@@ -20,10 +20,9 @@
 # Rares Vernica, Finsiel Romania
 
 from html2text import html2text
+from zope.interface import implements
 from IEvent import IEvent
-from Globals import MessageDialog
 
-import string
 from time import *
 
 
@@ -90,7 +89,7 @@ def _slash_encode(line,offset):
     output = output + new + '\r\n'
     return output
 
-class OutputHelp:
+class OutputHelp(object):
     """ This class is here so incremental output works.
         Apache will send a Content-Length = 0 if you use RESPONSE.write
         and doesn't set content length manually.
@@ -103,15 +102,14 @@ class OutputHelp:
 
     def flush(self):
         pass
-    
+
     def purge(self):
         return self.body
 
-class BaseEvent:
+class BaseEvent(object):
     """ BaseEvent class, implements IEvent interface"""
 
-    __implements__=IEvent
-
+    implements(IEvent)
 
     def show_vcs(self,REQUEST,RESPONSE):
         """Generate vCalendar file"""

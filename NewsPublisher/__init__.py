@@ -21,30 +21,13 @@ __version__='0.1'
 
 # Zope imports
 from App.ImageFile import ImageFile
-from Products.ZCatalog.ZCatalog import manage_addZCatalog
 
 # Product imports
 import NewsItem
 import NewsList
 from StaticServe import StaticServeFromZip
 
-def install_catalog(app):
-    if not hasattr(app, 'Catalog'):
-        manage_addZCatalog(app, 'Catalog', 'Catalog')
-    
-    if 'meta_type' not in app.Catalog.indexes():
-        app.Catalog.addIndex('meta_type', 'FieldIndex', 'meta_type')
-    
-    if 'published' not in app.Catalog.indexes():
-        app.Catalog.addIndex('published', 'FieldIndex', 'published')
-    
-    if 'release_date' not in app.Catalog.indexes():
-        app.Catalog.addIndex('release_date', 'FieldIndex', 'release_date')
-
 def initialize(context):
-    # make sure the catalog exists
-    install_catalog(context._ProductContext__app)
-    
     # register NewsItem
     context.registerClass(
         NewsItem.NewsItem,
@@ -52,7 +35,7 @@ def initialize(context):
                        NewsItem.manage_addNewsItem),
         icon='www/news_item.gif',
     )
-    
+
     # register NewsList
     context.registerClass(
         NewsList.NewsList,

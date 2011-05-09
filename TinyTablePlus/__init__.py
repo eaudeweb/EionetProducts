@@ -36,7 +36,7 @@ __version__="$Revision: 1.5 $"[11:-2]
 
 ######################### Imported Modules #########################
 
-from ImageFile import ImageFile
+from App.ImageFile import ImageFile
 import TinyTablePlus
 
 ######################### Metadata #########################
@@ -70,7 +70,7 @@ __ac_permissions__ = (
 )
 
 # Define shared web objects that are used by products.
-# This is usually (always ?) limited to images used 
+# This is usually (always ?) limited to images used
 # when displaying an object ub contents lists.
 # These objects are accessed as:
 #   <!--#var SCRIPT_NAME-->/misc_/Product/name

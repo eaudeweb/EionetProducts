@@ -31,18 +31,12 @@ $Id: ManagedMeetings.py 9869 2007-10-17 13:54:11Z nituacor $
 __version__='$Revision: 1.26 $'[10:-2]
 
 
-from OFS import Folder,Image
+from OFS import Folder
 from Globals import DTMLFile, MessageDialog, InitializeClass, package_home
-from AccessControl import getSecurityManager, Permissions, ClassSecurityInfo
+from AccessControl import getSecurityManager, ClassSecurityInfo
 
 import Products
-import os
 from os.path import join
-import re
-import string
-import tempfile
-import types
-import StringIO
 
 manage_addManagedMeetingsForm=DTMLFile('www/ManagedMeetings_addForm', globals())
 

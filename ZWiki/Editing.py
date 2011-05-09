@@ -4,21 +4,19 @@ Editing methods.
 
 from __future__ import nested_scopes
 import re, string, time
-from string import split,join,find,lower,rfind,atoi,strip
+from string import find,strip
 from urllib import quote, unquote
 from types import *
 from email.Message import Message
 from copy import deepcopy
 
-import ZODB # need this for pychecker
 from AccessControl import getSecurityManager, ClassSecurityInfo
-from App.Common import rfc1123_date
 from DateTime import DateTime
 from Globals import InitializeClass
 try:
-    from zope.app.content_types import guess_content_type
+    from zope.contenttype import guess_content_type
 except ImportError:
-    from OFS.content_types import guess_content_type
+    from zope.app.content_types import guess_content_type
 from OFS.DTMLDocument import DTMLDocument
 from OFS.ObjectManager import BadRequestException
 import OFS.Image
@@ -37,13 +35,13 @@ class PageEditingSupport:
     def checkPermission(self, permission, object):
         return getSecurityManager().checkPermission(permission,object)
 
-    security.declareProtected(Permissions.Add, 'create') 
+    security.declareProtected(Permissions.Add, 'create')
     def create(self,page=None,text='',type=None,title='',REQUEST=None,log='',
                sendmail=1, parents=None, subtopics=None, pagename=None):
         """
         Create a new wiki page, with optional extras.
 
-        Normally edit() will call this for you. 
+        Normally edit() will call this for you.
 
         We assume the page name comes url-quoted. If it's not a url-safe
         name, we will create the page with a similar url-safe id, which we
@@ -52,13 +50,13 @@ class PageEditingSupport:
         argument, to support the page management form (XXX temporary).
         Other features:
 
-        - can upload a file at the same time.  
+        - can upload a file at the same time.
 
         - can set the subtopics display property
 
         - can handle a rename during page creation. This helps CMF/Plone
         and is occasionally useful.
-        
+
         - checks the edit_needs_username property as well as permissions.
 
         - redirects to the new page or to the denied view if appropriate
@@ -69,7 +67,7 @@ class PageEditingSupport:
         if not self.checkSufficientId(REQUEST):
             if REQUEST: REQUEST.RESPONSE.redirect(self.pageUrl()+'/denied')
             return None
-        
+
         name = unquote(page or pagename)
         id = self.canonicalIdFrom(name)
 
@@ -93,7 +91,7 @@ class PageEditingSupport:
         else: p.parents = parents
         self.wikiOutline().add(p.pageName(),p.parents) # update wiki outline
 
-        # choose the specified type, the default type or whatever we're allowed 
+        # choose the specified type, the default type or whatever we're allowed
         p.setPageType(type or self.defaultPageType())
         p.setText(text,REQUEST)
         p.handleFileUpload(REQUEST)
@@ -182,7 +180,7 @@ class PageEditingSupport:
         if in_reply_to: m['In-Reply-To'] = in_reply_to
         m.set_payload(text)
         m.set_unixfrom(self.fromLineFrom(m['From'],m['Date'])[:-1])
-        
+
         # discard junk comments
         if not (m['Subject'] or m.get_payload()): return
 
@@ -238,11 +236,11 @@ class PageEditingSupport:
             self.edit(text=self.read()+separator+str(text), REQUEST=REQUEST,log=log)
 
     security.declarePublic('edit')      # check permissions at runtime
-    def edit(self, page=None, text=None, type=None, title='', 
-             timeStamp=None, REQUEST=None, 
+    def edit(self, page=None, text=None, type=None, title='',
+             timeStamp=None, REQUEST=None,
              subjectSuffix='', log='', check_conflict=1, # temp (?)
              leaveplaceholder=LEAVE_PLACEHOLDER, updatebacklinks=1,
-             subtopics=None): 
+             subtopics=None):
         """
         General-purpose method for editing & creating zwiki pages.
 
@@ -387,7 +385,7 @@ class PageEditingSupport:
             # existing links on a line that you tweak will be counted.
             # Not sure what happens if you replace existing links.
             self.checkForSpam(self.addedText(old, new))
-                
+
             # change it
             self.setText(text,REQUEST)
             self.setLastEditor(REQUEST)
@@ -513,7 +511,7 @@ class PageEditingSupport:
         # newlines would cause glitches later..
         pagename = re.sub(r'[\r\n]','',pagename)
         newname, newid = pagename, self.canonicalIdFrom(pagename)
-        if not newname or (newname == oldname and newid == oldid): return 
+        if not newname or (newname == oldname and newid == oldid): return
 
         BLATHER('renaming %s (%s) to %s (%s)...'%(oldname,oldid,newname,newid))
 
@@ -595,7 +593,7 @@ class PageEditingSupport:
                 child.removeParent(self.pageName())
                 child.addParent(newparent)
                 child.index_object() # XXX need only reindex parents
-                
+
         """
         Replace one link with another throughout the wiki.
 
@@ -718,7 +716,7 @@ class PageEditingSupport:
             if guess_content_type(file.filename)[0][0:5] == 'image':
                 if self.inCMF():
                     #XXX how ?
-                    id = folder._setObject(id, OFS.Image.Image(id,title,'')) 
+                    id = folder._setObject(id, OFS.Image.Image(id,title,''))
                 else:
                     id = folder._setObject(id, OFS.Image.Image(id,title,''))
             else:
@@ -738,7 +736,7 @@ class PageEditingSupport:
     def _addFileLink(self, file_id, content_type, size, REQUEST):
         """
         Link a file or image at the end of this page, if not already linked.
-        
+
         If it's an image and not too big, display it inline.
         """
         if re.search(r'(src|href)="%s"' % file_id,self.text()): return
@@ -768,7 +766,7 @@ class PageEditingSupport:
         #    self._deleteOwnershipAfterAdd()
         #else:
         #    self._setOwnerRole(REQUEST)
-            
+
     # for IssueNo0157
     _old_read = DTMLDocument.read
     security.declareProtected(Permissions.View, 'read')
@@ -780,7 +778,7 @@ class PageEditingSupport:
     def text(self, REQUEST=None, RESPONSE=None):
         """
         Return this page's source text, with text/plain content type.
-        
+
         (a permission-free version of document_src)
         # XXX security ?
         """
@@ -821,7 +819,7 @@ class PageEditingSupport:
                     (ip, username, page, reason, t))
             raise _("There was a problem: %s" % \
                     (verbose_reason))
-            
+
         # banned link pattern ?
         for pat in getattr(self.folder(),'banned_links',[]):
             pat = strip(pat)
@@ -919,7 +917,7 @@ class PageEditingSupport:
         return (hasattr(self,'creator') and
                 hasattr(self,'creation_time') and
                 hasattr(self,'creator_ip'))
-                
+
 
     def setCreator(self, REQUEST=None):
         """
@@ -939,7 +937,7 @@ class PageEditingSupport:
         Warn if this edit would be in conflict with another.
 
         Edit conflict checking based on timestamps -
-        
+
         things to consider: what if
         - we are behind a proxy so all ip's are the same ?
         - several people use the same cookie-based username ?
@@ -979,7 +977,7 @@ class PageEditingSupport:
     security.declareProtected(Permissions.View, 'timeStamp')
     def timeStamp(self):
         return str(self._p_mtime)
-    
+
     security.declareProtected(Permissions.FTP, 'manage_FTPget')
     def manage_FTPget(self):
         """
@@ -1073,7 +1071,7 @@ class PageEditingSupport:
         here and there.
         """
         return self.pageType().split(self)
-    
+
     security.declareProtected(Permissions.Delete, 'merge')
     def merge(self):
         """
@@ -1083,6 +1081,6 @@ class PageEditingSupport:
         text page type does this.
         """
         return self.pageType().merge(self)
-    
+
 InitializeClass(PageEditingSupport)
 

@@ -20,15 +20,13 @@
 # Rares Vernica, Finsiel Romania
 
 from Event import BaseEvent
-from webdav.WriteLockInterface import WriteLockInterface
-from Globals import DTMLFile, MessageDialog, InitializeClass, package_home
+from Globals import DTMLFile, InitializeClass, package_home
 from AccessControl import ClassSecurityInfo
 from OFS import SimpleItem, ObjectManager, FindSupport
 import webdav.Collection
 import Products
 
 from os.path import join
-import re,string
 from time import *
 
 manage_addAnnouncedEventForm=DTMLFile('www/AnnouncedEvent_addForm', globals())

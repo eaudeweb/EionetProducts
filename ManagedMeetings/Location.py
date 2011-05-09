@@ -21,17 +21,16 @@
 
 from OFS import SimpleItem, ObjectManager, FindSupport
 import AccessControl.Role, webdav.Collection
-from webdav.WriteLockInterface import WriteLockInterface
-from Globals import DTMLFile, MessageDialog, InitializeClass, package_home
-from AccessControl import getSecurityManager, Permissions, ClassSecurityInfo
+from zope.interface import implements
+try:
+    from webdav.interfaces import IWriteLock
+except ImportError: #< zope2.12
+    from webdav.WriteLockInterface import WriteLockInterface as IWriteLock
 
-import os
+from Globals import DTMLFile, MessageDialog, InitializeClass, package_home
+from AccessControl import getSecurityManager, ClassSecurityInfo
+
 from os.path import join
-import re
-import string
-import tempfile
-import types
-import StringIO
 import Products
 
 manage_addLocationForm=DTMLFile('www/Location_addForm', globals())
@@ -70,8 +69,7 @@ class Location(
     FindSupport.FindSupport,
     ):
     """Meeting location"""
-
-    __implements__ = (WriteLockInterface,)
+    __implements__ = (IWriteLock, )
 
     meta_type="Meeting Location"
 

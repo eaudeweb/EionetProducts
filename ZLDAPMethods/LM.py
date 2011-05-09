@@ -1,17 +1,17 @@
 # core of LDAP Filter Methods.
 
 
-from Globals import HTMLFile, HTML
 __version__ = "$Revision: 1.10 $"[11:-2]
 
-try: import ldap              # see if it's on a regular path
-except ImportError:  from Products.ZLDAPConnection import ldap
+try:
+    import ldap              # see if it's on a regular path
+except ImportError:
+    from Products.ZLDAPConnection import ldap
 
 from Shared.DC.ZRDB import Aqueduct
-from Shared.DC.ZRDB.Aqueduct import parse, decodestring, default_input_form
-from Shared.DC.ZRDB.Results import Results
+from Shared.DC.ZRDB.Aqueduct import parse, default_input_form
 import Acquisition, Globals, AccessControl.Role, OFS.SimpleItem
-from Globals import HTMLFile, MessageDialog, Persistent
+from Globals import HTMLFile, MessageDialog
 import DocumentTemplate
 import sys
 try:
@@ -27,7 +27,7 @@ class Filter(DocumentTemplate.HTML):
     It's just nice to have a nice name that reflects what this is. :)
     """#"
     pass
-    
+
 
 def LDAPConnectionIDs(self):
     """find LDAP connections in the current folder and parents
@@ -55,7 +55,7 @@ def LDAPConnectionIDs(self):
 
 manage_addZLDAPMethodForm = HTMLFile('add', globals())
 
-def manage_addZLDAPMethod(self, id, title, connection_id, scope, basedn, 
+def manage_addZLDAPMethod(self, id, title, connection_id, scope, basedn,
                           filters, arguments, getfromconnection=0,
                           REQUEST=None, submit=None):
     """Add an LDAP Method """
@@ -64,7 +64,7 @@ def manage_addZLDAPMethod(self, id, title, connection_id, scope, basedn,
     self._setObject(id, l)
     if getfromconnection:
         getattr(self,id).recomputeBaseDN()
-        
+
     if REQUEST is not None:
         u=REQUEST['URL1']
         if submit==" Add and Edit ":
@@ -73,12 +73,12 @@ def manage_addZLDAPMethod(self, id, title, connection_id, scope, basedn,
             u="%s/%s/manage_testForm" % (u,id)
         else:
             u=u+'/manage_main'
-            
+
         REQUEST.RESPONSE.redirect(u)
     return ''
 
-_ldapScopes = { "ONELEVEL": ldap.SCOPE_ONELEVEL, 
-                "SUBTREE": ldap.SCOPE_SUBTREE, 
+_ldapScopes = { "ONELEVEL": ldap.SCOPE_ONELEVEL,
+                "SUBTREE": ldap.SCOPE_SUBTREE,
                 "BASE": ldap.SCOPE_BASE }
 
 class LDAPFilter(Aqueduct.BaseQuery,
@@ -97,7 +97,7 @@ class LDAPFilter(Aqueduct.BaseQuery,
         {'label':'Test', 'action':'manage_testForm'},
         {'label':'Security', 'action':'manage_access'},
         )
-        
+
     __ac_permissions__=(
         ('View management screens', ('manage_tabs','manage_main',),),
         ('Change LDAP Methods', ('manage_edit',
@@ -115,7 +115,7 @@ class LDAPFilter(Aqueduct.BaseQuery,
                                      '<!--#var manage_tabs-->')
         return DocumentTemplate.HTML(input_src)(self,REQUEST,HTTP_REFERER='')
 
-    def __init__(self, id, title, connection_id, scope, basedn, 
+    def __init__(self, id, title, connection_id, scope, basedn,
                  arguments, filters):
         """ init method """
         self.id = id
@@ -127,7 +127,7 @@ class LDAPFilter(Aqueduct.BaseQuery,
         self.arguments_src=self.arguments=arguments
         self._arg=parse(arguments)
         self.filters = filters
-        
+
 
     def recomputeBaseDN(self):
         ' recompute base DN based on connection '
@@ -168,7 +168,7 @@ class LDAPFilter(Aqueduct.BaseQuery,
 
     def _getConn(self):
         return self._connection().GetConnection()
-        
+
     # Hacky, Hacky
     GetConnection=_getConn
 
@@ -202,7 +202,7 @@ class LDAPFilter(Aqueduct.BaseQuery,
             return report
 
         finally: tb=None
-                
+
     def prettyResults(self, res):
         s = ""
         if not res or not len(res):
@@ -239,17 +239,17 @@ class LDAPFilter(Aqueduct.BaseQuery,
             if auth_user is not None:
                 try: auth_user = auth_user.get('AUTHENTICATED_USER', None)
                 except: auth_user = None
-                
+
         if auth_user is not None:
             if getSecurityManager is None:
                 # working in a pre-Zope 2.2.x instance
                 from AccessControl.User import verify_watermark
                 verify_watermark(auth_user)
                 argdata['AUTHENTICATED_USER'] = auth_user
-                
+
 
         f = Filter(self.filters)        # make a FilterTemplate
-        f.cook()                       
+        f.cook()
         if getSecurityManager is None:
             # working in a pre-Zope 2.2 instance
             f = apply(f, (p,argdata))       #apply the template
@@ -259,11 +259,11 @@ class LDAPFilter(Aqueduct.BaseQuery,
             security.addContext(self)
             try:     f = apply(f, (p,), argdata)  # apply the template
             finally: security.removeContext(self)
-            
+
         f = str(f)                      #ensure it's a string
         if src__: return f              #return the rendered source
         f = self.cleanse(f)
-        
+
         ### run the search
         res = c.search_s(self.basedn, self._scope, f)
         if tst__: return res            #return test-friendly data
@@ -293,5 +293,5 @@ pretty_results=DocumentTemplate.HTML("""\
   </table>""")
 
 
-import Globals
-Globals.default__class_init__(LDAPFilter)
+#import Globals
+#Globals.default__class_init__(LDAPFilter)

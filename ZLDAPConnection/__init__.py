@@ -1,8 +1,7 @@
 """LDAP Server Connection Package """
 
-import ZLDAP, Entry
+import ZLDAP
 __version__ = ZLDAP.__version__
-
 
 # use the propert product registration
 def initialize(context):

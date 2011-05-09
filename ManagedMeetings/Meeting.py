@@ -22,8 +22,7 @@
 # Rares Vernica, Finsiel Romania
 
 from Event import BaseEvent
-from webdav.WriteLockInterface import WriteLockInterface
-from AccessControl import getSecurityManager, Permissions, ClassSecurityInfo
+from AccessControl import getSecurityManager, ClassSecurityInfo
 from Globals import DTMLFile, MessageDialog, InitializeClass, package_home
 from OFS import SimpleItem, ObjectManager, FindSupport
 import webdav.Collection

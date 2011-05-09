@@ -12,7 +12,7 @@ disclaimers apply, etc.
 
 
 STYLE NOTES
-    
+
 imports
 
  are usually in three groups: python, then zope, then zwiki imports
@@ -32,7 +32,7 @@ docstrings
 
  Data attributes override method attributes with the same name; to
  avoid accidental name conflicts, which may cause hard-to-find bugs in
- large programs, it is wise to use some kind of convention 
+ large programs, it is wise to use some kind of convention
  [such as] verbs for methods and nouns for data attributes."
 
 method visibility
@@ -47,8 +47,10 @@ method visibility
 """
 
 from __future__ import nested_scopes
-import os, sys, re, string, time, thread
-from string import split,join,find,lower,rfind,atoi,strip
+import re
+import string
+import thread
+from string import find, lower, rfind
 from urllib import quote, unquote
 from types import *
 
@@ -58,7 +60,10 @@ from App.Common import rfc1123_date
 from DateTime import DateTime
 from Globals import InitializeClass
 from OFS.DTMLDocument import DTMLDocument
-from webdav.WriteLockInterface import WriteLockInterface
+try:
+    from webdav.interfaces import IWriteLock
+except ImportError: #< zope2.12
+    from webdav.WriteLockInterface import WriteLockInterface as IWriteLock
 
 import Permissions
 from Defaults import AUTO_UPGRADE, IDS_TO_AVOID, \
@@ -91,8 +96,8 @@ from plugins import PLUGINS
 DEFAULT_PAGETYPE = PAGETYPES[0]
 
 
-class ZWikiPage(    
-    PLUGINS[0], # see plugins/__init__.py    
+class ZWikiPage(
+    PLUGINS[0], # see plugins/__init__.py
     PLUGINS[1],
     PLUGINS[2],
     PLUGINS[3],
@@ -108,7 +113,7 @@ class ZWikiPage(
     PLUGINS[13],
     PLUGINS[14],
     PLUGINS[15],
-    PageEditingSupport, 
+    PageEditingSupport,
     PageOutlineSupport,
     PageDiffSupport,
     PageMailSupport,
@@ -131,7 +136,7 @@ class ZWikiPage(
     wiki-building, email, issue tracking, etc.  Mixins are used to
     organize functionality into modules.
     """
-    __implements__ = (WriteLockInterface, PageCMFSupport.__implements__)
+    __implements__ = (IWriteLock, PageCMFSupport.__implements__)
     security = ClassSecurityInfo()
     security.declareObjectProtected('View')
     security.declareProtected(Permissions.Edit, 'revert')
@@ -179,7 +184,7 @@ class ZWikiPage(
     last_edit_time = ''
     last_log = ''
     PAGE_TYPES = PAGE_TYPES # used by skin templates
-    # page_type used to be a string used to select a render method. 
+    # page_type used to be a string used to select a render method.
     # As of 0.25 it is an object which encapsulates the page's formatting
     # behaviour. It will return the old id string when called, which
     # should keep existing catalogs working.
@@ -210,7 +215,7 @@ class ZWikiPage(
         return self.pageType().id()
 
     # pre-rendered text cache
-    _prerendered = ''   
+    _prerendered = ''
     def setPreRendered(self,t): self._prerendered = t
     def preRendered(self):
         # cope with non-existing or None attribute on old instances - needed ?
@@ -274,7 +279,7 @@ class ZWikiPage(
     def preRender(self,clear_cache=0):
         """
         Make sure any applicable pre-rendering for this page has been done.
-        
+
         If clear_cache is true, blow away any cached data.
         XXX I think this happens anyway.
         """
@@ -286,7 +291,7 @@ class ZWikiPage(
         Render some source text according to the specified page type.
         """
         return self.lookupPageType(type)().renderText(self,text,**kw)
-            
+
     security.declareProtected(Permissions.View, 'clearCache')
     def clearCache(self,REQUEST=None):
         """
@@ -324,7 +329,7 @@ class ZWikiPage(
             REQUEST,
             RESPONSE,
             **kw)
-    
+
     def renderMidsectionIn(self, text, **kw):
         """
         Insert some final things between the rendered document and discussion.
@@ -335,7 +340,7 @@ class ZWikiPage(
 
         XXX This is not good enough. The midsection marker can get mixed
         up with other rendering in the various page types.
-        
+
         """
         # page may not have been prerendered with midsection marker yet -
         # we'll also insert at a messages separator, if we see one,
@@ -344,8 +349,8 @@ class ZWikiPage(
             try: doc, discussion = re.split(MIDSECTIONMARKER,text)
             except ValueError:
                 #our marker got clobbered, or there's more than one - bail out
-                return text 
-                
+                return text
+
         elif string.find(text,r'<a name="messages">') != -1:
             doc, discussion = re.split(r'<a name="messages">',text)
             discussion = '<a name="messages">' + discussion
@@ -374,34 +379,34 @@ class ZWikiPage(
                 self.dtmlAllowed() and
                 (re.search(r'(?i)(<dtml-var["\s]+|&dtml-)subtopics',
                            self.read()) is not None))
-    
+
     security.declareProtected(Permissions.View, 'supportsStx')
-    def supportsStx(self): 
-        """supportsStx""" 
+    def supportsStx(self):
+        """supportsStx"""
         return self.pageType().supportsStx()
 
     security.declareProtected(Permissions.View, 'supportsRst')
-    def supportsRst(self): 
-        """supportsRst""" 
+    def supportsRst(self):
+        """supportsRst"""
         return self.pageType().supportsRst()
 
     security.declareProtected(Permissions.View, 'supportsWwml')
-    def supportsWwml(self): 
-        """supportsWwml""" 
+    def supportsWwml(self):
+        """supportsWwml"""
         return self.pageType().supportsWwml()
 
     security.declareProtected(Permissions.View, 'supportsWikiLinks')
-    def supportsWikiLinks(self): 
+    def supportsWikiLinks(self):
         """supportsWikiLinks"""
         return self.pageType().supportsWikiLinks()
 
     security.declareProtected(Permissions.View, 'supportsHtml')
-    def supportsHtml(self): 
+    def supportsHtml(self):
         """Does this page render ordinary HTML tags ?"""
         return self.pageType().supportsHtml()
 
     security.declareProtected(Permissions.View, 'supportsDtml')
-    def supportsDtml(self): 
+    def supportsDtml(self):
         """Does this page support embedded DTML ?"""
         return self.pageType().supportsDtml()
 
@@ -601,7 +606,7 @@ class ZWikiPage(
             protected_line,
             lambda m:re.sub(wikilink, r'!\1', m.group(1)),
             text)
-        
+
     def renderLink(self,link,allowed=0,state=None,text='',
                    link_title=None,access_key=None):
         """
@@ -688,7 +693,7 @@ class ZWikiPage(
                 try: link = p.getId() # XXX poor caching
                 except AttributeError: link = p.id   # all-brains
                 # and fall through
-            
+
         # must be either a WikiName link, or an existing page's id from above
         return self.renderLinkToPage(link,
                                      linkorig=linkorig,
@@ -698,7 +703,7 @@ class ZWikiPage(
     # XXX helper for above
     def renderLinkToPage(self,page,linkorig=None,link_title=None,
                          access_key=None,name=None):
-                         
+
         """
         Render a wiki link to page, which may or may not exist.
 
@@ -742,7 +747,7 @@ class ZWikiPage(
                 quote(self.id()),
                 quote(page),
                 _("create this page")))
-                  
+
         # subwiki support: or does a matching page exist in the parent folder ?
         # XXX this is dumber than the above; doesn't handle i18n
         # characters, freeform names
@@ -785,7 +790,7 @@ class ZWikiPage(
         """
         if self.spacedWikinamesEnabled():
             return self.spacedNameFrom(wikiname)
-        else: 
+        else:
             return wikiname
 
     security.declareProtected(Permissions.View, 'spacedNameFrom')
@@ -860,7 +865,7 @@ class ZWikiPage(
     def linkTitleFrom(self,last_edit_time=None,last_editor=None,prettyprint=0):
         """
         make a link title string from these last_edit_time and editor strings
-        
+
         with prettyprint=1, format it for use in the standard header.
         """
         try:
@@ -880,7 +885,7 @@ class ZWikiPage(
                 ' <a href="%s/diff" title="%s%s" >%s</a>' % (
                 self.pageUrl(),
                 _('show last edit'),
-                lastlog, 
+                lastlog,
                 interval))
 
             # use the link in a clear i18n way
@@ -896,9 +901,9 @@ class ZWikiPage(
             if not prettyprint:
                 s = s + " " + _("by %(editor)s")% {"editor":editor}
             else:
-                s = s + " " + _("by %(editor)s") % {"editor":"<b>%s</b>" % editor} 
+                s = s + " " + _("by %(editor)s") % {"editor":"<b>%s</b>" % editor}
         return s
-    
+
     def linkToAllCataloged(self):
         return getattr(self,'link_to_all_cataloged',
                        LINK_TO_ALL_CATALOGED) and 1
@@ -922,7 +927,7 @@ class ZWikiPage(
 
     def pageId(self):
         return self.id()
-    
+
     security.declareProtected(Permissions.View, 'spacedPageName')
     def spacedPageName(self):
         """
@@ -931,7 +936,7 @@ class ZWikiPage(
         We use this for eg the html title tag to improve search engine relevance.
         """
         return self.spacedNameFrom(self.pageName())
-    
+
     security.declareProtected(Permissions.View, 'formattedPageName')
     def formattedPageName(self):
         """
@@ -977,7 +982,7 @@ class ZWikiPage(
         # ' is not considered a word boundary.
         name = re.sub(r"'",r"",name)
         name = re.sub(r'[%s]+'%re.escape(string.punctuation),r' ',name)
-        
+
         # capitalize whitespace-separated words (preserving existing
         # capitals) then strip whitespace
         id = ' '+name
@@ -1052,7 +1057,7 @@ class ZWikiPage(
         Different catalog configurations screw up our title and text
         searches somewhat. For the standard search form, we want: case
         insensitive, partial matching in page names and page text.
-        
+
         """
         if self.hasCatalogIndexesMetadata((['meta_type','path'], [])):
             if self.linkToAllCataloged():
@@ -1121,9 +1126,9 @@ class ZWikiPage(
         None; we guard against that.
         """
         # faster, & more robust
-        return self.folder().objectIds(spec=self.meta_type) 
+        return self.folder().objectIds(spec=self.meta_type)
         # catalog-driven, so could work across folders (cf ALLBRAINS etc.)
-        #return filter(lambda x:x is not None, map(lambda x:x.id,self.pages())) 
+        #return filter(lambda x:x is not None, map(lambda x:x.id,self.pages()))
 
     security.declareProtected(Permissions.View, 'pageNames')
     def pageNames(self):
@@ -1180,7 +1185,7 @@ class ZWikiPage(
     def defaultPage(self):
         """
         Return this wiki's default page object, where eg mail goes by default.
-        
+
         That is:
 
         - a page named in the default_page string or lines property
@@ -1190,7 +1195,7 @@ class ZWikiPage(
         """
         # default_page property could be a list, tuple or string
         default_page_names = getattr(self.folder(),'default_page',[])
-        if type(default_page_names) == StringType: 
+        if type(default_page_names) == StringType:
             default_page_names = [default_page_names]
         elif type(default_page_names) == TupleType:
             default_page_names = list(default_page_names)
@@ -1200,13 +1205,13 @@ class ZWikiPage(
             if p: return p
         # pageObjects could be a LazyMap
         return (list(self.pageObjects())+[None])[0]
-        
+
     security.declareProtected(Permissions.View, 'defaultPageId')
     def defaultPageId(self):
         """
         Return this wiki's default page ID.
-        
-        See defaultPage. 
+
+        See defaultPage.
         """
         p = self.defaultPage()
         return (p and p.id()) or None
@@ -1272,13 +1277,13 @@ class ZWikiPage(
         """
         Return the page in this folder with this as it's name or id, or None.
         """
-        return (self.pageWithId(name,url_quoted) or 
+        return (self.pageWithId(name,url_quoted) or
                 self.pageWithName(name,url_quoted))
-        
+
     security.declareProtected(Permissions.View, 'pageWithFuzzyName')
     def pageWithFuzzyName(self,name,url_quoted=0,allow_partial=0,
                           ignore_case=1, numeric_match=0):
-                          
+
         """
         Return the page in this folder for which name is a fuzzy link, or None.
 
@@ -1307,13 +1312,13 @@ class ZWikiPage(
             pass
         for i in ids:
             ilower = string.lower(i)
-            if (ilower == idlower or 
+            if (ilower == idlower or
                 ((allow_partial and ilower[:len(idlower)] == idlower) and not
                  (numeric_match and re.match(r'[0-9]',ilower[len(idlower):])))
                 ):
                 return self.pageWithId(i)
         return None
-        
+
     security.declareProtected(Permissions.View, 'backlinksFor')
     def backlinksFor(self, page):
         """
@@ -1321,7 +1326,7 @@ class ZWikiPage(
 
         Optimisation: like pages(), this method used to return actual page
         objects but now returns metadata objects (catalog results if possible,
-        or workalikes) to improve caching. 
+        or workalikes) to improve caching.
 
         page may be a name or id, and need not exist in the wiki
 
@@ -1355,13 +1360,13 @@ class ZWikiPage(
         to call _("") from the python: Expression.
 
         dont forget to force i18n extraction with something like
-        
+
         <span tal:condition='nothing'>
             <!-- force i18n extraction -->
-            <span title='Sentence' i18n:attributes='title'></span>            
+            <span title='Sentence' i18n:attributes='title'></span>
         </span>
         """
-    
+
         translate_msg = _(msgid)
         if map:
             try:
@@ -1385,7 +1390,7 @@ class ZWikiPage(
     wiki_page_url = PageUtils.page_url
     wiki_base_url = PageUtils.wiki_url
     zwiki_username_or_ip = PageUtils.usernameFrom
-    applyLineEscapesIn = applyWikiLinkLineEscapesIn 
+    applyLineEscapesIn = applyWikiLinkLineEscapesIn
 
     # CMF compatibility
     view = __call__
@@ -1426,10 +1431,10 @@ def within_literal(upto, after, state, text,
     lastend,inpre,incode,intag,inanchor = \
       state['lastend'], state['inpre'], state['incode'], state['intag'], \
       state['inanchor']
-      
+
     newintag = newincode = newinpre = newinanchor = 0
     text = lower(text)
-    
+
     # Check whether '<pre>' is currently (possibly, still) prevailing.
     opening = rfind(text, '<pre', lastend, upto)
     if (opening != -1) or inpre:

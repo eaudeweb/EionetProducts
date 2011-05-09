@@ -1,7 +1,6 @@
-
 __version__="$Revision: 1.1 $"[11:-2]
 
-class LDAPConnectionAccessors:
+class LDAPConnectionAccessors(object):
     """ getters / setters for LDAP Properties """
 
     __ac_permissions__ = (
@@ -74,7 +73,7 @@ class LDAPConnectionAccessors:
 
     shouldBeOpen = getOpenConnection
 
-    
+
     def getBrowsable(self):
         """ if true, connection object is set to be browsable through the
         management interface """
@@ -100,6 +99,7 @@ class LDAPConnectionAccessors:
         # always committing.
         if not transactional:
             self._isCommitting = 1
-        
-import Globals
-Globals.default__class_init__(LDAPConnectionAccessors)
+
+#import Globals
+#Globals.default__class_init__(LDAPConnectionAccessors)
+

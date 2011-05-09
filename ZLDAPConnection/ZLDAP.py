@@ -1,4 +1,4 @@
-""" 
+"""
    An LDAP connection product.  Depends on David Leonard's ldapmodule.
    $Id: ZLDAP.py 10692 2008-01-22 15:41:02Z roug $
    Started by Anthony Baxter, <anthony@interlink.com.au>
@@ -9,12 +9,17 @@
 
 __version__ = "$Revision: 1.1 $"[11:-2]
 
-import Acquisition, AccessControl, OFS, string
+import ldap
+import urllib
+import time
+import Acquisition
+import AccessControl
+import OFS
 from Globals import HTMLFile, MessageDialog, Persistent
-import ldap, urllib, time
 
 import LDCAccessors
 from Entry import ZopeEntry, GenericEntry, TransactionalEntry
+
 ConnectionError='ZLDAP Connection Error'
 
 manage_addZLDAPConnectionForm = HTMLFile('add', globals())
@@ -149,7 +154,7 @@ class ZLDAPConnection(
         elif o._isNew or o._isDeleted:
             oko.append(o)
         self._v_okobjects=oko
-        
+
     def tpc_finish(self, *ignored):
         " really really commit and DON'T FAIL "
         oko=self._v_okobjects
@@ -196,13 +201,13 @@ class ZLDAPConnection(
             if o.dn in getattr(self,'_v_add',{}).keys():
                 del self._v_add[o.dn]
         self.GetConnection().destroy_cache()
-        
+
     def _abort(self):
         oko=self._v_okobjects
         for o in oko:
             self.abort(o)
         self.GetConnection().destroy_cache()
-            
+
     def tpc_vote(self, *ignored):
         pass
 
@@ -282,7 +287,7 @@ class ZLDAPConnection(
 
     def getSubEntries(self, dn, o=None):
         Entry = self._EntryFactory()
-        
+
         r=[]
         se=self.getRawSubEntries(dn)
 
@@ -302,7 +307,7 @@ class ZLDAPConnection(
             #outside of a commit.  We're not going to allow that!
         c=self._connection()
         c.modify_s(dn, modlist)
-        
+
     ### deleting entries
     def _registerDelete(self, dn):
         " register DN for deletion "
@@ -345,7 +350,7 @@ class ZLDAPConnection(
             raise AccessError, 'Cannot add unless in a commit'
         c=self._connection()
         c.add_s(dn, attrs)
-        
+
     ### other stuff
     def title_and_id(self):
         "title and id, with conn state"
@@ -367,7 +372,7 @@ class ZLDAPConnection(
             raise ConnectionError, 'Connection Closed'
 
     GetConnection=_connection
-            
+
     def isOpen(self):
         """ quickly checks to see if the connection's open
             Reopen if connection older than 5 minutes
@@ -404,7 +409,7 @@ class ZLDAPConnection(
             self._v_conn.simple_bind_s(self.bind_as, self.pw)
         except ldap.NO_SUCH_OBJECT:
             return """
-   Error: LDAP Server returned `no such object' for %s. Possibly 
+   Error: LDAP Server returned `no such object' for %s. Possibly
    the bind string or password are incorrect"""%(self.bind_as)
         self._v_openc = long(time.time())
 
@@ -492,11 +497,11 @@ class ZLDAPConnection(
 ##          if not hasattr(self, '_v_conn'):
 ##              self._open()
 ##          return self._v_conn
-            
+
 
     def _isAnLDAPConnection(self):
         return 1
-    
+
 def splitHostPort(hostport):
     import string
     l = string.split(hostport,':')

@@ -31,15 +31,16 @@
 from AccessControl import ClassSecurityInfo
 from DateTime import *
 import binascii,md5
-import operator, string, time
+import string, time
 import Globals
-from Globals import Persistent, Acquisition
+import Acquisition
+from Globals import Persistent
 from webdav.common import rfc1123_date
 import AccessControl
 import OFS
 from Products.ZCatalog.CatalogAwareness import CatalogAware
 
-import pickle, types, os, string
+import pickle, types, os
 from os.path import join, isfile
 
 from copy import deepcopy
@@ -262,7 +263,7 @@ class RDFSummary (
             self.rssurl = p.feed_redirect
             self._p_changed = 1
             if REQUEST:
-                message=""" The feed from %s was permanently moved to %s""" % (buf, self.rssurl) 
+                message=""" The feed from %s was permanently moved to %s""" % (buf, self.rssurl)
                 return self.manage_main(self,REQUEST,manage_tabs_message=message)
 
         if p.channel != {}:

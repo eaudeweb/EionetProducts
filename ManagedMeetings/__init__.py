@@ -22,7 +22,7 @@
 __doc__="""Meeting initialization module"""
 __version__= '$Revision: 1.24 $'[11:-2]
 
-from ImageFile import ImageFile
+from App.ImageFile import ImageFile
 import ManagedMeetings
 import Meeting
 import Location

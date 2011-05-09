@@ -19,9 +19,9 @@
 # Cornel Nitu, Finsiel Romania
 # Rares Vernica, Finsiel Romania
 
-from Interface import Base
+from zope.interface import Interface
 
-class IEvent(Base):
+class IEvent(Interface):
     """ """
     def show_ics(self,REQUEST,RESPONSE):
         """Generate iCalendar file"""

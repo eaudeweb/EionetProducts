@@ -19,10 +19,8 @@
 # Cornel Nitu, Finsiel Romania
 # Rares Vernica, Finsiel Romania
 
-import types
 import string, re
-from whrandom import choice
-from time import strftime
+from random import choice
 
 def format_date(date):
     try:
