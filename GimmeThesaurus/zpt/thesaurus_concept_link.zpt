@@ -1,0 +1,17 @@
+<tal:block tal:define="concept options/concept;
+					concept_name concept/concept_name;
+					concept_ns concept/concept_ns;
+					concept_id concept/concept_id">
+	<a	tal:condition="python:concept_name != ''"
+		tal:attributes="href python:concept.get_url(here, {'langcode': options['langcode']});
+						title string:${concept/concept_name}" 
+		tal:content="concept/concept_name"/>
+	<tal:block	condition="python:(concept_name == '') and (concept_id != '')"
+				tal:define="record python:here.GetConceptName(concept_ns, concept_id, 'en');
+							alt_concept_err python:record[0];">
+	<a	tal:define="alt_concept_name python:here.mp_concept_name(record[1][0])"
+		tal:attributes="href python:concept.get_url(here, {'langcode': options['langcode']})"
+		tal:content="python:test(alt_concept_err, '* ' + str(alt_concept_name), 'No english equivalent')"/>
+	<span tal:condition="alt_concept_err" class="name-note"> [english]</span>
+	</tal:block>
+</tal:block>

@@ -1,0 +1,7 @@
+<p tal:repeat="error python:options.get('errors', [])"><tal:block content="structure error" /></p>
+
+<p tal:repeat="message python:options.get('messages', [])"><tal:block content="structure message" /></p>
+
+<p tal:define="next python:options.get('next', None)" tal:condition="next">
+    <a tal:attributes="href next/url" tal:content="next/text" />
+</p>

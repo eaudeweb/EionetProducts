@@ -1,0 +1,22 @@
+<div style="float:right; margin: 3px; border: 2px solid #ff7e00">
+    <table cellspacing="0" cellpadding="3" border="0">
+    <tr><td align="center">
+         <br /><a class="menu" href="<dtml-var "getAbsoluteURL()">">
+          <img src="/misc_/ManagedMeetings/Overview_but.jpg" border="0" alt="" /><br />Overview</a><br />
+        <dtml-if "status == 'active' and enddate.isFuture()">
+            <br /><a href="typeofsignup"><img alt="Sign up here!" src="/misc_/ManagedMeetings/IWillAttend_but.jpg" border="0" /><br />Sign Up</a><br />
+        </dtml-if>
+        <br /><a class="menu" href="show_vcs"><img alt="Copy to your calender" src="/misc_/ManagedMeetings/vCalendar_but.jpg" border="0" /><br />vCalender</a><br />
+        <br /><a class="menu" href="show_ics">
+            <img alt="Copy to your calender" src="/misc_/ManagedMeetings/iCalendar_but.jpg" border="0" /><br />iCalender</a><br />
+    <dtml-if "_.len(objectValues('Meeting Attendee')) > 0">
+        <br /><a class="menu" href="attendeelist">
+                    <img alt="See the attendees list" src="/misc_/ManagedMeetings/Attendees_but.jpg" border="0" /><br />Attendees</a><br />
+    </dtml-if>
+    <dtml-if "_.len(objectValues('Meeting Attendee')) > 0">
+        <br /><a class="menu" href="SendEmail_form">
+            <img alt="Send mail to all attendees" src="/misc_/ManagedMeetings/EmailAll_but.jpg" border="0" /><br />Email all</a><br />
+    </dtml-if>
+        <br /></td></tr>
+    </table>
+</div>

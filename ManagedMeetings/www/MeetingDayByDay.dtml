@@ -1,0 +1,62 @@
+<dtml-comment> -*- mode: dtml; dtml-top-element: "body" -*- </dtml-comment>
+<dtml-var standard_html_header>
+<dtml-var choose_bar>
+<h1>Overview Day by Day for <i><dtml-var title_or_id></i></h1>
+<dtml-call "REQUEST.set('day', '')">
+<dtml-call "REQUEST.set('time', '')">
+<dtml-let numtracks="_.len(PARENTS[0].objectValues(['Meeting Track']))">
+<table border="0" width="100%" cellspacing="0" cellpadding="0">
+
+    <dtml-in "PARENTS[0].objectValues(['Meeting Session','Meeting Break'])" sort=startdate>
+       <dtml-call "REQUEST.set('currsession', id)">
+	<dtml-if "startdate.day() != day">
+	  <tr>
+	  <th align="left" colspan="<dtml-var "numtracks + 1">"><dtml-var startdate fmt="Day"> <dtml-var startdate fmt="day"> <dtml-var startdate fmt="Month"></th>
+	  </tr>
+	  <tr>
+	  <th>&nbsp;</th>
+	  <dtml-in "PARENTS[0].objectValues(['Meeting Track'])" sort=order,title>
+	  <th bgcolor="&dtml-colour;">&dtml-title;</th>
+	  </dtml-in>
+	  </tr>
+          <dtml-call "REQUEST.set('day', startdate.day())">
+	</dtml-if>
+
+	<tr>
+	  <dtml-if "startdate.TimeMinutes() != time">
+	    <td align="left" valign="top" bgcolor="#cccccc"><strong><dtml-var startdate
+	    fmt="TimeMinutes"></strong></td>
+	    <dtml-call "REQUEST.set('time', startdate.TimeMinutes())">
+	  <dtml-else>
+	    <td align="left" valign="top">&nbsp;</td>
+	  </dtml-if>
+	  <dtml-if "meta_type == 'Meeting Session'">
+	    <dtml-call "REQUEST.set('sttime', startdate)">
+    
+  <dtml-in "PARENTS[0].objectValues(['Meeting Track'])" sort=order,title>
+    <dtml-call "REQUEST.set('currtrack',id)">
+	<td align="left" valign="top" bgcolor="<dtml-var "_.getitem(currtrack).colour">">
+    <dtml-in "PARENTS[0].objectValues(['Meeting Agendaitem'])" sort=session_ord>
+	<dtml-if "session == currsession and (track == currtrack or track == '')">
+	    <b><a href="&dtml-id;"><dtml-var title_or_id></a></b><br />
+	  <dtml-in speakers>
+           <dtml-var "speakerlink(_['sequence-item'])"><br /></dtml-in>
+	    <b>Time:</b> <dtml-var sttime fmt="TimeMinutes"> -
+	    <dtml-call "REQUEST.set('sttime', sttime + _.float(duration)/1440.0)">
+	    <dtml-var sttime fmt="TimeMinutes"><br />
+	    <b>Location:</b> <dtml-var showlocation><br /><br />
+	</dtml-if>
+    </dtml-in>
+    </td>
+  </dtml-in>
+	  <dtml-else>
+	    <td align="center" bgcolor="#cccccc" colspan="<dtml-var numtracks>"><b><dtml-var title_or_id></b></td>
+	  </dtml-if>
+	    </td>
+	</tr>
+
+    </dtml-in>
+  </table>
+  </dtml-let>
+
+<dtml-var standard_html_footer>

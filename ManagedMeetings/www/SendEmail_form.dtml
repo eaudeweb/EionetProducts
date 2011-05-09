@@ -1,0 +1,82 @@
+<dtml-var standard_html_header>
+<dtml-var choose_bar>
+<h1>Send Email to All Attendees</h1>
+
+<dtml-if "REQUEST.has_key('FORM_ERROR')">
+   You have an error in the following form. Please correct it.
+</dtml-if>
+
+<form action="send_email" method="post" enctype="multipart/form-data">
+<table>
+<tr><th>Subject</th>
+    <td align="left" valign="top">
+      <input type="text" name="subject:string" size="60" value="<dtml-var "REQUEST.get('subject','')" html_quote>" style="width:45em" />
+	<dtml-if "REQUEST.has_key('FORM_ERROR' + '_subject')">
+        <br/><span style="color:red"><dtml-var "REQUEST['FORM_ERROR'+'_subject']"></span>
+	</dtml-if></td></tr>
+<tr>
+  <th><label for="comments">Message<label></th>
+  <td align="left" valign="top">
+      <textarea rows="15" cols="60" id="comments" name="comments:text" style="width:45em" ><dtml-var "REQUEST.get('comments','')" html_quote></textarea>
+	<dtml-if "REQUEST.has_key('FORM_ERROR' + '_comments')">
+        <br/><span style="color:red"><dtml-var "REQUEST['FORM_ERROR'+'_comments']"></span>
+	</dtml-if></td></tr>
+<dtml-if "_.len(objectValues(['File', 'Image', 'DTML Document', 'ExtFile', 'URL Reference',])) > 0">
+<tr><th valign="top">Attachments</th>
+    <td>
+    <dtml-in "objectValues(['File', 'Image', 'DTML Document', 'ExtFile', 'URL Reference',])">
+        <input type="checkbox" name="attached" value="&dtml-id;" id="attachment&dtml-sequence-number;" /> <label for="attachment&dtml-sequence-number;"><dtml-var title_and_id html_quote></label><br />
+    </dtml-in>
+  </td></tr>
+</dtml-if>
+
+<tr>
+  <th>Your email</th>
+  <td align="left" valign="top">
+      <input type="text" name="email:string" size="40" value="<dtml-var "REQUEST.get('email','')" html_quote>" style="width:45em" />
+	<dtml-if "REQUEST.has_key('FORM_ERROR' + '_email')">
+        <br/><span style="color:red"><dtml-var "REQUEST['FORM_ERROR'+'_email']"></span>
+	</dtml-if></td></tr>
+		
+<dtml-comment>
+If you installed the MessageBoard product, will be able to receive notications
+when someone answers
+</dtml-comment>
+
+<dtml-in all_meta_types mapping>
+    <dtml-if "_['sequence-item'].has_key('product')">
+   <dtml-if "'MessageBoard' == _['sequence-item']['product'] and _.hasattr(this(),'MaillingList')">
+	<tr>
+	  <th>Notify</th>
+	  <td align="left" valign="top">
+	      <input id="notify" type="checkbox" name="notify:boolean" /> <label for="notify">Notify me by e-mail if someone answers to this email</label>
+	      </td></tr>
+	<tr>
+	  <th>Save email</th>
+	  <td align="left" valign="top">
+	      <input id="saveemail" type="checkbox" name="saveMessage:boolean" checked="checked" /> <label for="saveemail">Save email into the mailling list</label>
+	      </td></tr>
+   </dtml-if>
+   </dtml-if>
+</dtml-in>
+
+<tr><td><input type="hidden" name="date:date" value="<dtml-var ZopeTime>" />
+	<input type="hidden" name="passwd:string" value="" />
+	<input type="hidden" name="destinationURL" value="index_html" /></td>
+    <td align="left"><input type="submit" value="Send" /></td></tr>
+</table>
+</form>
+
+<dtml-in all_meta_types mapping>
+   <dtml-if "_['sequence-item'].has_key('product')">
+   <dtml-if "'MessageBoard' == _['sequence-item']['product'] and _.hasattr(this(),'MaillingList')">
+
+	<table bgcolor="#FFEECC" border="0" width="100%">
+	<tr><td align="left"><img src="/misc_/ManagedMeetings/hint.gif" alt="Hint" /></td>
+	    <td>If you choose to save the email into the mailling list, people who 
+		will attend later will be able to see the entire track of emails</td></tr>
+	</table>
+    </dtml-if>
+    </dtml-if>
+</dtml-in>
+<dtml-var standard_html_footer>

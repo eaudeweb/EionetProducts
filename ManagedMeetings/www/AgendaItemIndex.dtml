@@ -1,0 +1,78 @@
+<dtml-var standard_html_header>
+<dtml-with "REQUEST.PARENTS[1]"><dtml-var choose_bar></dtml-with>
+<h1><dtml-var title_or_id></h1>
+
+
+<table width="100%" border="0">
+<tr><th align="left">Title</th> 
+    <td><dtml-var title></td> 
+</tr>
+
+<dtml-if track>
+<tr><th align="left">Track</th> 
+    <td><dtml-var tracklink></td></tr> 
+</dtml-if>
+
+<dtml-if session>
+<tr><th align="left">Session</th> 
+    <td><dtml-var showsession></td></tr> 
+</dtml-if>
+
+<dtml-if location>
+<tr><th align="left">Location</th> 
+    <td><dtml-var showlocation></td></tr>
+</dtml-if>
+
+<dtml-if "speakers and _.len(speakers) >0">
+<tr><th align="left">Speaker</th> 
+    <td><dtml-in speakers>
+       <dtml-var "speakerlink(_['sequence-item'])"><br /></dtml-in></td></tr>
+</dtml-if>
+
+<dtml-if author>
+<tr><th align="left">Author(s)</th> 
+    <td><dtml-var author></td></tr> 
+</dtml-if>
+
+<dtml-if abstract>
+<tr><th align="left">Abstract</th> 
+    <td><dtml-var abstract></td></tr>
+</dtml-if>
+
+<dtml-if paper_url>
+<tr><th align="left">Paper URL</th> 
+    <td><dtml-var paper_url></td></tr>
+</dtml-if>
+
+<dtml-if slides_url>
+<tr><th align="left">Slides URL</th> 
+    <td><dtml-var slides_url></td></tr>
+</dtml-if>
+
+<dtml-if url>
+<tr><th align="left">Related URL</th> 
+    <td><dtml-var url></td></tr>
+</dtml-if>
+
+<dtml-if keywords>
+<tr><th align="left">Keywords</th> 
+    <td><dtml-var keywords></td></tr>
+</dtml-if>
+
+<dtml-if actions_agreed>
+<tr><th align="left">Actions agreed</th> 
+    <td><dtml-var actions_agreed></td></tr>
+</dtml-if>
+
+<dtml-if actions_comp>
+<tr><th align="left">Actions completed</th> 
+    <td><dtml-var actions_comp></td></tr>
+</dtml-if>
+
+<dtml-if minutes>
+<tr><th align="left">Minutes of meeting</th> 
+    <td><dtml-var minutes></td></tr>
+</dtml-if>
+</table>
+
+<dtml-var standard_html_footer>

@@ -1,0 +1,17 @@
+MessageBoard - Add: Create a new MessageBoard
+
+  Description
+
+    Create a new MessageBoard object.
+
+  Controls
+
+    'ID' -- The id of the MessageBoard object.
+
+    'Title' -- The title of the MessageBoard.
+
+    'Description' -- The description of the MessageBoard object.
+
+    'MailHost' -- The Mailhost to use for sending notifications for reply to messages in the MessageBoard.
+
+

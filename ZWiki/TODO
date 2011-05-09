@@ -1,0 +1,87 @@
+General plans and todos for the zwiki project. -*- rst -*-
+
+PROCESS
+=======
+efficient wiki system announcements
+ send by mail
+ possible recipients
+  zope-web 
+  wiki.zope.org
+  wiki.zope.org/zope3
+  wiki.zope.org/zope2
+  zwiki.org
+  *.zwiki.org/*.joyful.com ?
+ off-zope/off-site location
+
+repo speedups
+ partial pulling too many patches, check checkpoints
+ try darcs optimize # --reorder-patches
+
+highlight active contributors, code and docs
+author stats
+automatic release
+more automated release announcement, wider announcement
+ditto release notes
+auto testing
+open commit - direct push/open send/approved send, reliable, clear instructions
+better dev docs
+CIA or other bot, darcs, issues etc. on irc
+build dev community on darcs, irc & email
+use ruby and haskell
+hosting stats & cost reporting
+lighter monthly release, perhaps a more thoroughly polished quarterly release
+
+DOCS
+====
+clarify division/integration between fs and wiki docs
+publish fs docs online - darcsweb ? epydoc ? trac ? zwiki ?
+get epydoc working
+pursue literate-programming-like wins
+generally rename code files to lower-case
+simpler more focussed wiki docs
+
+SITES
+=====
+profile, speed up, simplify
+good stats.. bite google analytics bullet ?
+better tracking of free wikis
+better free wiki signup/marketing/maintenance
+close down dead wikis
+
+PRODUCT
+=======
+fix 1284 acquisition bug - Views_tests
+built-in helppage, editform help
+
+I18N
+----
+reduce rosetta diffs
+ handle rosetta stripping default lines
+  convert defaults to one line
+
+VIEWS AND SKINS
+---------------
+keep cleaning up and simplifying
+
+nautica
+.......
+- make stylesheet work in nautica wiki template, with/without CURRENTSKIN
+- commit nautica template
+
+tichu
+.....
+- ask kevin to confirm name
+- genericise
+- install for other wikis
+- change side bar button text
+
+skin selection
+..............
+- select default skin from option
+- select skin from request
+
+TESTS
+-----
+fix cmf tests
+aftersetup -> setup ? clarify in all fixtures
+bring back doctests ?

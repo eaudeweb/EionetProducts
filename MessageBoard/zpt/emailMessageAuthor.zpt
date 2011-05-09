@@ -1,0 +1,71 @@
+<tal:comment tal:replace="nothing">
+    If you want to integrate MessageBoard in your product you must set
+    'integrated' flag to 1.
+    If MessageBoard's flag 'integrated' is set to 1, then all dtml files will not include
+    'standard_html_header' and 'standard_html_footer'. Instead will include some other 2 files:
+    'integrated_html_header' and 'integrated_html_footer'.
+    In your product (the one who integrates MessageBoard) you must have 2 dtml files:
+        - integrated_html_header
+        - integrated_html_footer
+</tal:comment>
+
+<span tal:replace="structure here/integrated_html_header" tal:condition="python:here.integrated" />
+<span tal:replace="structure here/standard_html_header" tal:condition="python:not here.integrated" />
+<span tal:replace="python:request.RESPONSE.setHeader('content-type','text/html;charset=utf-8')" />
+
+<link href="mesgboard_css" rel="stylesheet" type="text/css" media="all" />
+
+<h1>
+	<a tal:attributes="href string:${here/getMPAbsolutePath}/index_html" i18n:translate="">Message Board</a>
+</h1>
+
+<h2 i18n:translate="">Send an email to the author of this message</h2>
+
+<div class="box">
+	<h3 tal:content="here/getSubject" />
+	<p tal:content="structure here/getBody" />
+	<p><tal:block repeat="obj python:here.objectValues('File')">
+			<strong i18n:translate="">Download attachment: </strong><a tal:attributes="href obj/absolute_url" tal:content="obj/id" />
+		</tal:block>
+	</p>
+	<p><span i18n:translate="">Author:</span><span tal:replace="here/author" /><br />
+		<span i18n:translate="">Date:</span><span tal:replace="here/date" />
+	</p>
+</div>
+
+<span tal:condition="python:request.has_key('FORM_ERROR')" class="error_msg" i18n:translate="">
+	You have an error in the following form. Please correct it.
+</span>
+
+
+<form method="post" action="sendEmailMessageAuthor" name="sendEMA" id="sendEMA">
+	<div class="form_body">
+			<div class="field">
+				<div class="label">
+					<span class="required">*</span> 
+					<label for="email" i18n:translate="">Email</label>
+				</div>
+				<input type="text" name="email:utf8:ustring" size="40" id="email"
+					tal:attributes="value python:request.get('email', '')" />
+				<span class="error_msg" tal:condition="python:request.has_key('FORM_ERROR' + '_email')" 
+					tal:content="python:request['FORM_ERROR'+'_email']" />
+			</div>
+			<div class="field">
+				<div class="label">
+					<span class="required">*</span> 
+					<label for="content" i18n:translate="">Content</label>
+				</div>
+				<textarea name="content:utf8:ustring" rows="7" cols="50" id="content"
+					tal:content="python:request.get('content', '')" />
+				<span class="error_msg" tal:condition="python:request.has_key('FORM_ERROR' + '_content')" 
+					tal:content="python:request['FORM_ERROR'+'_content']" />
+			</div>
+			<p class="tip" i18n:translate="">Items with * are required. All other items are optional.</p>
+			<input type="hidden" name="destinationURL" tal:define="topic here/getTopic" 
+				tal:attributes="value string:${here/getMPAbsolutePath}/tree_html?msg=${topic/id}" />
+			<input type="submit" name="submit" value=" Send " i18n:attributes="value" />
+	</div>
+</form>
+
+<span tal:replace="structure here/integrated_html_footer" tal:condition="python:here.integrated" />
+<span tal:replace="structure here/standard_html_footer" tal:condition="python:not here.integrated" />

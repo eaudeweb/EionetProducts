@@ -1,0 +1,34 @@
+<span metal:use-macro="here/thesaurus_template/macros/thesaurus_page">
+
+	<span metal:fill-slot="thesaurus_page_title" tal:omit-tag="">
+		Groups list
+	</span>
+
+	<tal:block metal:fill-slot="thesaurus_content">
+		<h1>Groups list</h1>
+		<tal:block define="	records python:here.GetGroups(langcode);
+							lang_dir python:here.mp_direction(here.GetLanguageDirection(langcode)[0][0]);
+							all_groups python:records[0];
+							errors python:records[1];">
+
+			<span tal:condition="python:errors == 1" tal:replace="structure here/thesaurus_error"/>
+
+			<tal:block condition="python:errors == 0">
+			<dl id="elements-list" tal:attributes="class python:test(lang_dir=='rtl', 'direction_RTL', '')">
+				<tal:block tal:repeat="super python:all_groups.keys()">
+				<dt style="color: #564E9E" tal:attributes="xml:lang langcode"><br /><strong><tal:block content="python:super[1]" /></strong></dt>
+				<dd tal:repeat="groups python:all_groups[super]" tal:attributes="xml:lang langcode">
+						<a	tal:define="id_group python:groups['group_id'];
+										id_tree python:here.encodeTreeExpansion(id_group)"
+							tal:attributes="href string:${here/absolute_url}/relations?tree=${id_tree}&amp;langcode=${langcode}"
+							tal:content="python:groups['group_description']"/></dd>
+				</tal:block>
+			</dl>
+			</tal:block>
+
+		</tal:block>
+	</tal:block>
+
+	<tal:block metal:fill-slot="thesaurus_version" tal:content="python:here.get_namespace_version(namespace_id=3)" />
+
+</span>

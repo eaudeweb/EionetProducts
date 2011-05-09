@@ -1,0 +1,96 @@
+<span metal:use-macro="here/thesaurus_template/macros/thesaurus_page">
+
+	<span metal:fill-slot="thesaurus_page_title" tal:omit-tag="">
+		Alphabetic listing of terms
+	</span>
+
+	<tal:block metal:fill-slot="thesaurus_content">
+		<h1>Alphabetic listing of terms</h1>
+		<tal:block define="	start python:request.get('start', 0);
+							letter python:request.get('letter', 1);
+							result python:here.GetConceptsName(langcode, start, letter);
+							lang_dir python:here.mp_direction(here.GetLanguageDirection(langcode)[0][0]);
+							paging python:result[0];
+							records python:result[1];
+							errors python:result[2]">
+
+			<span tal:condition="python:errors == 1"  tal:replace="structure here/thesaurus_error"/>
+
+			<tal:block condition="python:errors == 0">
+				<table id="elements-list" tal:attributes="class python:test(lang_dir=='rtl', 'direction_RTL', '')">
+					<tr tal:repeat="concept_pair python:here.utSplitList(records)">
+						<td tal:attributes="xml:lang langcode"
+							tal:content="structure python:here.thesaurus_concept_link(
+									concept=concept_pair[1],
+									langcode=langcode)" />
+						<td tal:attributes="xml:lang langcode"
+							tal:condition="python:concept_pair[0]"
+							tal:content="structure python:here.thesaurus_concept_link(
+									concept=concept_pair[0],
+									langcode=langcode)" />
+					</tr>
+				</table>
+
+				<div id="batch-top" tal:condition="python:len(records)>0"
+						tal:define="paging_start python:paging[0]+1; 
+									paging_upper python:paging[1];
+									paging_total python:paging[2];
+									paging_prev python:paging[3];
+									paging_next python:paging[4]; 
+									paging_current_page python:paging[5];
+									paging_records_page python:paging[6];
+									paging_pages python:paging[7];">
+					<a	tal:define="start python:(paging_current_page-1)*paging_records_page" 
+						tal:attributes="href string:${here/absolute_url}/alphabetic?letter=${letter}&amp;start=${start}&amp;langcode=${langcode}"
+						class="top"
+						tal:condition="python:paging_prev!=-1"><img src="/misc_/GimmeThesaurus/back.gif" valign="middle" alt="Previous" />Previous</a>
+
+					<tal:block tal:repeat="page paging_pages">
+						<span class="batch" tal:condition="python:page==paging_current_page" tal:content="python:page+1">page number</span>
+					<a	tal:define="start python:paging_records_page*page; current_page python:page+1"
+						class="batch"
+						tal:attributes="href string:${here/absolute_url}/alphabetic?letter=${letter}&amp;start=${start}&amp;langcode=${langcode};
+										title string:Page ${current_page}"
+						tal:condition="python:page!=paging_current_page" tal:content="current_page">page number</a></tal:block>&nbsp;
+					<a	tal:define="start python:(paging_current_page+1)*paging_records_page"
+						class="top"
+						tal:attributes="href string:${here/absolute_url}/alphabetic?letter=${letter}&amp;start=${start}&amp;langcode=${langcode}"
+						tal:condition="python:paging_next!=-1">Next<img src="/misc_/GimmeThesaurus/forward.gif" alt="Next" /></a>
+				</div>
+
+				<div align="center" tal:condition="python:langcode in here.GetUnicodeLangs()">
+					<a	style="font-weight: bold; color: orange;" title="all"
+						tal:condition="python:letter != '0'"
+						tal:attributes="href string:${here/absolute_url}/alphabetic?letter=0&amp;langcode=${langcode}">all</a>&nbsp;
+					<span	style="font-weight: bold; color: #FF6600;"
+							tal:condition="python:letter == '0'">all</span>&nbsp;
+					<tal:block define="el_letters python:here.getAlphabet(langcode, '', 0)" repeat="el_letter el_letters">
+						<a	style="font-weight: bold; color: orange;"
+							tal:define="letter_id repeat/el_letter/number"
+							tal:condition="python:(el_letter[1] != 0) and (str(letter) != str(letter_id))"
+							tal:attributes="href string:${here/absolute_url}/alphabetic?letter=${letter_id}&amp;langcode=${langcode};
+											title python:str(el_letter[1]) + ' concepts for letter \'' + str(el_letter[0]) + '\''"
+							tal:content="python:el_letter[0]" />
+						<span	style="font-weight: bold; color: #FF6600;"
+								tal:define="letter_id repeat/el_letter/number"
+								tal:condition="python:(el_letter[1] != 0) and (str(letter) == str(letter_id))"
+								tal:content="python:el_letter[0]" />
+						<span	style="font-weight: bold; color: #666666;"
+								tal:condition="python:el_letter[1] == 0"
+								tal:content="python:el_letter[0]" />&nbsp;
+					</tal:block>
+					<a	style="font-weight: bold; color: orange;" title="other"
+						tal:condition="python:letter != '99'"
+						tal:attributes="href string:${here/absolute_url}/alphabetic?letter=99&amp;langcode=${langcode}">other</a>&nbsp;
+					<span	style="font-weight: bold; color: #FF6600;"
+							tal:condition="python:letter == '99'">other</span>
+				</div>
+
+			</tal:block>
+
+		</tal:block>
+	</tal:block>
+
+	<tal:block metal:fill-slot="thesaurus_version" tal:content="python:here.get_namespace_version(namespace_id=1)" />
+
+</span>

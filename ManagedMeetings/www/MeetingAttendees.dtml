@@ -1,0 +1,53 @@
+<dtml-var standard_html_header>
+<dtml-var choose_bar>
+<h1>Attendees list for <i><dtml-var title_or_id></i></h1>
+<table>
+	<dtml-if "max_attendees > 0">
+	  <tr><th align="left">Occupancy: </th>
+	  <td>&nbsp;<dtml-var "_.len(getAttendeeSeat())"> occupied out of <dtml-var max_attendees> available.</td></tr>
+	</dtml-if>
+     </table><br />
+     <table cellspacing="0" cellpadding="2" border="1">
+	<dtml-in "getAttendeeSeat()+getVIP()" sort="role,givenname,sn">
+	  <dtml-if sequence-start>
+	      <tr><td colspan="4" align="left"><b>Occupied seats</b></td></tr>	
+	      <tr><th width="10">Nr.</th>
+	      <th width="300">Name</th>
+	      <th width="100">Attending</th>
+	      <th width="100">Role</th></tr>
+	  </dtml-if>
+	  <tr <dtml-if "_['sequence-item'].role!='Attendee'">bgcolor="#FFFFFF"</dtml-if>>
+		<td align="right"><dtml-if "_['sequence-item'].role=='Attendee'">
+					<dtml-var sequence-number>
+				  <dtml-else>&nbsp;
+				  </dtml-if></td>
+		<td><a href="<dtml-var "absolute_url(0)">"><dtml-var givenname>&nbsp;<dtml-var sn></a></td>
+		<td><dtml-if "_['sequence-item'].attending=='CONFIRMED'">Yes
+		    <dtml-elif "_['sequence-item'].attending=='TENTATIVE'">Tentative
+		    <dtml-else>No
+		    </dtml-if></td>
+		<td><dtml-var role></td></tr>
+	<dtml-else></dtml-in>
+      </table><br />
+	<table cellspacing="0" cellpadding="2" border="1">
+	  <dtml-in getAttendeeStand sort="role,givenname,sn">
+		<dtml-if sequence-start>
+			<tr><td colspan="4" align="left"><b>Waiting list</b></td></tr>
+			<tr><th width="10">Nr.</th>
+			<th width="300">Name</th>
+			<th width="100">Attending</th>
+			<th width="100">Role</th></tr>
+		</dtml-if>
+		<tr><td align="right"><dtml-if "_['sequence-item'].role=='Attendee'">
+                 				<dtml-var sequence-number>
+		                      <dtml-else>&nbsp;
+				      </dtml-if></td>
+		    <td><a href="<dtml-var "absolute_url(0)">"><dtml-var givenname> <dtml-var sn></a></td>
+		    <td><dtml-if "_['sequence-item'].attending=='CONFIRMED'">Yes
+		        <dtml-elif "_['sequence-item'].attending=='TENTATIVE'">Tentative
+			<dtml-else>No
+			</dtml-if></td>
+		    <td><dtml-var role></td></tr>
+	   <dtml-else></dtml-in>
+	</table>
+<dtml-var standard_html_footer>

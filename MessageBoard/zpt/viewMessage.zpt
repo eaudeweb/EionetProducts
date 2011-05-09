@@ -1,0 +1,47 @@
+<tal:comment tal:replace="nothing">
+    If you want to integrate MessageBoard in your product you must set
+    'integrated' flag to 1.
+    If MessageBoard's flag 'integrated' is set to 1, then all dtml files will not include
+    'standard_html_header' and 'standard_html_footer'. Instead will include some other 2 files:
+    'integrated_html_header' and 'integrated_html_footer'.
+    In your product (the one who integrates MessageBoard) you must have 2 dtml files:
+        - integrated_html_header
+        - integrated_html_footer
+</tal:comment>
+
+<span tal:replace="structure here/integrated_html_header" tal:condition="python:here.integrated" />
+<span tal:replace="structure here/standard_html_header" tal:condition="python:not here.integrated" />
+<span tal:replace="python:request.RESPONSE.setHeader('content-type','text/html;charset=utf-8')" />
+
+<link href="mesgboard_css" rel="stylesheet" type="text/css" media="all" />
+
+<h2 i18n:translate="">View message</h2>
+
+<tal:comment tal:replace="nothing">
+	Load page parameters
+</tal:comment>
+
+<div>
+	<a tal:define="msg here/getTopic" tal:attributes="href string:${here/getMPAbsolutePath}/tree_html?msg=${msg/id}" i18n:translate="">Back</a>
+	<a tal:attributes="href string:${here/getMPAbsolutePath}" i18n:translate="">Messages list</a>
+</div>
+
+<div class="box">
+	<h3 tal:content="here/getSubject" />
+	by <strong tal:content="here/author" /><br />
+	<strong tal:content="python:here.showFullDateTime(here.date)" />
+	<p tal:content="structure here/getBody" />
+	<p><tal:block repeat="obj python:here.objectValues('File')">
+			<strong i18n:translate="">Download attachment: </strong><a tal:attributes="href obj/absolute_url" tal:content="obj/id" />
+		</tal:block>
+	<p><a tal:attributes="href string:${here/absolute_url}/reply_Message" 
+			tal:condition="here/checkPermissionReply" i18n:translate="">[Reply]</a>&nbsp;
+		<a tal:attributes="href string:${here/absolute_url}/emailMessageCopy" 
+			tal:condition="here/checkPermissionEmail" i18n:translate="">[Send to a friend]</a>&nbsp;
+		<a tal:attributes="href string:${here/absolute_url}/emailMessageAuthor" 
+			tal:condition="here/checkPermissionEmail" i18n:translate="">[Email author]</a>
+	</p>
+</div>
+
+<span tal:replace="structure here/integrated_html_footer" tal:condition="python:here.integrated" />
+<span tal:replace="structure here/standard_html_footer" tal:condition="python:not here.integrated" />

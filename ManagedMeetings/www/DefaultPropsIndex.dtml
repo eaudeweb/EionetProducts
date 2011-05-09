@@ -1,0 +1,6 @@
+<dtml-var standard_html_header>
+<dtml-with "REQUEST.PARENTS[1]"><dtml-var choose_bar></dtml-with>
+
+<h1><dtml-var title></h1>
+
+<dtml-var standard_html_footer>

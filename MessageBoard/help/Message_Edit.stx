@@ -1,0 +1,19 @@
+Message- Edit: Edit Message properties
+
+  Description
+
+    This view allows you edit the Message.
+
+  Controls
+
+    'Subject' -- The subject of the Message.
+
+    'Text' -- The text of the Message.
+
+    'Your name' -- The name of the author.
+
+    'Email' -- The Email of the author.
+
+    'Notify' -- Check it if you want to be notifyed (at the email address supplied above) if someone reply to this message
+
+    'Password' -- This is the Message password (you will need it if you will want to change the message), you can also change it.

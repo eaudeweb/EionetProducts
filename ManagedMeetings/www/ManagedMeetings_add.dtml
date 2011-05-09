@@ -1,0 +1,25 @@
+<dtml-comment> -*- mode: dtml; dtml-top-element: "body" -*- </dtml-comment>
+<html>
+<head><title>Add Meeting</title></head>
+<body bgcolor="#ffffff" link="#000099" vlink="#555555">
+
+<dtml-with "Meeting.createInObjectManager(REQUEST['id'], REQUEST)">
+	<dtml-call "propertysheets.Basic.manage_editProperties(REQUEST)">
+</dtml-with>
+
+<dtml-comment> Now we need to return something.  We do this via
+                a redirect so that the URL is correct.
+                Unfortunately, the way we do this depends on
+                whether we live in a product or in a class.
+                If we live in a product, we need to use DestinationURL
+                to decide where to go. If we live in a class,
+                DestinationURL won't be available, so we use URL2.
+</dtml-comment>
+
+<dtml-if DestinationURL>
+	<dtml-call "RESPONSE.redirect(DestinationURL+'/manage_main?update_menu=1')">
+<dtml-else>
+	<dtml-call "RESPONSE.redirect(URL2+'/manage_main?update_menu=1')">
+</dtml-if>
+
+</body></html>

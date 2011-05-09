@@ -1,0 +1,72 @@
+<dtml-comment> -*- mode: dtml; dtml-top-element: "body" -*- </dtml-comment>
+<dtml-var standard_html_header>
+<dtml-call "REQUEST.set('userid',AUTHENTICATED_USER.getUserName)">
+<h1>Sign me up for <dtml-var title>!</h1> 
+
+<dtml-if "REQUEST.has_key('FORM_ERROR')">
+   You have an error in the following form. Please correct it.
+</dtml-if>
+
+<dtml-in sitedir_lookup>
+<form action="manage_addAttendeeAction" method="post">
+<table> 
+<tr><td><label class="question">UserID</label></td> 
+    <td><dtml-var AUTHENTICATED_USER></td>
+</tr> 
+
+<tr><td><label for="sn" class="question required">Surname</label></td> 
+    <td><input type="text" id="sn" name="sn" size="30" value="&dtml.missing-sn;" /></td>
+</tr> 
+<tr><td><label for="givenname" class="question required">First names</label></td> 
+    <td><input type="text" id="givenname" name="givenname" size="30" value="&dtml.missing-givenname;" /></td>
+</tr> 
+<tr><td><label for="organisation" class="question">Organisation</label></td> 
+    <td><input type="text" id="organisation" name="organisation" size="30" value="&dtml.missing-organisation;" /></td>
+</tr> 
+<tr><td><label for="mail" class="question">Email</label></td> 
+    <td><input type="text" id="mail" name="mail" size="30" value="&dtml.missing-mail;" />
+        <font color="red">
+            <dtml-if "REQUEST.has_key('FORM_ERROR' + '_mail')">
+                <br/><dtml-var "REQUEST['FORM_ERROR'+'_mail']">
+            </dtml-if>
+        </font>
+    </td>
+</tr> 
+<tr><td><label for="tel" class="question">Telephone</label></td> 
+    <td><input type="text" id="tel" name="tel" size="20" value="&dtml.missing-tel;" /></td>
+</tr> 
+<tr><td><label for="postaladdress" class="question">Postal Address</label></td> 
+    <td><textarea cols="30" rows="3" id="postaladdress" name="postaladdress">&dtml.missing-postaladdress;</textarea></td>
+</tr> 
+
+</dtml-in>
+<dtml-try>
+<dtml-with "superValues('Default Attendee Properties')[0]">
+<dtml-var extraprops_addin>
+</dtml-with>
+<dtml-except>
+<!-- Failed superValues -->
+</dtml-try>
+
+<tr><td><label for="attending" class="question">Attending</label></td> 
+    <td><select name="attending" id="attending">
+	<option value="CONFIRMED" selected="selected">Yes</option>
+	<option value="TENTATIVE">Tentative</option>
+	<option value="DECLINED">No, but keep me informed</option>
+	</select></td>
+</tr> 
+<tr><td><label for="role" class="question">Role</label></td>
+    <td><select name="role" id="role">
+	<dtml-in "['Attendee','Speaker','Organiser','Chair']">
+		<option><dtml-var sequence-item></option>
+	</dtml-in>
+	</select></td>
+</tr>
+
+<tr><td></td><td><input type="submit" value="Add" /></td>
+</tr> 
+</table>
+<input type="hidden" name="passwd" value="<dtml-var "genRandomId()">" />
+<input type="hidden" name="ldap_id" value="<dtml-var AUTHENTICATED_USER>" />
+</form>
+<dtml-var standard_html_footer>

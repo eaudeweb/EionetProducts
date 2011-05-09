@@ -1,0 +1,86 @@
+<dtml-comment> -*- mode: dtml; dtml-top-element: "body" -*- </dtml-comment>
+<dtml-if "_.SecurityCheckPermission('View management screens',this())">
+	<dtml-var manage_page_header>
+	<dtml-var "manage_form_title(this(), _,
+							form_title='Add Announced Event',
+							help_product='ManagedMeetings',
+							help_topic='Meeting_Add.stx'
+					)">
+<dtml-else>
+	<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+	<html lang="en">
+		<head>
+			<title>Add Announced Event</title>
+		</head>
+		<body bgcolor="#ffffff" link="#000099" vlink="#555555">
+			<h3>Add Announced Event</h3>
+</dtml-if>
+<form action="manage_addAnnouncedEvent"><table>
+	<tr>
+		<th>Id</th>
+		<td><input type="text" size="15" name="id:string" value="" /></td>
+	</tr>
+	<tr>
+		<th>Type</th>
+		<td>
+			<dtml-if "_.has_key('event_types') and event_types">
+				<select name="event_type:string">
+					<dtml-in event_types>
+						<option><dtml-var sequence-item html_quote></option>
+					</dtml-in>
+				</select>
+			<dtml-else>
+				<input type="text" name="event_type:string" size="30" value="Meeting" />
+			</dtml-if>
+		</td>
+	</tr>
+	<tr>
+		<th>Title of event</th>
+		<td colspan="3" align="left" valign="top"><input type="text" name="title:string" size="55" /></td>
+	</tr>
+	<tr>
+		<th>Summary</th>
+		<td colspan="3" align="left" valign="top"><textarea name="description:text" rows="6" cols="55"></textarea></td>
+	</tr>
+	<tr>
+		<th>Location<br /></th>
+		<td colspan="3" align="left" valign="top">
+			<input name="txtlocation:string" size="35" type="text" />
+		</td>
+	</tr>
+	<tr>
+		<th>URL<br /></th>
+		<td colspan="3" align="left" valign="top">
+			<input name="urllocation:string" size="35" type="text" />
+		</td>
+	</tr>
+	<tr>
+		<th>Start/End date</th>
+		<td colspan="3" align="left" valign="top"><input type="text" name="startdate:date" size="23" value="<dtml-var "ZopeTime()" fmt=Date> 9:00" /> to <input type="text" name="enddate:date" size="23" value="<dtml-var "ZopeTime()" fmt=Date> 17:00" /></td>
+	</tr>
+	<tr>
+		<th>Organiser</th>
+		<td colspan="3" align="left" valign="top"><input type="text" name="organiser:string" size="35" value="" /></td>
+	</tr>
+	<tr>
+		<th>Status</th>
+		<td colspan="3" align="left" valign="top">
+			<select name="status:string">
+				<option value="active" selected="selected">Active</option>
+				<option value="inactive">Inactive</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+	<tr>
+		<td></td>
+		<td colspan="3"><input type="submit" value="Add" /></td>
+	</tr>
+</table>If you have more documents you can add them to the folder and they will belisted as supporting documents.</form>
+
+<dtml-if "_.SecurityCheckPermission('View management screens',this())">
+	<dtml-var manage_page_footer>
+<dtml-else>
+		</body>
+	</html>
+</dtml-if>

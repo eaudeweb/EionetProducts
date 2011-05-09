@@ -1,0 +1,90 @@
+<dtml-comment> -*- mode: dtml; dtml-top-element: "body" -*- </dtml-comment>
+<dtml-if "_.SecurityCheckPermission('View management screens',this())">
+	<dtml-var manage_page_header>
+	<dtml-var "manage_form_title(this(), _,	form_title='Add Meeting',
+						help_product='ManagedMeetings',
+						help_topic='Meeting_Add.stx')">
+<dtml-else>
+	<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+	<html lang="en">
+	<head><title>Add Meeting</title></head>
+	<body bgcolor="#ffffff" link="#000099" vlink="#555555">
+	<h3>Add Meeting</h3>
+</dtml-if>
+
+<dtml-if "REQUEST.has_key('FORM_ERROR')"><font color="red">You have an error in the following form. Please correct it.</font></dtml-if>
+
+<form action="manage_addMeeting"><table>
+<tr><th>Id</th>
+    <td><input type="text" size="15" name="id:string"
+    	value="<dtml-if "REQUEST.has_key('id')"><dtml-var "REQUEST['id']"></dtml-if>" /></td></tr>
+<tr><th>Type</th>
+    <td><dtml-if "_.has_key('event_types') and event_types">
+		<select name="event_type:string">
+		<dtml-in event_types>
+			<option 
+			<dtml-if "REQUEST.has_key('event_type') and REQUEST['event_type']== _['sequence-item']">
+				selected="selected"
+			</dtml-if>><dtml-var sequence-item html_quote></option>
+		</dtml-in></select>
+	<dtml-else>
+		<input type="text" name="event_type:string" size="30" value="Meeting" />
+	</dtml-if></td></tr>
+<tr><th>Title of event</th>
+    <td colspan="3" align="left" valign="top"><input type="text" name="title:string" size="55"
+    	value="<dtml-if "REQUEST.has_key('title')"><dtml-var "REQUEST['title']"></dtml-if>" /></td></tr>
+<tr><th>Summary</th>
+    <td colspan="3" align="left" valign="top"><textarea name="description:text" rows="6"
+    	cols="55"><dtml-if "REQUEST.has_key('description')"><dtml-var "REQUEST['description']"></dtml-if></textarea></td></tr>
+<tr><th>Location<br /><i>or type it...</i></th>
+    <td colspan="3" align="left" valign="top">
+		<select name="location:string">
+			<option value="">Select location</option>
+			<dtml-in "PARENTS[0].objectValues('Meeting Location')">
+				<option value="<dtml-var id>"
+				<dtml-if "REQUEST.has_key('location') and REQUEST['location']== id">
+					selected="selected"
+				</dtml-if>><dtml-var title_or_id></option>
+			</dtml-in></select><br />
+		<input name="txtlocation:string" size="35" type="text"
+			value="<dtml-if "REQUEST.has_key('txtlocation')"><dtml-var "REQUEST['txtlocation']"></dtml-if>" /></td></tr>
+<tr><th>Start/End date</th>
+    <td colspan="3" align="left" valign="top">
+	<input type="text" name="startdate:date" size="23"
+		value="<dtml-if "REQUEST.has_key('startdate')"><dtml-var "REQUEST['startdate']"><dtml-else><dtml-var "ZopeTime()" fmt="Date"> 9:00</dtml-if>" />
+	 	to <input type="text" name="enddate:date" size="23"
+		value="<dtml-if "REQUEST.has_key('enddate')"><dtml-var "REQUEST['enddate']"><dtml-else><dtml-var "ZopeTime()" fmt="Date"> 17:00</dtml-if>" /><br />
+		<font color="red"><dtml-if "REQUEST.has_key('FORM_ERROR' + '_invalid_date')"><dtml-var "REQUEST['FORM_ERROR'+'_invalid_date']"></dtml-if></font></td></tr>
+<tr><th>Organiser</th>
+    <td colspan="3" align="left" valign="top"><input type="text" name="organiser:string" size="35"
+    	value="<dtml-if "REQUEST.has_key('organiser')"><dtml-var "REQUEST['organiser']"></dtml-if>" /></td></tr>
+<tr><th>Organiser Email</th>
+    <td colspan="3" align="left" valign="top"><input type="text" name="organiser_email:string" size="35"
+    	value="<dtml-if "REQUEST.has_key('organiser_email')"><dtml-var "REQUEST['organiser_email']"></dtml-if>" /></td></tr>
+<tr><th>Max Attendees</th>
+    <td colspan="3" align="left" valign="top"><input type="text" name="max_attendees:int" size="5"
+    	value="<dtml-if "REQUEST.has_key('max_attendees')"><dtml-var "REQUEST['max_attendees']"><dtml-else>0</dtml-if>" /> If there is no maximum, leave as 0.</td></tr>
+<tr><th>Authenticated registrations</th>
+    <td colspan="3" align="left" valign="top"><input type="checkbox" name="allow_registrations:boolean" 
+    	<dtml-if "REQUEST.has_key('allow_registrations') and REQUEST['allow_registrations']">checked="checked"</dtml-if> />Yes users can register.</td></tr>
+<tr><th>Anonymous registrations</th>
+    <td colspan="3" align="left" valign="top">Check/Remove 'Register for Meetings' of the Anonymous role to change anonymous registration.</td></tr>
+<tr><th>Status</th>
+    <td colspan="3" align="left" valign="top">
+	<select name="status:string">
+		<option value="active" selected="selected">Active</option>
+		<option value="inactive">Inactive</option>
+		<option value="tentative">Tentative</option>
+		<option value="cancelled">Cancelled</option>
+	</select></td></tr>
+<tr><td></td>
+    <td colspan="3"><input type="submit" value="Add" /></td></tr>
+</table>
+If you have more documents you can add them to the folder and they will belisted as supporting documents.
+</form>
+
+<dtml-if "_.SecurityCheckPermission('View management screens',this())">
+	<dtml-var manage_page_footer>
+<dtml-else>
+	</body></html>
+</dtml-if>

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<skins-tool>
+ <skin-directory id="cmfldap"
+                 directory="LDAPUserFolder/skins/cmfldap"/>
+ <skin-path id="*">
+  <layer name="cmfldap" insert-after="custom"/>
+ </skin-path>
+</skins-tool>

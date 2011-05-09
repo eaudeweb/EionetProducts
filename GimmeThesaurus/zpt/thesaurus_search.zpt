@@ -1,0 +1,57 @@
+<span metal:use-macro="here/thesaurus_template/macros/thesaurus_page">
+
+	<tal:block metal:fill-slot="thesaurus_page_title">
+		Search thesaurus
+	</tal:block>
+
+	<span metal:fill-slot="thesaurus_content" tal:omit-tag="">
+	<h1>Search thesaurus</h1>
+
+	<tal:block define="selected_lang python:here.GetLanguage(langcode)[0][0]['language']">
+	<form name="frmSearchThesaurus" method="post" tal:attributes="action string:${here/absolute_url}/searchDB">
+		<input type="hidden" name="langcode" tal:attributes="value langcode" />
+		<table border="0" width="30%">
+			<tr>
+				<th align="left">Query</th>
+				<td><input type="text" name="query:utf8:ustring" value="" /></td>
+			</tr>
+			<tr>
+				<th align="left">Selected language</th>
+				<td tal:content="selected_lang" />
+			</tr>
+			<tr>
+				<td colspan="2">
+					<div style="text-align:center;" class="rdf-submit"><input type="submit" value="Search" /></div>
+				</td>
+			</tr>
+		</table>
+	</form>
+	</tal:block>
+
+	<tal:block define="query python:request.get('query', '');
+						results python:here.searchThesaurus(query.decode('utf-8'), langcode)">
+
+		<div style="background-color: #ffe6d6" tal:condition="python:query">
+			<span style="float:right"><span tal:replace="python:len(results)" /> results found.</span>
+			<span>Searched for: '<strong tal:content="query" />'</span>
+		</div>
+
+		<tal:block repeat="concept results">
+			<div>
+				<a	tal:attributes="href python:concept.get_url(here, {'langcode': langcode});
+									title concept/concept_name"
+					tal:content="concept/concept_name" /><br />
+                <tal:block condition="concept/concept_alt_name">
+                    <small style="margin-left: 10px"><strong>other names:</strong> <span tal:content="concept/concept_alt_name" /></small><br />
+                </tal:block>
+				<small style="margin-left: 10px"><strong>scope note:</strong> <span tal:content="concept/concept_scope_name" /></small>
+			</div>
+		</tal:Block>
+
+	</tal:block>
+
+	</span>
+
+	<tal:block metal:fill-slot="thesaurus_version" tal:content="python:here.get_namespace_version(namespace_id=1)" />
+
+</span>

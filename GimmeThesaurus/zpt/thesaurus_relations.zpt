@@ -1,0 +1,71 @@
+<span metal:use-macro="here/thesaurus_template/macros/thesaurus_page">
+
+	<span metal:fill-slot="thesaurus_page_title" tal:omit-tag="">
+		Concepts list
+	</span>
+
+	<tal:block metal:fill-slot="thesaurus_content">
+		<h1>Relations</h1>
+		<tal:block define="	expand python:request.get('tree', '');
+							expand_list python:here.decodeTreeExpansion(expand)">
+
+			<tal:block condition="python:len(expand_list) > 0"
+						define="records python:here.GetGroupConcepts(expand_list, langcode);
+						tree python:records[0];
+						errors python:records[1];
+						lang_dir python:here.mp_direction(here.GetLanguageDirection(langcode)[0][0]);">
+
+				<span tal:condition="python:errors == 1"  tal:replace="structure here/thesaurus_error"/>
+
+				<script language="javascript" type="text/javascript">
+				<!--
+				function fTreeClick(expand, langcode)
+				{
+					document.location.href='?tree=' + expand + '&langcode=' + langcode;
+				}
+				//-->
+				</script>
+				
+				<form name="frmGroups" method="post" action=""
+						tal:attributes="class python:test(lang_dir=='rtl', 'direction_RTL', '')">
+				<table border="0" cellspacing="1" cellpadding="1" width="100%">
+					<tr tal:repeat="tree_node tree">
+						<td>
+							<table border="0" cellspacing="1" cellpadding="1">
+								<tr>
+									<td>
+										<img tal:repeat="i python:range(0, tree_node[2])"
+											src="misc_/GimmeThesaurus/square.gif" border="0" />
+										<tal:block tal:condition="python:tree_node[1]==-1">
+											<img src="misc_/GimmeThesaurus/square.gif" border="0" />
+										</tal:block>
+										<tal:block
+											tal:define="node_expand python:here.encodeTreeExpansion(here.utTreeCollapse(expand_list, tree_node[0].concept_id))"
+											tal:condition="python:tree_node[1]==0">
+											<a tal:attributes="onclick string:javascript:fTreeClick('${node_expand}', '${langcode}')"><img src="misc_/GimmeThesaurus/minus.gif" alt="Collapse" title="Collapse" border="0" /></a>
+										</tal:block>
+										<tal:block
+											tal:define="node_expand python:here.encodeTreeExpansion(here.utTreeExpand(expand_list, tree_node[0].concept_id))"
+											tal:condition="python:tree_node[1]==1">
+											<a tal:attributes="onclick string:javascript:fTreeClick('${node_expand}', '${langcode}')"><img src="misc_/GimmeThesaurus/plus.gif" alt="Expand" title="Expand" border="0" /></a>
+										</tal:block>
+									</td>
+									<td>&nbsp;</td>
+									<td tal:attributes="xml:lang langcode">
+										<a	tal:condition="repeat/tree_node/index" 
+											tal:attributes="href python:tree_node[0].get_url(here, {'langcode': langcode});
+															id python:test(str(tree_node[0].concept_id) in expand_list, 'elements-clicked', tree_node[0].concept_id)"
+											tal:content="python:tree_node[0].concept_name">concept</a>
+										<span tal:condition="python:not path('repeat/tree_node/index')" tal:replace="python:tree_node[0].concept_name"/>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+				</form>
+			</tal:block>
+
+		</tal:block>
+	</tal:block>
+</span>

@@ -1,0 +1,10 @@
+<tal:block replace="structure here/standard_html_header" />
+
+<h1 tal:content="here/title_or_id" />
+
+<span tal:content="string:Released on ${here/release_date}" />
+<span tal:condition="here/author" tal:content="string:by: ${here/author}" />
+
+<div tal:content="structure here/details" />
+
+<tal:block replace="structure here/standard_html_footer" />

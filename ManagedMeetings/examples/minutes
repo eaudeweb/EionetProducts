@@ -1,0 +1,19 @@
+<dtml-var standard_html_header>
+<h2><dtml-var title_or_id></h2>
+<p>
+<dtml-with "PARENTS[0]">
+  <b><dtml-var title_or_id></b>
+</dtml-with>
+</p>
+<ol>
+<li>Important note</li>
+<li>Important note</li>
+<li>Important note</li>
+<li>Important note</li>
+<li>Important note</li>
+<li>Important note</li>
+<li>Important note</li>
+<li>Important note</li>
+<li>Important note</li>
+</ol>
+<dtml-var standard_html_footer>

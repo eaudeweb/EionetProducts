@@ -1,0 +1,59 @@
+<html>
+ <head><title>About TinyTablePlus...</title></head>
+ <body bgcolor="#FFFFFF" link="#000099" vlink="#555555" alink="#77003B">
+
+ <!-- $Endicor: About.dtml,v 1.6 1999/04/26 19:38:43 tsarna Exp $ -->
+
+ <!--#var manage_tabs-->
+
+ <center>
+
+  &nbsp;
+
+  <p>
+
+  <h3>TinyTablePlus</h3>
+
+  <h4>
+   Copyright &copy; 1998-1999 Endicor Technologies, Inc.<br>
+   All Rights Reserved.  Written by Ty Sarna
+   &lt;<a href="mailto:tsarna@endicor.com">tsarna@endicor.com</a>&gt;
+  </h4>
+  
+  <h4>
+   Modified to support updates of the table in DTML / PythonMethods
+   by Shane Hathaway.  (13 April 2000)
+  </h4>
+
+  <p>
+
+  <table>
+   <tr>
+    <td colspan="2">
+     <a href="http://www.endicor.com/">
+     <img src="<!--#var SCRIPT_NAME-->/misc_/TinyTablePlus/logo" border=0></a>
+    </td>
+   </tr>
+   <tr>
+    <td>&nbsp;</td>
+   </tr>
+   <tr>
+    <td align="left">
+     +1 210 650 4988 <br>
+     +1 210 650 0054 FAX
+    </td>
+    <td align="right">
+     <a href="http://www.endicor.com/">http://www.endicor.com/</a> <br>
+     <a href="mailto:info@endicor.com">info@endicor.com</a>
+    </td>
+   </tr>
+  </table>
+
+  <p>
+
+  P.O. Box 681477 <br>
+  San Antonio, TX 78268-1477 <br>
+  USA
+ </center>
+
+</body></html>

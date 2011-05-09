@@ -1,0 +1,29 @@
+<table border="0" width="100%">
+<tr valign="top">
+    <td width="10%" align="center">&nbsp;</td>
+    <td width="90%">
+          <h1>Site Error</h1>
+
+          <p>An error was encountered while publishing this resource.
+          </p>
+          <p><strong>Resource not found</strong></p>
+
+          <p>troubleshooting Suggestions</p>
+
+          <ul>
+          <li>The URL may be incorrect.</li>
+          <li>The parameters passed to this resource may be incorrect.</li>
+          <li>A resource that this resource relies on may be
+              encountering an error.</li>
+          </ul>
+
+          <p>For more detailed information about the error, please
+          refer to error log.
+          </p>
+
+          <p>If the error persists please contact the site maintainer.
+          Thank you for your patience.
+          </p>
+        </td>
+    </tr>
+</table>

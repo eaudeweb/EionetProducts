@@ -1,0 +1,53 @@
+Meeting - Edit: Edit a Meeting.
+
+  Description
+
+    This view allows you to change a Meeting's properties.
+
+  Controls
+
+    'Id' -- The id of the Meeting. This is the last part of the URL that is the address of the meeting.
+
+    'Type' -- The legal values of type is listed in the event_types property
+    of the meetings folder.
+
+    'Title of event' -- The subject of the meeting.
+
+    'Summary' -- A short description of the meeting - not the agenda.
+    It is used when meetings are syndicated.
+
+    'Location' -- Either select one of the predefined *Meeting Locations*
+    or type it.
+
+    'Start/End date' -- Enter the start/end times in YYYY/MM/DD YY:MM format.
+
+    'Organiser' -- The organiser is the person or organisation organising
+    the event. People expect to be able to contact the organiser for
+    information about the event.
+
+    'Authenticated registrations' -- If you have a sitedir_lookup method
+    then you can use your user directory to let user register with
+    username / password.
+
+    'Add' -- Creates a new Meeting.
+
+  Online registration
+
+    There are two ways to let the users register for the meeting.
+    They can do it either unauthenticated or authenticated. The first
+    one means that they must input all information manually. And in
+    addition, there is no assurance that the person who claims
+    to want to attend the event actually is the person. It is
+    therefore imperative you verify the registration by calling back
+    on phone or email.
+
+    To allow unauthenticated registration, click on the Security tab
+    and set the 'Register for Meetings' for the Anonymous role.
+
+  Email
+
+    The product allows the users to communicated by email. To allow them
+    to do this you must set the 'Use mailhost services' for either the
+    Anonymous role or some other role relevant for your situation.
+    At the moment the product doesn't actually make use of the
+    Zope MailHost service.

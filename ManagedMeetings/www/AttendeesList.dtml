@@ -1,0 +1,22 @@
+<dtml-var standard_html_header>
+<dtml-comment>
+  This method is an example on how you can generate your own lists of attendees.
+  You simply loop through the objects and print the attributes.
+</dtml-comment>
+    <h1>Attendees list for <i><dtml-var title_or_id></i></h1>
+
+     <table cellspacing="0" cellpadding="2" border="1">
+        <dtml-in "getAttendeeSeat()+getVIP()" sort="sn,givenname">
+          <dtml-if sequence-start>
+              <tr>
+              <th width="300">Name</th>
+              <th width="100">Address</th>
+              <th width="100">Email</th></tr>
+          </dtml-if>
+          <tr valign="top">
+	    <td><dtml-var givenname>&nbsp;<dtml-var sn></td>
+	    <td><dtml-var organisation html_quote><br /><dtml-var postaladdress newline_to_br html_quote></td>
+	    <td><dtml-var mail null="No Email"></td></tr>
+        </dtml-in>
+      </table>
+<dtml-var standard_html_footer>

@@ -1,0 +1,98 @@
+<dtml-in propertyMap mapping>
+<tr>
+  <td>
+  <label class="question" for="<dtml-var id>"><dtml-var "propertyLabel(id)"></label>
+  </dh>
+  <td>
+
+  <dtml-if "'w' in _['sequence-item'].get('mode', 'awd')">
+  <dtml-if "type == 'int'">
+  <input type="text" id="<dtml-var id>" name="<dtml-var id>:<dtml-var 
+   type>" size="35" value="<dtml-if "hasProperty(id)"><dtml-var 
+   "'%s' % getProperty(id)" html_quote></dtml-if>" />
+  <dtml-elif "type == 'long'">
+  <input type="text" id="<dtml-var id>" name="<dtml-var id>:<dtml-var type>" size="35"
+   value="<dtml-if "hasProperty(id)"><dtml-var 
+   "('%s' % getProperty(id))" html_quote></dtml-if>" />
+  <dtml-elif "type in ('float', 'date')">
+  <input type="text" id="<dtml-var id>" name="<dtml-var id>:<dtml-var type>" size="35"
+   value="<dtml-var "getProperty(id)" html_quote>" />
+  <dtml-elif "type=='string'">
+  <input type="text" id="<dtml-var id>" name="<dtml-var id>:string" size="35"
+   value="<dtml-var "getProperty(id)" html_quote>" />
+  <dtml-elif "type=='boolean'">
+  <input type="checkbox" id="<dtml-var id>" name="<dtml-var id>:boolean" size="35"
+   <dtml-if "getProperty(id)">checked="checked"</dtml-if> />
+  <dtml-elif "type=='tokens'">
+  <input type="text" id="<dtml-var id>" name="<dtml-var id>:tokens" size="35"
+   value="<dtml-in "getProperty(id)"><dtml-var sequence-item html_quote> </dtml-in>" />
+  <dtml-elif "type=='text'">
+  <textarea id="<dtml-var id>" name="<dtml-var id>:text" rows="6" cols="35"><dtml-var 
+   "getProperty(id)" html_quote></textarea>
+  <dtml-elif "type=='lines'">
+  <textarea id="<dtml-var id>" name="<dtml-var id>:lines" rows="6" cols="35"><dtml-in
+  "getProperty(id)"><dtml-var sequence-item html_quote><dtml-if
+   sequence-end><dtml-else><dtml-var "'\n'"></dtml-if></dtml-in></textarea>
+
+  <dtml-elif "type=='selection'">
+
+    <dtml-if "hasProperty(select_variable)">
+    <select id="<dtml-var id>" name="<dtml-var id>">
+      <dtml-in "getProperty(select_variable)">
+         <option
+          <dtml-if "_['sequence-item']==getProperty(id)">selected="selected"</dtml-if>
+          ><dtml-var sequence-item html_quote></option>
+      </dtml-in>
+    </select>
+    <dtml-elif "_.has_key(select_variable)">
+    <select id="<dtml-var id>" name="<dtml-var id>">
+      <dtml-in "_[select_variable]">
+         <option
+          <dtml-if "_['sequence-item']==getProperty(id)">selected="selected"</dtml-if>
+          ><dtml-var sequence-item html_quote></option>
+      </dtml-in>
+    </select>
+    <dtml-else>
+    <div class="form-text">
+       No value for <dtml-var select_variable>.
+    </div>
+    </dtml-if>
+
+  <dtml-elif "type=='multiple selection'">
+
+    <dtml-if "hasProperty(select_variable)">
+    <select id="<dtml-var id>" name="<dtml-var id>:list" multiple
+      size="<dtml-var "_.min(7, _.len(getProperty(select_variable)))">">
+      <dtml-in "getProperty(select_variable)">
+         <option<dtml-if 
+         "getProperty(id) and (_['sequence-item'] in getProperty(id))"
+         > selected="selected"</dtml-if
+         >><dtml-var sequence-item html_quote></option>
+      </dtml-in>
+    </select>
+    <dtml-elif "_.has_key(select_variable)">
+    <select id="<dtml-var id>" name="<dtml-var id>:list" multiple
+      size="<dtml-var "_.min(7, _.len(_[select_variable]))">">
+      <dtml-in "_[select_variable]">
+         <option<dtml-if 
+         "getProperty(id) and (_['sequence-item'] in getProperty(id))"
+         > selected="selected"</dtml-if
+         >><dtml-var sequence-item html_quote></option>
+      </dtml-in>
+    </select>
+    <dtml-else>
+    <div class="form-text">
+    No value for <dtml-var select_variable>.
+    </div>
+    </dtml-if>
+  <dtml-else>
+  <em>Unknown property type</em>
+  </dtml-if>
+  <dtml-else>
+  <table border="1">
+  <tr><td><dtml-var "getProperty(id)" html_quote></td></tr>
+  </table>
+  </dtml-if>
+  </td>
+</tr>
+</dtml-in>

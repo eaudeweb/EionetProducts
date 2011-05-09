@@ -1,0 +1,21 @@
+<div class="thesaurus_languages">
+	<strong>Select language:</strong>
+	<tal:block repeat="lang options/languages">
+
+		<tal:block define="	langc python:lang['langcode'];
+							lang python:lang['language'];">
+
+		<a	tal:condition="python:langc != options['current_langcode']"
+			tal:content="python:langc" class="languagebutton"
+			tal:attributes="href python:here.getLangURL(langc);
+							title lang">
+			
+		</a>
+
+		<span	tal:condition="python:langc == options['current_langcode']"
+				tal:content="python:langc" class="languagebutton active_lang">
+		</span>
+		</tal:block>
+
+	</tal:block>
+</div>

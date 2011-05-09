@@ -1,0 +1,20 @@
+<dtml-var standard_html_header>
+
+<dtml-var choose_bar>
+<h1>Speakers for <i><dtml-var title_or_id></i></h1>
+<dl>
+<dtml-in "objectValues('Meeting Attendee')" sort=sn,givenname>
+<dtml-if "role in ['Speaker','Organiser','Chair']">
+<dt><b><a href="&dtml-absolute_url;">&dtml-sn;, &dtml-givenname;</a></b></dt>
+
+    <dtml-let myid="id">
+    <dtml-in "PARENTS[0].objectValues('Meeting Agendaitem')" sort=track,session_ord>
+    <dtml-if "myid in speakers">
+    <dd><a href="&dtml-absolute_url;"><dtml-var title></a></dd>
+    </dtml-if>
+    </dtml-in>
+    </dtml-let>
+</dtml-if>
+</dtml-in>
+</dl>
+<dtml-var standard_html_footer>

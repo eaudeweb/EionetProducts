@@ -1,0 +1,64 @@
+<html>
+ <head><title>Edit <!--#var title_or_id--></title></head>
+ <body bgcolor="#FFFFFF" link="#000099" vlink="#555555" alink="#77003B">
+
+  <!-- $Endicor: Edit.dtml,v 1.10 1999/04/26 19:38:43 tsarna Exp $ -->
+
+  <!--#var manage_tabs-->
+    
+  <h2>Edit Properties of <!--#var title_or_id--></h2>
+    
+  <table cellspacing="2">
+   <form action="manage_edit" method="POST">
+
+    <tr>
+     <th align="LEFT" valign="TOP">Id</th>
+     <td align="LEFT" valign="TOP"><!--#var id--></td>
+    </tr>
+
+    <tr>
+     <th align="LEFT" valign="TOP"><em>Title</em></th>
+     <td align="LEFT" valign="TOP">
+      <input type="TEXT" name="title" size="50"
+      value="<!--#var title-->">
+     </td>
+    </tr>
+
+    <tr>
+     <th align="LEFT" valign="TOP">Columns</th>
+     <td align="LEFT" valign="TOP">
+      <input type="TEXT" name="columns" size="50"
+      value="<!--#var cols_text-->">
+     </td>
+    </tr>
+
+    <tr>
+     <td></td>
+     <td><br><input type="SUBMIT" value="Change"></td>
+    </tr>
+
+   </form>
+
+   <tr><td colspan=2><hr></td></tr>
+
+   <form action="manage_editData" method="POST">
+
+    <tr>
+     <th colspan="2" align="LEFT" valign="TOP">Data</th>
+    </tr>
+    <tr>
+     <td colspan="2">
+      <textarea name="data:text" rows="50"
+      cols="200"><!--#var data_text--></textarea>
+     </td>
+    </tr>
+
+    <tr>
+     <td></td>
+     <td><br><input type="SUBMIT" value="Change"></td>
+    </tr>
+
+   </form>
+  </table>
+ </body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="content-type" tal:attributes="content string:text/html;;charset=utf-8" />
+    <tal:block define="dummy python:request.RESPONSE.setHeader('content-type', 'text/html;;charset=utf-8')" />
+    <title>Add News List</title>
+    <link rel="stylesheet" type="text/css" href="/manage_page_style.css" />
+    <style>
+        form.news_edit ol li { list-style: none; }
+        form.news_edit ol li label { display: block; }
+    </style>
+</head>
+<body>
+
+<h1>Add News List</h1>
+
+<form class="news_edit" action="manage_addNewsList" method="POST">
+<ol>
+    <li>
+        <label for="id">Id:</label>
+        <input id="id" type="text" name="id" size="50" />
+    </li>
+    <li>
+        <label for="title">Title:</label>
+        <input id="title" type="text" name="title:utf8:ustring" size="50" />
+    </li>
+    <li>
+        <label for="items_in_list">Items in news list:</label>
+        <input id="items_in_list" type="text" name="items_in_list" size="50" value="5" />
+    </li>
+    <li>
+        <label for="items_in_feed">Items in news feed:</label>
+        <input id="items_in_feed" type="text" name="items_in_feed" size="50" value="15" />
+    </li>
+    <li>
+        <input type="submit" value="Add news list" />
+    </li>
+</ol>
+</form>
+
+</body>
+</html>

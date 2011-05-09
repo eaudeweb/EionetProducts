@@ -1,0 +1,27 @@
+Meeting Session - Add: Add a Meeting Session.
+
+  Description
+
+    A Meeting Session is used if your event has more than one track. You
+    will typically build the day of the conference as a combination of
+    Meeting Sessions and Breaks. The breaks could be: breakfast, morning
+    coffee, lunch and afternoon coffee. There would then be four sessions
+    in between.
+
+    Sessions must be the same for all tracks.
+
+    In each session you then create one or more agenda items.  
+    The sessions serve as an anchor point for the start time of the agenda
+    items.
+
+  Controls
+
+    'Id' -- The id of the Session.
+
+    'Title' -- The title of the session.
+
+    'Start/End time' -- Enter the start/end times in YYYY/MM/DD YY:MM format.
+
+    'Cost' -- Unused at present.
+
+    'Add' -- Creates a new Meeting.

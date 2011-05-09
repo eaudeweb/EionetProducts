@@ -1,0 +1,28 @@
+<span metal:use-macro="here/thesaurus_template/macros/thesaurus_page">
+
+	<tal:block metal:fill-slot="thesaurus_page_title">
+		All used alphabets
+	</tal:block>
+
+	<tal:block	metal:fill-slot="thesaurus_content"
+				define="characters python:here.GetUnicodeMap(langcode);">
+
+		<h1 tal:define="record python:here.GetLanguage(langcode); language python:record[0]">
+			<em><span tal:replace="python:here.mp_language(language[0])"/></em>'s alphabet
+		</h1>
+
+		<tal:block repeat="chars characters">
+		<div style="margin-left: 2em; clear: left; padding-top: 3px;">
+			<span	tal:content="repeat/chars/number"
+					style="float: left; width: 20px; height: 30px; font-weight: bold; color: orange;" />
+			<span	style='	vertial-align: middle; font-family: "Arial Unicode MS"; text-align: center;
+							margin-left: 3px; font-weight: bold; font-size: 120%; border: 1px solid orange;
+							width: 50px; height: 30px; display: block; float: left; background-color: #f0f0f0;'
+					tal:repeat="char chars"
+					tal:content="python:char.encode('utf-8')" />
+		</div>
+		</tal:block>
+
+	</tal:block>
+</span>
+

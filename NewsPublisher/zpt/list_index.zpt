@@ -1,0 +1,14 @@
+<h3>Latest news <a tal:attributes="href python:here.absolute_url()+'/feed_atom'"><img src="misc_/NewsPublisher/news_feed.png" alt="RSS feed" /></a></h3>
+
+<ul>
+    <tal:block repeat="item options/news_items">
+    <li tal:define="news_item python:item.getObject()">
+        <a tal:attributes="href news_item/absolute_url"><h4 tal:content="news_item/title_or_id" /></a>
+        <p>
+            <span tal:content="string:Released on ${news_item/release_date}" />
+            <span tal:condition="news_item/author" tal:content="string:by: ${news_item/author}" />
+        </p>
+        <p tal:content="news_item/teaser" />
+    </li>
+    </tal:block>
+</ul>

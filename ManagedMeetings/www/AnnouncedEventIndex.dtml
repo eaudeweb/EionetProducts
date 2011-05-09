@@ -1,0 +1,31 @@
+<dtml-var standard_html_header>
+<dtml-var choose_bar>
+<h1><dtml-var title></h1>
+<dtml-if description><p>
+        <dtml-var description></p>
+</dtml-if>
+<table>
+<tr><th align="left">Date</th>
+    <td><dtml-var startdate fmt=Day>
+	<dtml-var startdate fmt=Date> 
+	<dtml-var startdate fmt=TimeMinutes> to
+	<dtml-if "startdate.Date() == enddate.Date()">
+		<dtml-var enddate fmt=TimeMinutes>
+	<dtml-else>
+		<dtml-var enddate fmt=Date> <dtml-var enddate fmt=TimeMinutes>
+	</dtml-if></td></tr>
+
+	<dtml-if event_type>
+		<tr><th align="left">Type</th>
+		    <td><dtml-var event_type></A></td></tr>
+	</dtml-if>
+
+	<dtml-if "urllocation">
+		<tr><th align="left">Venue</th>
+		    <td><a href="&dtml-urllocation;"><dtml-var urllocation></a></td></tr>
+	</dtml-if>
+
+		<tr><th align="left">Organiser</th>
+		    <td><dtml-var organiser></td></tr>
+</table>
+<dtml-var standard_html_footer>

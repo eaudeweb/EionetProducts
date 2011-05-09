@@ -1,0 +1,45 @@
+<dtml-comment> -*- mode: dtml; dtml-top-element: "body" -*- </dtml-comment>
+<dtml-var standard_html_header>
+
+<dtml-var choose_bar>
+<table width="80%" border="0">
+    <tr>
+        <td colspan="2" align="center">
+            In order to join this meeting, please choose one of the registration types below. You will receive a confirmation email shortly after that, at the address you provided, which contains a summary of the event and a link to your profile that you can view and modify using the corresponding account. (LDAP username and password &mdash; or email address and the password provided by email)<br /><br /><br />
+        </td>
+    </tr>
+    <tr>
+        <td align="center" colspan="2"><strong>Choose your type of signup</strong></td>
+    </tr>
+<dtml-if "status == 'active' and enddate.isFuture()">
+    <dtml-if "_.hasattr(this(),'allow_registrations') and allow_registrations and _.SecurityCheckPermission('Register for Meetings',this())">
+        <tr>
+        <td align="right" width="20%" valign="top">
+            <a class="menu" href="signup?status=&dtml-status;">
+            <img alt="Sign up here!" src="/misc_/ManagedMeetings/IWillAttend_but.jpg" border="0" /></a>
+            
+        </td>
+        <td width="*">&nbsp;
+            <dtml-if "status=='active'"><strong>Register and signup</strong> - Click this button, provide your credentials in order to signup. Use the email address and the password that you will receive in the confirmation email to modify your personal information at a later time.
+            <dtml-else><strong>I would like to attend</strong> - Click this button, provide your credentials in order to signup. Use the email address and the password that you will receive in the confirmation email to modify your personal information at a later time.
+            </dtml-if>
+        </td>
+        </tr>
+    </dtml-if>
+    <tr>
+        <td colspan="2">&nbsp;</td>
+    </tr>
+    <dtml-if "_.has_key('sitedir_lookup') and _.hasattr(this(),'allow_registrations') and allow_registrations">	
+        <tr>
+        <td align="right" width="20%" valign="top">
+            <a href="authenticatedsignup"><img alt="If you have an account on <dtml-var "sitedir_lookup.title"> you can use the authenticated" src="/misc_/ManagedMeetings/SignUp_but.jpg" border="0" /></a>
+        </td>
+        <td width="*">&nbsp;
+            <strong>Signup using your LDAP account</strong> - If you already have registered on EIONET CIRCA, click this button and type in your username and password to signup for this event.
+        </td>
+        </tr>
+    </dtml-if>
+</dtml-if>
+</table>
+
+<dtml-var standard_html_footer>

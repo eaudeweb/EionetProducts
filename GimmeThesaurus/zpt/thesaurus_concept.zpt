@@ -1,0 +1,221 @@
+<span metal:use-macro="here/thesaurus_template/macros/thesaurus_page">
+
+	<metal:block metal:fill-slot="thesaurus_page_title">
+		<tal:block	define="concept_info python:options['result'][0];"
+					condition="python:here.mp_concept_name(concept_info) != ''"
+					content="python:here.mp_concept_name(concept_info)" />
+	</metal:block>
+
+	<metal:block fill-slot="thesaurus_extra_head">
+		<link rel="alternate" type="application/rdf+xml" title="RDF"
+		      tal:define="ns_id python:int(request.get('ns', 1));
+		                  cp_id options/concept_id"
+		      tal:attributes="href python:here.construct_concept_uri(ns_id, cp_id)" />
+	</metal:block>
+
+	<tal:block metal:fill-slot="thesaurus_language_bar" content="structure python:here.thesaurus_language_bar(current_langcode=langcode, languages=here.GetLanguages(concept_ns=1, concept_id=options['concept_id']))" />
+
+	<span metal:fill-slot="thesaurus_content" tal:omit-tag="">
+
+	<tal:block define="	concept_info python:options['result'][0];
+						narrower python:options['result'][1];
+						broader python:options['result'][2];
+						related python:options['result'][3];
+						concept_trans python:options['result'][4];
+						definition python:options['result'][5];
+						note python:options['result'][6];
+						marker python:options['result'][7];
+						relations python:options['result'][8];
+						foreign_relations python:options['result'][9];
+						definition_source python:options['result'][10];
+						errors python:options['result'][11]">
+
+		<span tal:condition="python:errors == 1" tal:replace="structure here/thesaurus_error" />
+
+		<tal:block condition="python:errors == 0">
+
+		<h1 class="concept-h1" tal:condition="python:here.mp_concept_name(concept_info) != ''"
+			tal:content="python:here.mp_concept_name(concept_info)"
+			tal:attributes="xml:lang langcode">CONCEPTS NAME</h1>
+        <p class="concept-alt-labels"
+           tal:condition="python:here.mp_concept_alt(concept_info) != []"
+           tal:attributes="xml:lang langcode"
+           tal:content="python:'; '.join(here.mp_concept_alt(concept_info))">
+        </p>
+
+		<tal:block condition="python:here.mp_concept_name(concept_info) == ''">
+			<tal:block repeat="record concept_trans">
+				<h1 xml:lang="en" tal:condition="python:here.mp_language(record) == 'English'" tal:content="python:here.mp_concept_name(record)">NAME IN ENGLISH</h1>
+				<div class="name-note" tal:condition="python:here.mp_language(record) == 'English'">
+				<strong>* Note:</strong> Name is not available for the current language
+				</div>
+			</tal:block>
+		</tal:block>
+
+
+		<div id="definition-note">Definition:
+			<tal:block tal:condition="python:marker in ['01', '00'] and definition != ''">*</tal:block></div>
+		<div xml:lang="en" class="definition-body" tal:condition="python:definition == ''">definition is not available</div>
+		<div tal:attributes="xml:lang python:test(marker in ['01', '00'] and definition != '','en',langcode)" class="definition-body"><span tal:condition="python:definition != ''" tal:replace="definition">CONCEPT DEFINITION</span>
+		<tal:block condition="definition_source">
+			<span>(Source: <tal:block content="python: definition_source[0]['value']">SOURCE</tal:block>)</span>
+		</tal:block>
+		</div>
+		<div xml:lang="en" class="name-note" tal:condition="python:marker in ['01', '00'] and definition != ''">
+			<strong>* Note:</strong> Definition is not available for the current language</div>
+
+		<div id="concept-left-box">
+			<table cellspacing="0" cellpadding="0" width="100%" border="0" tal:condition="python:len(related)+len(broader)+len(narrower)>0">
+
+				<tr tal:condition="python:len(broader)>0">
+					<td class="sitemap-node"><img src="/misc_/GimmeThesaurus/categ.gif" alt="" /></td>
+					<td xml:lang="en" colspan="2"><strong>broader terms</strong></td>
+				</tr>
+				<tr tal:repeat="record broader">
+				<tal:block tal:condition="python:path('repeat/record/start') and not path('repeat/record/end')">
+					<td class="sitemap-node" valign="top"><img src="/misc_/GimmeThesaurus/branch.gif" alt="" /></td>
+					<td class="sitemap-line" valign="top"><img src="/misc_/GimmeThesaurus/leaf_top.gif" alt="" ></td>
+				</tal:block>
+				<tal:block tal:condition="python: not (path('repeat/record/start') or path('repeat/record/end'))">
+					<td class="sitemap-node">&nbsp;</td>
+					<td class="sitemap-line" valign="top"><img src="/misc_/GimmeThesaurus/leaf_mid.gif" alt="" /></td>
+				</tal:block>
+				<tal:block tal:condition="python:path('repeat/record/end') and path('repeat/record/length')>1">
+					<td class="sitemap-node">&nbsp;</td>
+					<td class="sitemap-node" valign="top"><img src="/misc_/GimmeThesaurus/leaf_end.gif" alt="" /></td>
+				</tal:block>
+				<tal:block tal:condition="python:path('repeat/record/end') and path('repeat/record/start')">
+					<td class="sitemap-node" valign="top"><img src="/misc_/GimmeThesaurus/branch.gif" alt="" /></td>
+					<td class="sitemap-node" valign="top"><img src="/misc_/GimmeThesaurus/leaf_only.gif" alt="" /></td>
+				</tal:block>
+					<td>
+						<a class="sitemap"	tal:attributes="href python:record.get_url(here, {'langcode': langcode});
+															title string:${record/concept_name};
+															xml:lang langcode;"
+											tal:content="record/concept_name">
+						</a>
+					</td>
+				</tr>
+
+				<tr tal:condition="python:len(narrower)>0">
+					<td class="sitemap-node"><img src="/misc_/GimmeThesaurus/categ.gif" alt="" /></td>
+					<td colspan="2"><strong>narrower terms</strong></td>
+				</tr>
+				<tr tal:repeat="record narrower">
+				<tal:block tal:condition="python:path('repeat/record/start') and not path('repeat/record/end')">
+					<td class="sitemap-node"  valign="top"><img src="/misc_/GimmeThesaurus/branch.gif" alt="" /></td>
+					<td class="sitemap-line" valign="top"><img src="/misc_/GimmeThesaurus/leaf_top.gif" alt="" /></td>
+				</tal:block>
+				<tal:block tal:condition="python: not (path('repeat/record/start') or path('repeat/record/end'))">
+					<td class="sitemap-node">&nbsp;</td>
+					<td class="sitemap-line" valign="top"><img src="/misc_/GimmeThesaurus/leaf_mid.gif" alt="" /></td>
+				</tal:block>
+				<tal:block tal:condition="python:path('repeat/record/end') and path('repeat/record/length')>1">
+					<td class="sitemap-node">&nbsp;</td>
+					<td class="sitemap-node" valign="top"><img src="/misc_/GimmeThesaurus/leaf_end.gif" alt="" /></td>
+				</tal:block>
+				<tal:block tal:condition="python:path('repeat/record/end') and path('repeat/record/start')">
+					<td class="sitemap-node" valign="top"><img src="/misc_/GimmeThesaurus/branch.gif" alt="" /></td>
+					<td class="sitemap-node" valign="top"><img src="/misc_/GimmeThesaurus/leaf_only.gif" alt="" /></td>
+				</tal:block>
+					<td>
+						<a class="sitemap"	tal:attributes="href python:record.get_url(here, {'langcode': langcode});
+															title string:${record/concept_name};
+															xml:lang langcode;"
+											tal:content="record/concept_name">
+						</a>
+					</td>
+				</tr>
+
+				<tr tal:condition="python:len(related)>0">
+					<td class="sitemap-node"><img src="/misc_/GimmeThesaurus/categ.gif" alt="" /></td>
+					<td colspan="2"><strong>related terms</strong></td>
+				</tr>
+				<tr tal:repeat="record related">
+				<tal:block tal:condition="python:path('repeat/record/start') and not path('repeat/record/end')">
+					<td class="sitemap-node" valign="top"><img src="/misc_/GimmeThesaurus/branch.gif" alt="" /></td>
+					<td class="sitemap-line" valign="top"><img src="/misc_/GimmeThesaurus/leaf_top.gif" alt="" /></td>
+				</tal:block>
+				<tal:block tal:condition="python: not (path('repeat/record/start') or path('repeat/record/end'))">
+					<td class="sitemap-node">&nbsp;</td>
+					<td class="sitemap-line" valign="top"><img src="/misc_/GimmeThesaurus/leaf_mid.gif" alt="" /></td>
+				</tal:block>
+				<tal:block tal:condition="python:path('repeat/record/end') and path('repeat/record/length')>1">
+					<td class="sitemap-node">&nbsp;</td>
+					<td class="sitemap-node" valign="top"><img src="/misc_/GimmeThesaurus/leaf_end.gif" alt="" /></td>
+				</tal:block>
+				<tal:block tal:condition="python:path('repeat/record/end') and path('repeat/record/start')">
+					<td class="sitemap-node" valign="top"><img src="/misc_/GimmeThesaurus/branch.gif" alt="" /></td>
+					<td class="sitemap-node" valign="top"><img src="/misc_/GimmeThesaurus/leaf_only.gif" alt="" /></td>
+				</tal:block>
+					<td>
+						<a class="sitemap"	tal:attributes="href python:record.get_url(here, {'langcode': langcode});
+															title string:${record/concept_name};
+															xml:lang langcode;"
+											tal:content="record/concept_name">
+						</a>
+					</td>
+				</tr>
+			</table>
+
+			<div class="concept-relation-label">Scope note:
+				<div class="concept-relation-body" xml:lang="en"
+					tal:condition="python:note == ''">scope note is not available</div>
+				<tal:block condition="python:marker in ['10', '00'] and note != ''">*</tal:block>
+			</div>
+			<div class="concept-relation-body"
+				 tal:attributes="xml:lang python:test(marker in ['10', '00'] and note != '','en',langcode)"
+				 tal:condition="python:note != ''" tal:content="note">
+				CONCEPT SCOPE
+			</div>
+			<div class="name-note" xml:lang="en"
+				tal:condition="python:marker in ['10', '00'] and note != ''"><strong>* Note:</strong> Scope note is not available for the current language</div>
+
+			<tal:block tal:repeat="relation_group relations">
+				<div class="concept-relation-label">
+					<tal:block tal:content="python:relation_group['thesaurus']">THESAURUS NAME</tal:block>:
+				</div>
+				<div class="concept-relation-body"
+					tal:repeat="relation python:relation_group['concepts']"
+					 tal:attributes="xml:lang langcode">
+					<div tal:content="relation">CONCEPT'S RELATIONS</div>
+				</div>
+				<div class="name-note" xml:lang="en" tal:condition="python:not relation_group['available_in_lang']">
+					<strong>Note:</strong>
+					<tal:block tal:content="python:relation_group['thesaurus']">THESAURUS NAME</tal:block>
+					are not available for the current language
+				</div>
+			</tal:block>
+			<tal:block tal:condition="foreign_relations">
+				<div class="concept-relation-label">Other relations:</div>
+				<dl>
+					<tal:block tal:repeat="foreign_relation python: foreign_relations.items()">
+						<dt style="font-weight: normal" tal:content="python:foreign_relation[0][1]"></dt>
+						<dd tal:repeat="link python:foreign_relation[1]">
+							<a tal:attributes="href python:link[0]" tal:content="python:link[1]" />
+						</dd>
+					</tal:block>
+				</dl>
+			</tal:block>
+		</div>
+		<div id="concept-right-box">
+			<table cellspacing="0" style="border-left: 1px solid black;">
+				<tal:block repeat="record concept_trans">
+				<tr>
+					<td style="padding-left: 1em; padding-right: 1em;" valign="top" xml:lang="en">
+						<strong tal:content="python:here.mp_language(record)+':'">LANGUAGE</strong>
+					</td>
+					<td tal:attributes="xml:lang python:record['langcode']"
+						tal:content="python:here.mp_concept_name(record)">CONCEPT TRANS</td>
+				</tr>
+				</tal:block>
+			</table>
+		</div>
+
+		</tal:block>
+	</tal:block>
+	</span>
+
+	<tal:block metal:fill-slot="thesaurus_version" tal:content="python:here.get_namespace_version(namespace_id=1)" />
+
+</span>

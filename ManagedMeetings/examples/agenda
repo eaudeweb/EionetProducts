@@ -1,0 +1,19 @@
+<dtml-var standard_html_header>
+<h2><dtml-var title_or_id></h2>
+<p>
+<dtml-with "PARENTS[0]">
+  <b><dtml-var title_or_id></b>
+</dtml-with>
+</p>
+<ul>
+<li>08.00 Breakfast</li>
+<li>08.30 Study</li>
+<li>10.00 Coffee</li>
+<li>10.15 Study</li>
+<li>12.00 Lunch</li>
+<li>13.00 Study</li>
+<li>15.00 Coffee</li>
+<li>15.15 Study</li>
+<li>17.00 Go Home</li>
+</ul>
+<dtml-var standard_html_footer>

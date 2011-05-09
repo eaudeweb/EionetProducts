@@ -1,0 +1,5 @@
+Zope >= 2.8 (see http://www.zope.org)
+python-ldap >= 2.0.0 (see http://python-ldap.sourceforge.net)
+
+If you want to use the LDAPMembership and the LDAPMemberData tools:
+CMF >= 1.5 (see http://www.zope.org)

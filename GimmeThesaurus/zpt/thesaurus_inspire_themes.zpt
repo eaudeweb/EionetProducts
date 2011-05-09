@@ -1,0 +1,73 @@
+<span metal:use-macro="here/thesaurus_template/macros/thesaurus_page">
+
+	<tal:block metal:fill-slot="thesaurus_page_title">
+		INSPIRE Spatial Data Themes
+	</tal:block>
+
+	<tal:block metal:fill-slot="thesaurus_language_bar" content="structure python:here.thesaurus_language_bar(current_langcode=langcode, languages=here.GetLanguages(concept_ns=5))" />
+
+	<span metal:fill-slot="thesaurus_content" tal:omit-tag="">
+	<h1>INSPIRE Spatial Data Themes</h1>
+	<tal:block define="	records python:here.GetThemes(langcode, namespace=5);
+						all_themes python:records[0];
+						errors python:records[1];">
+
+	<span tal:condition="python:errors == 1" tal:replace="structure here/thesaurus_error" />
+
+	<tal:block condition="python:errors == 0">
+		<tal:block condition="python:len(all_themes) == 0">
+			<tal:block define="	elements python:here.GetThemes('en', namespace=5);
+								themes python:elements[0];">
+				<span class="name-note" tal:condition="python:len(themes) == 0">There are no themes available</span>
+
+				<div class="name-note" tal:condition="python:len(themes) != 0">* There are no themes available for the current language so these are listed in English</div>
+				<table id="elements-list" tal:condition="python:len(themes) != 0" border="0">
+				<tal:block define="en_themes python:here.utSplitList(themes)" repeat="record en_themes">
+				<tr>
+				<td xml:lang="en">
+					<a	tal:define="theme_id python:here.mp_theme_id(record[1]); theme_name python:here.mp_theme_descr(record[1])" 
+						tal:attributes="href string:${here/absolute_url}/theme_concepts?th=${theme_id}&amp;langcode=${langcode}&amp;ns=5;
+										title python:here.mp_theme_definition(record[1])"
+						tal:content="theme_name"/>
+				</td>
+				<td xml:lang="en">
+					<a	tal:define="theme_id python:here.mp_theme_id(record[0]); theme_name python:here.mp_theme_descr(record[0])" 
+						tal:condition="python:record[0]"
+						tal:attributes="href string:${here/absolute_url}/theme_concepts?th=${theme_id}&amp;langcode=${langcode}&amp;ns=5;
+										title python:here.mp_theme_definition(record[0])"
+						tal:content="theme_name"/>
+				</td>
+				</tr>
+				</tal:block>
+				</table>
+
+			</tal:block>
+		</tal:block>
+
+		<table id="elements-list" tal:condition="python:len(all_themes) != 0">
+		<tal:block define="themes python:here.utSplitList(all_themes)" repeat="record themes">
+		<tr>
+			<td tal:attributes="xml:lang langcode">
+				<a	tal:define="theme_id python:here.mp_theme_id(record[1]); theme_name python:here.mp_theme_descr(record[1])" 
+					tal:attributes="href string:${here/absolute_url}/theme_concepts?th=${theme_id}&amp;langcode=${langcode}&amp;ns=5;
+									title python:here.mp_theme_definition(record[1])"
+					tal:content="theme_name"/><br/>
+			</td>
+			<td tal:attributes="xml:lang langcode">
+				<a	tal:define="theme_id python:here.mp_theme_id(record[0]); theme_name python:here.mp_theme_descr(record[0])" 
+					tal:condition="python:record[0]"
+					tal:attributes="href string:${here/absolute_url}/theme_concepts?th=${theme_id}&amp;langcode=${langcode}&amp;ns=5;
+									title python:here.mp_theme_definition(record[0])"
+					tal:content="theme_name"/>
+			</td>
+		</tr>
+		</tal:block>
+		</table>
+	</tal:block>
+
+	</tal:block>
+	</span>
+
+	<tal:block metal:fill-slot="thesaurus_version" tal:content="python:here.get_namespace_version(namespace_id=5)" />
+
+</span>

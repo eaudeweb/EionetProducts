@@ -1,0 +1,69 @@
+<dtml-var standard_html_header>
+
+<dtml-var choose_bar>
+<h1><dtml-var title></h1>
+<dtml-if description>
+    <p><dtml-var description></p>
+</dtml-if>
+<table>
+  <tr>
+    <th align="left">Date</th>
+    <td><dtml-var startdate fmt="%A %d-%b-%Y %H:%M"> to 
+        <dtml-if "startdate.Date() == enddate.Date()">
+                <dtml-var enddate fmt="%H:%M">
+        <dtml-else>
+                <dtml-var enddate fmt="%d-%b-%Y %H:%M">
+        </dtml-if></td>
+  </tr>
+
+<dtml-if event_type>
+  <tr><th align="left">Type</th><td><dtml-var event_type></td>
+  </tr>
+</dtml-if>
+		
+<dtml-if "location or txtlocation">
+  <tr><th align="left">Venue</th><td><dtml-var showlocation></td></tr>
+</dtml-if>
+		
+<dtml-if "max_attendees > 0">
+  <tr><th align="left">Occupancy</th>
+    <td><dtml-var "_.len(getAttendeeSeat())"> occupied out of <dtml-var max_attendees> available.</td></tr>
+</dtml-if>
+		
+  <tr><th align="left">Organiser</th>
+    <td><a href="mailto:&dtml.missing-organiser_email;"><dtml-var organiser></a></td></tr>
+		
+<dtml-if instructor>
+  <tr><th align="left">Instructor</th>
+    <td><dtml-var instructor></td></tr>
+</dtml-if>
+
+<dtml-if agenda_url>
+  <tr><th align="left">Agenda</th>
+    <td><a href="&dtml-agenda_url;">See the agenda</a></td></tr>
+</dtml-if>
+
+<dtml-if minutes_url>
+  <tr><th align="left">Minutes</th>
+    <td><a href="&dtml-minutes_url;">See the minutes</A></td>
+  </tr>
+</dtml-if>
+</table>
+
+<dtml-call "REQUEST.set('first_matter',1)">
+<dtml-in "objectValues(['DTML Document','File','ExtFile','URL Reference','Message Board'])" skip_unauthorized>
+  <dtml-if "getId() != agenda_url and getId() != minutes_url">
+    <dtml-if first_matter>
+      <h2>Background material</h2>
+      <table border="0">
+      <dtml-call "REQUEST.set('first_matter',0)">
+    </dtml-if>
+        <tr><td><img src="<dtml-var icon>" border="0" alt="" />&nbsp;<a href="<dtml-var getId url_quote>"><dtml-var title_and_id html_quote></a></td>
+            <td><em>(<dtml-var bobobase_modification_time fmt=Date>)</em></td>
+        </tr>
+  </dtml-if> 
+</dtml-in>
+<dtml-unless first_matter>
+</table>
+</dtml-unless>
+<dtml-var standard_html_footer>

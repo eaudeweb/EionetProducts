@@ -1,0 +1,11 @@
+<dtml-comment> -*- mode: dtml; dtml-top-element: "body" -*- </dtml-comment>
+<dtml-var standard_html_header>
+
+<dtml-var choose_bar>
+<table width="90%" border="0px">
+    <tr>
+        <td align="center" width="80%"><b>Thanks for your registration!</b><br/>You can check you email account for the confirmation.</td>
+    </tr>
+</table>
+
+<dtml-var standard_html_footer>

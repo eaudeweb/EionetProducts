@@ -1,0 +1,74 @@
+CHANGES.txt for the LDAPUserFolder
+
+  This file contains change information for the LDAPUserFolder product.
+  To see changes made to revisions prior to the latest version see
+  HISTORY.txt.
+
+    2.7 (2006/07/20)
+
+      Bugs fixed
+
+        * Sidnei da Silva took the time to root out any use of mutable
+          variables in method argument lists.
+
+      Features:
+
+        * Completely refactored the way searches are handled by the 
+          FakeLDAP testing fixture. The new code uses intelligent parsing
+          to make sense of a query and apply it in a generic way instead
+          of trying to sniff a filter to guess where the query came from
+          and what the query was attempting to do. Kudos for a whole
+          bunch of time spent go to Sidnei da Silva.
+
+        * Added a more powerful groups search method named searchGroups
+          to improve group searching capabilities for e.g. Plone and
+          PlonePAS. Wichert Akkerman provided code and tests.
+
+        * Added a more powerful user search method named searchUsers.
+          Unlike findUser, searchUsers allows for more than one attribute
+          to be searched on. findUser has been reduced to a simple wrapper
+          around searchUsers. My thanks for inspiration and an initial
+          implementation suggestion go to Wichert Akkerman.
+
+      Other:
+
+        * Enabled utils.to_utf8 to handle unicode (continuing work on
+          http://www.dataflake.org/tracker/issue_00480)
+
+        * The use of zLOG, and the SimpleLog module, have been removed
+          in favor of using the Python logging module throughout.
+
+        * Software dependencies are now listed concisely in one place,
+          a new DEPENDENCIES.txt file.
+
+
+    2.7-beta (2006/03/02)
+
+      Bugs fixed:
+
+        * Harden SimpleLog against cases where the log message included
+          strings like %s, caught by Wichert Akkerman.
+          (http://www.dataflake.org/tracker/issue_00491)
+
+        * In ActiveDirectory, it is possible to have records (specifically
+          internal system accounts) that have the correct objectClasses to
+          qualify as user records, but they lack the attribute designated as
+          the chosen UID attribute. Thanks to Wichert Akkerman, these are now 
+          disregarded. (http://www.dataflake.org/tracker/issue_00484)
+
+        * Make sure objectGUID, when set on the LDAPUser as a property,
+          gets treated specially (discovered by Wichert Akkerman in the
+          course of clarifying http://www.dataflake.org/tracker/issue_00480)
+
+        * The SimpleLog.zLOGLogger log method ignored the *args parameter
+          (http://www.dataflake.org/tracker/issue_00474, thanks go to 
+          Mark Hammond)
+
+        * Repaired warings appearing in Zope 2.8.5 due to a couple typos
+          in security declarations.
+
+        * Fix breakage when local groups storage is used and no groups are
+          assigned to a user: When roles are changed to another empty value
+          an error occurred (http://www.dataflake.org/tracker/issue_00478 by
+          Junyong Pan)
+

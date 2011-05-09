@@ -1,0 +1,93 @@
+<tal:comment tal:replace="nothing">
+    If you want to integrate MessageBoard in your product you must set
+    'integrated' flag to 1.
+    If MessageBoard's flag 'integrated' is set to 1, then all dtml files will not include
+    'standard_html_header' and 'standard_html_footer'. Instead will include some other 2 files:
+    'integrated_html_header' and 'integrated_html_footer'.
+    In your product (the one who integrates MessageBoard) you must have 2 dtml files:
+        - integrated_html_header
+        - integrated_html_footer
+</tal:comment>
+
+
+<span tal:replace="structure here/integrated_html_header" tal:condition="python:here.integrated" />
+<span tal:replace="structure here/standard_html_header" tal:condition="python:not here.integrated" />
+<span tal:replace="python:request.RESPONSE.setHeader('content-type','text/html;charset=utf-8')" />
+
+<link href="mesgboard_css" rel="stylesheet" type="text/css" media="all" />
+
+<h1>
+	<a tal:attributes="href string:${here/getMPAbsolutePath}/index_html" i18n:translate="">Message Board</a>
+</h1>
+
+<h2 i18n:translate="">Add new message</h2>
+<p i18n:translate="">Add a new message here.</p>
+
+<span tal:condition="python:request.has_key('FORM_ERROR')" class="error_msg" i18n:translate="">
+	You have an error in the following form. Please correct it.
+</span>
+
+<form method="post" action="addMessage" enctype="multipart/form-data" name="addMsg" id="addMsg">
+<div>
+	<div class="field">
+		<div class="label">
+			<span class="required">*</span> 
+			<label for="title" i18n:translate="">Subject</label>
+		</div>
+		<input type="text" name="title:utf8:ustring" size="35" id="title"
+			tal:attributes="value python:request.get('title', '')" />
+			<span class="error_msg" tal:condition="python:request.has_key('FORM_ERROR' + '_title')" 
+				tal:content="python:request['FORM_ERROR'+'_title']" />
+	</div>
+	<div class="field">
+		<div class="label">
+			<span class="required">*</span> 
+			<label for="text" i18n:translate="">Text</label>
+		</div>
+		<textarea rows="14" cols="50" name="text:utf8:ustring" id="text"
+			tal:content="python:request.get('text', '')" />
+		<span class="error_msg" tal:condition="python:request.has_key('FORM_ERROR' + '_text')" 
+			tal:content="python:request['FORM_ERROR'+'_text']" />
+	</div>
+	<div class="field">
+		<div class="label">
+			<label for="file" i18n:translate="">File</label>
+		</div>
+		<input type="file" name="attachment" size="35" id="file" />
+		<span class="error_msg" tal:condition="python:request.has_key('FORM_ERROR' + '_file')" 
+			tal:content="python:request['FORM_ERROR'+'_file']" />
+	</div>
+	<div class="field">
+		<div class="label">
+			<span class="required">*</span> 
+			<label for="author" i18n:translate="">Your name</label>
+		</div>
+		<input type="text" name="author:utf8:ustring" size="35" id="author"
+			tal:attributes="value python:request.get('author', '')" />
+		<span class="error_msg" tal:condition="python:request.has_key('FORM_ERROR' + '_author')" 
+			tal:content="python:request['FORM_ERROR'+'_author']" />
+	</div>
+	<div class="field">
+		<div class="label">
+			<span class="required">*</span> 
+			<label for="email" i18n:translate="">Email</label>
+		</div>
+		<input type="text" name="email:utf8:ustring" size="35" id="email"
+			tal:attributes="value python:request.get('email', '')" />
+		<span class="error_msg" tal:condition="python:request.has_key('FORM_ERROR' + '_email')" 
+			tal:content="python:request['FORM_ERROR'+'_email']" />
+	</div>
+	<div class="field">
+		<div class="label">
+			<label for="notify" i18n:translate="">Notify</label>
+		</div>
+		<input type="checkbox" name="notify:boolean" checked="checked" id="notify" />
+		<span class="tip" i18n:translate="">Notify me by e-mail if someone answers to this message</span>
+	</div>
+	<input type="submit" name="submit" value=" Add message " i18n:attributes="value" />
+</div>
+
+</form>
+
+<span tal:replace="structure here/integrated_html_footer" tal:condition="python:here.integrated" />
+<span tal:replace="structure here/standard_html_footer" tal:condition="python:not here.integrated" />

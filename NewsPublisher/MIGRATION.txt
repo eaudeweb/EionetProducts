@@ -1,0 +1,75 @@
+Migration
+=========
+
+To update old NewsFolder-style announcements you should first create a news
+folder (an ordinary Zope folder). Inside the new folder create a Script(Python)
+object, and inside the script, paste the code from the end of this document.
+Run the script - it should report how many news items have been migrated. The
+old news objects are not removed.
+
+After migrating the news items, create an object of type NewsList: this will
+provide a listing of the latest news items and also an Atom feed.
+
+
+The update script
+-----------------
+
+#######################################################
+count = 0
+for old_item_ref in container.Catalog.search({'meta_type': 'Announcement'}):
+    old_item = old_item_ref.getObject()
+    
+    print 'copying:', old_item.absolute_url(1), old_item.releasedate.strftime('%Y-%m-%d'), repr(old_item.title)
+    
+    container.manage_addProduct['NewsPublisher'].manage_addNewsItem(
+        id=old_item.id,
+        title=unicode(old_item.title, 'utf-8'),
+        author=unicode(old_item.author, 'utf-8'),
+        release_date=old_item.releasedate.strftime('%Y-%m-%d'),
+        teaser=unicode(old_item.teaser, 'utf-8'),
+        details=unicode(old_item.details, 'utf-8'),
+        published=True,
+    )
+    new_item = container[old_item.id]
+    
+    files = []
+    for name, obj in old_item.objectItems():
+        files.append(obj.id())
+    
+    objects = old_item.manage_copyObjects(files)
+    new_item.manage_pasteObjects(objects)
+    
+    count += 1
+
+
+print '\n== done =='
+print 'copied', count, 'objects'
+
+return printed
+
+
+########################################################
+
+If you have problems with the MSWord unsupported, unstandard characters, this
+function can help you:
+
+def utStripMSWordUTF8(s):
+    """ replace MSWord characters """
+    s = s.replace('\\xe2\\x80\\xa6', '...') #ellipsis
+    s = s.replace('\\xe2\\x80\\x93', '-')   #long dash
+    s = s.replace('\\xe2\\x80\\x94', '-')   #long dash
+    s = s.replace('\\xe2\\x80\\x98', '\'')  #single quote opening
+    s = s.replace('\\xe2\\x80\\x99', '\'')  #single quote closing
+    s = s.replace('\\xe2\\x80\\x9c', '"')  #single quote closing
+    s = s.replace('\\xe2\\x80\\x9d', '"')  #single quote closing
+    s = s.replace('\\xe2\\x80\\xa2', '*')  #dot used for bullet points
+    return s
+
+You add this function in your script, then, instead of:
+	details=unicode(old_item.details, 'utf-8'),
+use:
+	details=utStripMSWordUTF8(old_item.details),
+
+in your update script.
+
+

@@ -1,0 +1,95 @@
+<html lang="en">
+	<head>
+		<title i18n:translate="">Add Message Board</title>
+		<span tal:replace="python:request.RESPONSE.setHeader('content-type','text/html;charset=utf-8')" />
+		<style>
+			.error_msg {
+				color: red;
+				font-size: 12px;
+				font-family: Verdana, Arial, sans-serif
+			}
+
+			.form_body {
+				padding: 15px 5px 5px;
+				background-color: #F0F0F0;
+			}
+
+			.field {
+				padding-bottom: 15px;
+				}
+
+			.required {
+				color: #900;
+				}
+
+			.label {
+				float: left;
+				width: 80px;
+				text-align: right;
+				padding-top: 2px;
+				padding-right: 10px;
+				font-size: 14px;
+				}
+
+			.tip {
+				font-size: 12px;
+				color: #333;
+				font-family: Verdana, Arial, sans-serif;
+				}
+
+			p {
+				color: #333;
+				font-family: "Trebuchet MS", Trebuchet, Verdana, Arial, sans-serif;
+				font-size: 12px;
+				line-height: 14px;
+				margin: 0.5em 1em;
+				}
+
+		</style>
+	</head>
+	<body>
+		<h3 i18n:translate="">Add Message Board</h3>
+		<tal:block condition="python:here.getMailHostList()">
+		<form action="manage_addMessageBoard" method="post" name="addMB" id="addMB">
+		<div>
+			<div class="field">
+				<div class="label">
+					<span class="required">*</span> 
+					<label for="id" i18n:translate="">Id</label>
+				</div>
+				<input type="text" name="id" size="35" />
+			</div>
+			<div class="field">
+				<div class="label">
+					<label for="title" i18n:translate="">Title</label>
+				</div>
+				<input type="text" name="title:UTF-8:ustring" size="35" />
+			</div>
+			<div class="field">
+				<div class="label">
+					<label for="description" i18n:translate="">Description</label>
+				</div>
+				<textarea name="description:UTF-8:ustring" rows="6" cols="55"></textarea>
+			</div>
+			<div class="field">
+				<div class="label">
+					<label for="mailhost" i18n:translate="">Mail Host</label>
+				</div>
+				<select name="mailhost">
+					<tal:block repeat="mh here/getMailHostList">
+						<option tal:attributes="value mh" tal:content="mh" />
+					</tal:block>
+				</select>
+			</div>
+			<p class="tip" i18n:translate="">Items with * are required. All other items are optional.</p>
+			<input type="submit" name="submit" value=" Add " i18n:attributes="value" />
+		</div>
+		</form>
+		</tal:block>
+		<tal:block condition="python: not here.getMailHostList()">
+			<p i18n:translate="">There is no Mail Host in the current forder or his parents!<br />. 
+				You need one in order to use Message Board.
+			</p>
+		</tal:block>
+	</body>
+</html>

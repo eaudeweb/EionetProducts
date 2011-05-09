@@ -1,0 +1,80 @@
+<span tal:replace="structure here/manage_page_header" />
+<span tal:replace="structure python:here.manage_form_title(here, request, form_title='Add Message')" />
+<span tal:replace="python:request.RESPONSE.setHeader('content-type','text/html;charset=utf-8')" />
+
+<link href="mesgboard_css" rel="stylesheet" type="text/css" media="all" />
+
+<span tal:condition="python:request.has_key('FORM_ERROR')" class="error_msg" i18n:translate="">
+	You have an error in the following form. Please correct it.
+</span>
+
+<form action="manage_addMessage" method="post" enctype="multipart/form-data" name="addMesg" id="addMesg">
+
+<div>
+	<div class="field">
+		<div class="label">
+			<span class="required">*</span> 
+			<label for="title" i18n:translate="">Subject</label>
+		</div>
+		<input type="text" name="title:utf8:ustring" size="35" 
+			tal:attributes="value python:request.get('title', '')" />
+			<span class="error_msg" tal:condition="python:request.has_key('FORM_ERROR' + '_title')" 
+				tal:content="python:request['FORM_ERROR'+'_title']" />
+	</div>
+	<div class="field">
+		<div class="label">
+			<span class="required">*</span> 
+			<label for="text" i18n:translate="">Text</label>
+		</div>
+		<textarea rows="14" cols="50" name="text:utf8:ustring" 
+			tal:content="python:request.get('text', '')" />
+		<span class="error_msg" tal:condition="python:request.has_key('FORM_ERROR' + '_text')" 
+			tal:content="python:request['FORM_ERROR'+'_text']" />
+	</div>
+	<div class="field">
+		<div class="label">
+			<label for="file" i18n:translate="">File</label>
+		</div>
+		<input type="file" name="attachment" size="35" />
+		<span class="error_msg" tal:condition="python:request.has_key('FORM_ERROR' + '_file')" 
+			tal:content="python:request['FORM_ERROR'+'_file']" />
+	</div>
+	<div class="field">
+		<div class="label">
+			<span class="required">*</span> 
+			<label for="author" i18n:translate="">Your name</label>
+		</div>
+		<input type="text" name="author:utf8:ustring" size="35" 
+			tal:attributes="value python:request.get('author', '')" />
+		<span class="error_msg" tal:condition="python:request.has_key('FORM_ERROR' + '_author')" 
+			tal:content="python:request['FORM_ERROR'+'_author']" />
+	</div>
+	<div class="field">
+		<div class="label">
+			<span class="required">*</span> 
+			<label for="email" i18n:translate="">Email</label>
+		</div>
+		<input type="text" name="email:utf8:ustring" size="35" 
+			tal:attributes="value python:request.get('email', '')" />
+		<span class="error_msg" tal:condition="python:request.has_key('FORM_ERROR' + '_email')" 
+			tal:content="python:request['FORM_ERROR'+'_email']" />
+	</div>
+	<div class="field">
+		<div class="label">
+			<label for="notify" i18n:translate="">Notify</label>
+		</div>
+		<input type="checkbox" name="notify:boolean" checked="checked" />
+		<span class="tip" i18n:translate="">Notify me by e-mail if someone answers to this message</span>
+	</div>
+
+	<input type="hidden" name="date:date" tal:attributes="value here/ZopeTime" />
+	<input type="hidden" name="form_name" value="manage_addMessageForm" />
+	<input type="hidden" name="destinationURL" 
+		tal:attributes="value python:test(request.get('destinationURL', '')!='', request.get('destinationURL'), request.HTTP_REFERER)" />
+
+	<p class="tip" i18n:translate="">Items with * are required. All other items are optional.</p>
+	<input type="submit" name="submit" value=" Add message " i18n:attributes="value" />
+</div>
+</form>
+
+<span tal:replace="structure here/manage_page_footer" />

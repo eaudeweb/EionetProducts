@@ -1,0 +1,69 @@
+<dtml-var standard_html_header>
+
+<dtml-with "REQUEST.PARENTS[1]"><dtml-var choose_bar></dtml-with>
+
+ <h1><dtml-var givenname> <dtml-var sn></h1>
+<a href="<dtml-if ldap_id>AttendeeChangePreferencesLDAP<dtml-else>AttendeeChangePreferences?email=<dtml-var mail></dtml-if>"><img src="misc_/ManagedMeetings/edit.gif" border="0" alt="Edit" /></a>
+<table class="datatable">
+<col style="width:20%"/>
+<col style="width:80%"/>
+
+<dtml-if ldap_id>
+<tr><th scope="row" class="scope-row">UserID</th> 
+    <td><dtml-var ldap_id html_quote></td></tr> 
+</dtml-if>
+
+<tr><th scope="row" class="scope-row">Surname</th> 
+    <td><dtml-if sn><dtml-var sn></dtml-if></td></tr> 
+
+<tr><th scope="row" class="scope-row">First names</th> 
+    <td><dtml-if givenname><dtml-var givenname></dtml-if></td></tr>
+
+<dtml-if organisation>
+<tr><th scope="row" class="scope-row">Organisation</th> 
+    <td><dtml-var organisation html_quote></td></tr> 
+</dtml-if>
+
+<tr><th scope="row" class="scope-row">Email</th> 
+    <td><dtml-if mail>
+          <dtml-var "antispam(mail)">
+        </dtml-if>
+    </td>
+</tr> 
+
+<dtml-if tel>
+<tr><th scope="row" class="scope-row">Telephone</th> 
+    <td><dtml-var tel></td></tr> 
+</dtml-if>
+
+<dtml-if postaladdress>
+<tr><th scope="row" class="scope-row">Postal Address</th> 
+    <td><dtml-var postaladdress newline_to_br html_quote></td></tr> 
+</dtml-if>
+  
+<tr><th scope="row" class="scope-row">Role</th> 
+    <td><dtml-var role></td></tr> 
+
+<dtml-if "resume != ''">
+<tr><th scope="row" class="scope-row">Resume</th>
+    <td><dtml-var resume></td></tr>
+</dtml-if>
+
+<dtml-call "REQUEST.set('haspres',0)">
+<dtml-let myid="id">
+	<dtml-in "PARENTS[1].objectValues('Meeting Agendaitem')">
+	    <dtml-if "myid in speakers">
+		<dtml-if "haspres == 0">
+			<tr><th scope="row" class="scope-row">Presentations</th> 
+			    <td><dtml-call "REQUEST.set('haspres',1)">
+		</dtml-if>
+		<a href="&dtml-absolute_url;"><dtml-var title></a><br />
+	    </dtml-if>
+	</dtml-in>
+
+<dtml-if "haspres == 1"></td></tr></dtml-if>
+</dtml-let>
+</table>
+
+
+<dtml-var standard_html_footer>

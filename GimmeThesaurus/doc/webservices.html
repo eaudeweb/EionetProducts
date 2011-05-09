@@ -1,0 +1,289 @@
+<html>
+<head>
+<title>GEMET's Web services</title>
+</head>
+<body>
+<h1>GEMET's Web services</h1>
+
+<p>GEMET's data is exposed through the Web for remote applications using XML (RDF/SKOS), HTTP and XML/RPC.
+The XML output is available at <a href="http://www.eionet.europa.eu/gemet/rdf" title="GEMET RDF output">http://www.eionet.europa.eu/gemet/rdf</a>.
+</p>
+
+<h2>API for XML/RPC and HTTP</h2>
+
+<p>The following set of functions can be called by a Web application or Web page using either HTTP, where
+the parameters are specified in the query string or via XML/RPC. A combination of such function calls ensure
+the full retrieval of GEMET's content.</p>
+
+<h3>searchForConcepts</h3>
+<p><strong>Description:</strong> for each term in the list terms list, this function searches the GEMET content looking
+for matches. The level indicates the type of term expansion to try when looking for a match</p>
+
+<p><strong>Signature:</strong></p>
+
+<pre>
+	searchForConcepts(termList, lang, level)
+</pre>
+
+<strong>Parameters</strong>
+
+<pre>
+termList - list of strings representing concepts or parts of concepts
+level - integer in the range 0 – 5 inclusive:
+	0 – no wildcarding of any type match 'clothes')
+	1 – suffix regex ('accident' becomes 'accident.+$')
+	2 – prefix regex ('accident' becomes '^.+accident')
+	3 – prefix/suffix combined ('accident' becomes '^.+accident.+$')
+	4 – auto search: each of the previous four expansions is tried in ascending order until a match is found.
+lang - string that indicates the language code
+
+</pre>
+
+<strong>Result</strong>
+A two element struct of (results, statusCode).
+results is an array of 0 or more concepts.
+<pre>
+{ 'results':ARRAY, 'statusCode':X }
+</pre>
+
+<p><strong>Example call in Python:</strong></p>
+
+<pre>
+	termList = ['accident', 'economic', 'water']
+	lang = 'en'
+	results = searchForConcepts(termList, lang, 0)
+</pre>
+
+<h3>fetchConcepts</h3>
+
+<p><strong>Description:</strong> for each name/scope pair in 'nameScopeList', returns the matching concept with
+attributes matching those specified in 'attributes'.
+By default, 'name' and 'scope' are always returned, in addition to whatever else attributes specifies.
+</p>
+
+<p><strong>Signature:</strong></p>
+
+<pre>
+	fetchConcepts(nameScopeList, attributes, lang)
+</pre>
+
+<strong>Parameters</strong>
+
+<pre>
+nameScopeList - list of pairs (concept_name, concept_scope)
+attributes - list of strings specifying concept specific attributes
+lang - string that indicates the language code
+
+Note: the special keyword 'ALL' is still passed as a single-element array.
+</pre>
+
+<strong>Result</strong>
+A two element struct of (results, statusCode).
+results is an array of 0 or more concepts.
+<pre>
+	{'results':ARRAY, 'statusCode':X}
+</pre>
+
+<p><strong>Example call in Python:</strong></p>
+
+<pre>
+    attributes = ['bt', 'nt', 'rt', 'use', ] or ['ALL'] or ['all']
+    nameScopeList = [ {'name':'accident source','scope':'accident'},
+        {'name':'armament conversion', 'scope':'international safety'} ]
+    lang = 'en'
+    results = fetchConcepts(nameScopeList, attributes, lang)
+</pre>
+
+<h3>fetchHier</h3>
+
+<p><strong>Description:</strong> for the specified name/scope, this function returns 
+an array of concepts in the direction specified and to the level specified or to the end of the hierarchy.
+</p>
+
+<p><strong>Signature:</strong></p>
+
+<pre>
+	fetchHier(nameScope, level, direction, lang)
+</pre>
+
+<strong>Parameters</strong>
+
+<pre>
+nameScope - pair (concept_name, concept_scope)
+level - integer specifying the depth to go in the hierarchy (default value 1)
+		A level of 0 is a request to return all concepts to the end of the hierarchy.
+direction - string indicating the direction in the hierarchy (up or down); possible value: 'parents', 'children'
+lang - string that indicates the language code
+</pre>
+
+<strong>Result</strong>
+A two element struct of (results, statusCode).
+results is an array of 0 or more concepts.
+
+<p><strong>Example call in Python:</strong></p>
+
+<pre>
+    nameScope = {'name':'air safety','scope':'safety measure'}
+    level=2
+    direction='parents'
+    lang = 'en'
+    fetchHier(nameScope, level, direction, lang)
+</pre>
+
+<h3>fetchSiblings</h3>
+
+<p><strong>Description:</strong> returns all the children of all the parents of the terms specified in the 'nameScopeList' parameter.
+</p>
+
+<p><strong>Signature:</strong></p>
+
+<pre>
+	fetchSiblings(nameScopeList, attributes, lang)
+</pre>
+
+<strong>Parameters</strong>
+
+<pre>
+nameScopeList - list of pairs (concept_name, concept_scope)
+attributes - list of strings specifying concept specific attributes
+lang - string that indicates the language code
+</pre>
+
+<strong>Result</strong>
+The standard two element array of (results, successIndicator) where 'results' is an array of concepts.
+
+<p><strong>Example call in Python:</strong></p>
+
+<pre>
+    attributes = ['bt', 'nt', 'rt', 'use', ] or ['ALL'] or ['all']
+    nameScopeList = [ {'name':'accident source','scope':'accident'},
+        {'name':'armament conversion', 'scope':'international safety'} ]
+    lang = 'en'
+    results = fetchSiblings(nameScopeList, attributes, lang)
+</pre>
+
+<!--
+<h3>fetchCluster</h3>
+
+<p><strong>Description:</strong> for each concept in 'nameScopeList', this function will return the 
+corresponding concept with all the 'name/scope' pairs associated with all attributes of that concept
+replaced by the equivalent full concept. This replacement is done not only for 'bt'
+(Broader) and 'nt' (Narrower) attributes but for all other attributes, such as 'rt' (Related).
+It is not possible to specify a level here as with 'fetchHier'.
+</p>
+
+<p><strong>Signature:</strong></p>
+
+<pre>
+	fetchCluster(nameScopeList, attributes, lang)
+</pre>
+
+<strong>Parameters</strong>
+
+<pre>
+nameScopeList - list of pairs (concept_name, concept_scope)
+attributes - list of strings specifying concept specific attributes
+lang - string that indicates the language code
+</pre>
+
+<strong>Result</strong>
+The standard two element array of (results, successIndicator) where result is the cluster struct.
+
+<p><strong>Example call in Python:</strong></p>
+
+<pre>
+    attributes = ['bt', 'nt', 'rt', 'use', ] or ['ALL'] or ['all']
+    nameScopeList = [ {'name':'accident source','scope':'accident'},
+        {'name':'armament conversion', 'scope':'international safety'} ]
+    lang = 'de'
+    results = fetchCluster(nameScopeList, attributes, lang)
+</pre>
+-->
+
+<h3>fetchConceptsById</h3>
+
+<p><strong>Description:</strong> return the matching concepts with attributes matching those specified in 'attributes'.
+</p>
+
+<p><strong>Signature:</strong></p>
+
+<pre>
+	fetchConceptsById(ids, attributes, lang)
+</pre>
+
+<strong>Parameters</strong>
+
+<pre>
+ids - list of concept IDs
+attributes - list of strings specifying concept specific attributes
+lang - string that indicates the language code
+</pre>
+
+<strong>Result</strong>
+A two element struct of (results, statusCode) where 'results' is the list of GEMET's concepts in the specified language.
+
+<h3>fetchTopConcepts</h3>
+
+<p><strong>Description:</strong> return all top concepts.
+</p>
+
+<p><strong>Signature:</strong></p>
+
+<pre>
+	fetchTopConcepts(lang)
+</pre>
+
+<strong>Parameters</strong>
+
+<pre>
+lang - string that indicates the language code
+</pre>
+
+<strong>Result</strong>
+A two element struct of (results, statusCode) where 'results' is the list of GEMET's top concepts in the specified language.
+
+<h3>fetchThemes</h3>
+
+<p><strong>Description:</strong> retrieves the list of themes from the GEMET's database.
+</p>
+
+<p><strong>Signature:</strong></p>
+
+<pre>
+	fetchThemes(lang)
+</pre>
+
+<strong>Parameters</strong>
+
+<pre>
+lang - string that indicates the language code
+</pre>
+
+<strong>Result</strong>
+A two element struct of (results, statusCode) where 'results' is the list of GEMET's themes in the specified language.
+
+<h3>fetchGroups</h3>
+
+<p><strong>Description:</strong> retrieves the list of groups from the GEMET's database.
+</p>
+
+<p><strong>Signature:</strong></p>
+
+<pre>
+	fetchGroups(lang)
+</pre>
+
+<strong>Parameters</strong>
+
+<pre>
+lang - string that indicates the language code
+</pre>
+
+<strong>Result</strong>
+A two element struct of (results, statusCode) where 'results' is the list of GEMET's groups in the specified language.
+
+
+
+<div style="text-align: center; font-size: 0.85em; line-height: 4em;">2004 GEMET Thesaurus version 1.0</div>
+</body>
+</html>

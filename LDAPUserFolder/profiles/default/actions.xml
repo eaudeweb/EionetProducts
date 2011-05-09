@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<actions-tool>
+ <action-provider id="portal_membership">
+  <action action_id="login" title="Login"
+          condition_expr="not: member"
+          url_expr="string:${portal_url}/login_form"
+          category="user" visible="True">
+   <permission>View</permission>
+  </action>
+  <action action_id="preferences" title="Preferences"
+          condition_expr="member"
+          url_expr="string:${portal_url}/personalize_form"
+          category="user" visible="True">
+   <permission>View</permission>
+  </action>
+  <action action_id="logout" title="Log out"
+          condition_expr="member"
+          url_expr="string:${portal_url}/logout"
+          category="user" visible="True">
+   <permission>View</permission>
+  </action>
+  <action action_id="addFavorite" title="Add to favorites"
+          condition_expr="portal/portal_membership/getHomeFolder"
+          url_expr="string:${object_url}/addtoFavorites"
+          category="user" visible="True">
+   <permission>View</permission>
+  </action>
+  <action action_id="mystuff" title="My stuff"
+          condition_expr="python: member and portal.portal_membership.getHomeFolder()"
+          url_expr="string:${portal/portal_membership/getHomeUrl}/folder_contents"
+          category="user" visible="True">
+   <permission>View</permission>
+  </action>
+  <action action_id="favorites" title="My favorites"
+          condition_expr="python: member and hasattr(portal.portal_membership.getHomeFolder(), &quot;Favorites&quot;)"
+          url_expr="string:${portal/portal_membership/getHomeUrl}/Favorites/folder_contents"
+          category="user" visible="True">
+   <permission>View</permission>
+  </action>
+  <action action_id="manage_members" title="Manage members"
+          condition_expr=""
+          url_expr="string:${portal_url}/members_manage_form"
+          category="global" visible="True">
+   <permission>Manage users</permission>
+  </action>
+  <action action_id="logged_in" title="Logged in"
+          condition_expr=""
+          url_expr="string:${portal_url}/logged_in"
+          category="user" visible="False">
+   <permission>View</permission>
+  </action>
+ </action-provider>
+</actions-tool>

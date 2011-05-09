@@ -1,0 +1,78 @@
+<dtml-comment> -*- mode: dtml; dtml-top-element: "body" -*- </dtml-comment>
+<dtml-var standard_html_header>
+<dtml-comment>
+    This add form is for the unauthenticated user
+    therefore they will have more options to fill out
+</dtml-comment>
+
+<dtml-var choose_bar>
+    <h1>Sign me up for <i><dtml-var title_or_id></i>!</h1>
+<dtml-if "REQUEST.has_key('FORM_ERROR')">
+   You have an error in the following form. Please correct it.
+</dtml-if>
+
+<form action="manage_addAnonAttendeeAction" method="post">
+
+<table> 
+<tr><td><label for="sn" class="question required">Surname</label></td> 
+    <td><input type="text" id="sn" name="sn" size="30" value="<dtml-if "REQUEST.has_key('sn')"><dtml-var "REQUEST['sn']"></dtml-if>" /><br />
+            <span style="color:red"><dtml-if "REQUEST.has_key('FORM_ERROR' + '_sn')">
+                    <dtml-var "REQUEST['FORM_ERROR'+'_sn']">
+            </dtml-if></span></td>
+</tr>
+<tr><td><label for="givenname" class="question required">First names</label></td> 
+    <td><input type="text" id="givenname" name="givenname" size="30" value="<dtml-if "REQUEST.has_key('givenname')"><dtml-var "REQUEST['givenname']"></dtml-if>" /><br />
+            <span style="color:red"><dtml-if "REQUEST.has_key('FORM_ERROR' + '_givenname')">
+                    <dtml-var "REQUEST['FORM_ERROR'+'_givenname']">
+            </dtml-if></span></td>
+</tr>
+<tr><td><label for="mail" class="question required">Email</label></td> 
+    <td><input type="text" id="mail" name="mail" size="30" value="<dtml-if "REQUEST.has_key('mail')"><dtml-var "REQUEST['mail']"></dtml-if>" /><br />
+            <span style="color:red"><dtml-if "REQUEST.has_key('FORM_ERROR' + '_mail')">
+                    <dtml-var "REQUEST['FORM_ERROR'+'_mail']">
+            </dtml-if></span></td>
+</tr>
+<dtml-if "status == 'active'">
+    <tr><td><label for="organisation" class="question">Organisation</label></td> 
+      <td><input type="text" id="organisation" name="organisation" size="30" /></td> 
+    </tr> 
+    <tr><td><label for="tel" class="question">Telephone</label></td> 
+      <td><input type="text" id="tel" name="tel" size="20" /></td> 
+    </tr> 
+    <tr><td><label for="postaladdress" class="question">Postal Address</label></td> 
+      <td><textarea cols="30" rows="3" id="postaladdress" name="postaladdress"></textarea></td> 
+    </tr> 
+<dtml-try>
+<dtml-with "superValues('Default Attendee Properties')[0]">
+<dtml-var extraprops_addin>
+</dtml-with>
+<dtml-except>
+<!-- Failed superValues -->
+</dtml-try>
+
+    <tr><td><label for="attending" class="question">Attending</label></td> 
+      <td><select id="attending" name="attending">
+          <option value="CONFIRMED" selected="selected">Yes</option>
+          <option value="TENTATIVE">Tentative</option>
+          <option value="DECLINED">No, but keep me informed</option>
+        </select>
+      </td> 
+    </tr> 
+<dtml-else>
+      <input type="hidden" name="tel" />
+      <input type="hidden" name="organisation" />
+      <input type="hidden" name="postaladdress" />
+      <input type="hidden" name="attending" value="TENTATIVE" />
+</dtml-if>
+<tr><td colspan="2" align="center"><input type="submit" value="Submit" /></td>
+</tr> 
+</table>
+</form>
+
+<table bgcolor="#FFEECC" border="0" width="100%">
+<tr><td align="left"><img src="/misc_/ManagedMeetings/hint.gif" alt="Hint" /></td>
+    <td>Fill out the form. At least your name and the email must be filled out. </td>
+</tr>
+</table>
+
+<dtml-var standard_html_footer>

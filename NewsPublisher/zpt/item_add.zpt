@@ -1,0 +1,59 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="content-type" tal:attributes="content string:text/html;;charset=utf-8" />
+    <tal:block define="dummy python:request.RESPONSE.setHeader('content-type', 'text/html;;charset=utf-8')" />
+    <title>Add News Item</title>
+    <link rel="stylesheet" type="text/css" href="/manage_page_style.css" />
+    <script type="text/javascript" src="/misc_/NewsPublisher/jquery.js"></script>
+    <script type="text/javascript" src="/misc_/NewsPublisher/date.js"></script>
+    <script type="text/javascript" src="/misc_/NewsPublisher/jquery_calendar.js"></script>
+    <link rel="stylesheet" type="text/css" href="/misc_/NewsPublisher/jquery_calendar.css" />
+    <link rel="stylesheet" type="text/css" href="/misc_/NewsPublisher/news_item_manage.css" />
+    <script type="text/javascript">
+    $(function() {
+        Date.format = 'yyyy-mm-dd';
+        $('input[id=release_date]').datePicker(
+            {clickInput:true, startDate:'2000-01-01'}
+        ).val(new Date().asString()).trigger('change');
+    });
+    </script>
+</head>
+<body>
+
+
+<h1>Add News Item</h1>
+
+<form class="news_edit" action="manage_addNewsItem" method="POST">
+<ol>
+    <li class="string">
+        <label for="id">Id / slug: <small><em>(optional)</em></small></label>
+        <input id="id" type="text" name="id" size="50" />
+    </li>
+    <li class="string">
+        <label for="title">Title:</label>
+        <input id="title" type="text" name="title:utf8:ustring" size="50" />
+    </li>
+    <li class="string">
+        <label for="author">Author:</label>
+        <input id="author" type="text" name="author:utf8:ustring" size="50" />
+    </li>
+    <li class="string">
+        <label for="release_date">Release date: <small><em>(yyyy-mm-dd)</em></small></label>
+        <input id="release_date" type="text" name="release_date" size="50" />
+    </li>
+    <li class="text">
+        <label for="teaser">Teaser:</label>
+        <textarea id="teaser" name="teaser:utf8:ustring" cols="62" rows="4"></textarea>
+    </li>
+    <li class="text">
+        <label>Details:</label> <small><em>(can be entered after the news item is created)</em></small>
+    </li>
+    <li class="submit">
+        <input type="submit" value="Add news item" />
+    </li>
+</ol>
+</form>
+
+</body>
+</html>

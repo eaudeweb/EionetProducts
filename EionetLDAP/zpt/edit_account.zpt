@@ -1,0 +1,34 @@
+<tal:block replace="structure here/standard_html_header" />
+
+<div class="error-msg" tal:condition="python:options.get('error', False)" tal:content="options/error" />
+<div class="system-msg" tal:condition="python:options.get('message', False)" tal:content="options/message" />
+
+<h1>Modify Eionet account</h1>
+
+<form action="edit_account" method="post" tal:define="data options/form_data">
+    <input id="uid" type="hidden" name="uid" tal:attributes="value data/uid" />
+    
+    <label for="email">E-mail:</label>
+    <input id="email" type="text" name="email" size="50" tal:attributes="value data/email" />
+    <br />
+    
+    <label for="uri">URL:</label>
+    <input id="uri" type="text" name="uri" size="50" tal:attributes="value data/uri" />
+    <br />
+    
+    <label for="organisation">Organisation:</label>
+    <input id="organisation" type="text" name="organisation:utf8:ustring" size="50" tal:attributes="value data/organisation" />
+    <br />
+    
+    <label for="postal_address">Postal address:</label>
+    <textarea id="postal_address" name="postal_address:utf8:ustring" cols="80" rows="4" tal:content="data/postal_address" />
+    <br />
+    
+    <label for="telephone_number">Telephone number:</label>
+    <input id="telephone_number" type="text" name="telephone_number" size="50" tal:attributes="value data/telephone_number" />
+    <br />
+    
+    <input type="submit" value="Apply changes" />
+</form>
+
+<tal:block replace="structure here/standard_html_footer" />

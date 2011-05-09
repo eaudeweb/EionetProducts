@@ -1,0 +1,32 @@
+form.news_edit ol {
+    padding-left: 1em;
+}
+
+form.news_edit ol li {
+    list-style: none;
+    clear: both;
+}
+
+form.news_edit ol li.string label {
+    display: block;
+    width: 6em;
+/*    padding-left: 2em;*/
+    float: left;
+    margin-bottom: .5em;
+}
+
+form.news_edit ol li input {
+    float: left;
+}
+
+form.news_edit ol li.text {
+    margin-top: 1em;
+}
+
+form.news_edit ol li.text label {
+    display: block;
+}
+
+form.news_edit ol li.submit {
+    margin-top: 1em;
+}

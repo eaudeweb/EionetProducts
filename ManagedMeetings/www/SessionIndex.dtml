@@ -1,0 +1,21 @@
+<dtml-var standard_html_header>
+<h1><dtml-var title_or_id></h1>
+<table>
+<tr><th align="left">Title</th> 
+    <td><dtml-var title></td> 
+</tr>
+<tr><th align="left">Time</th> 
+ <td><dtml-var startdate fmt=Day>
+     <dtml-var startdate fmt=Date> 
+     <dtml-var startdate fmt=TimeMinutes> to
+     <dtml-if "startdate.Date() == enddate.Date()">
+	  <dtml-var enddate fmt=TimeMinutes>
+     <dtml-else>
+	  <dtml-var enddate fmt=Date> <dtml-var enddate fmt=TimeMinutes>
+     </dtml-if></td></tr>
+<dtml-if "cost > 0.0">
+	<tr><th align="left">Cost</th> 
+	    <td><dtml-var cost> EUR</td></tr>
+</dtml-if>
+</table>
+<dtml-var standard_html_footer>

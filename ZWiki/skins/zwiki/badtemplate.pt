@@ -1,0 +1,21 @@
+<html metal:use-macro="here/main_template/macros/master" i18n:domain="zwiki" >
+  <head>
+    <title metal:fill-slot="title_slot" tal:content="
+           string:${container/title} ${here/pageName} bad template" />
+    <metal:block metal:fill-slot="head_slot">
+      <metal:block metal:use-macro="here/macros/formsearchtags" />
+    </metal:block>
+  </head>
+  <body>
+    <div metal:fill-slot="main">
+      <metal:macro metal:use-macro="here/macros/accesskeys" />
+      <h1 i18n:translate="">Bad template</h1>
+      <p i18n:translate="">
+        There was a problem locating one of this wiki's skin templates.
+        There may be a page or other non-page-template/non-dtml-method object
+        with the same ID, obscuring the template. Or the template may be
+        missing on the filesystem (an incomplete Zwiki installation).
+      </p>
+    </div>
+  </body>
+</html>

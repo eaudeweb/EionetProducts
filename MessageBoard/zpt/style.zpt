@@ -1,0 +1,207 @@
+<span tal:replace="python:request.RESPONSE.setHeader('content-type', 'text/css')"/>
+
+h2 {
+	color: #484488;
+	font-size: 18px;
+	border-bottom: 1px solid #484488;
+	margin-bottom: 15px;
+	font-weight: bold;
+	}
+
+p {
+	color: #333;
+	font-family: "Trebuchet MS", Trebuchet, Verdana, Arial, sans-serif;
+	font-size: 12px;
+	line-height: 14px;
+    margin: 0.5em 1em;
+	}
+
+.tip {
+	font-size: 12px;
+	color: #333;
+	font-family: Verdana, Arial, sans-serif;
+	}
+
+.field {
+	padding-bottom: 15px;
+	}
+
+.required {
+	color: #900;
+	}
+
+.label {
+	float: left;
+	width: 80px;
+	text-align: right;
+	padding-top: 2px;
+	padding-right: 10px;
+	}
+
+.error_msg {
+    color: red;
+    font-size: 12px;
+    font-family: Verdana, Arial, sans-serif
+}
+
+.button {
+	width: 100px;
+	font-family: Verdana, Arial, sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	color: #666;
+	text-transform: uppercase;
+	}
+
+input {
+	font-family: Verdana, Arial, sans-serif;
+	font-size: 11px;
+	color: #333;
+	}
+
+h1 a:link, h1 a:visited, h1 a:active {
+	text-decoration: underline;
+	color: #000;
+	}
+
+.form_body {
+    padding: 15px 5px 5px;
+    background-color: #F0F0F0;
+}
+
+div.box {
+	border: 1px solid #CCC;
+	padding: 0px 10px;
+	margin-top: 0px;
+	}
+
+h3 {
+	color: #000;
+	font-size: 15px;
+	margin: 6px 0px 10px 0px;
+	}
+
+
+.button {
+	width: 100px;
+	font-family: Verdana, Arial, sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	color: #666;
+	text-transform: uppercase;
+	}
+
+.tableselect table
+{
+	width: 100%;
+	margin: 0;
+	border: 0;
+	padding: 0;
+}
+
+.tableselect thead tr { 
+	background: #eee; 
+}
+
+.tableselect tbody tr:hover, tableselect tbody tr.focus {
+	background: #f3f7f3;
+}
+
+.tableselect th, .tableselect td {
+	font-size: 13px;
+	margin: 0;
+	border-bottom: 1px solid #ddd;
+	padding: 3px 3px 2px 3px;
+	text-align: left;
+	vertical-align: middle;
+}
+
+.tableselect th { border-color: #bbb; }
+
+.buttons {
+    font-size: 65%;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+                
+}
+
+.buttons a {
+    text-decoration: none;
+    background-color:#cccccc; /
+    color:#000000; 
+    line-height: 1.4em;
+    border-left:1px solid #eaeaea;  
+    border-top:1px solid #eaeaea; 
+    border-bottom:1px solid #999999; 
+    border-right:1px solid #999999; 
+    padding:1px 2px;
+    margin: 0em 0em;
+}
+
+.buttons a:visited {
+    color:#000000; 
+}
+
+/*TABLE STYLES*/
+
+.maintable {
+	border: 1px solid #E8E8E8;
+	color: #1578B0;
+	font-size: 11px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+.maintable th {
+	height: 25px;
+	background-color: #E8E8E8;
+	padding: 4px;
+	text-align: left;
+}
+.maintable tr {
+	height: 20px;
+	vertical-align: top;
+}
+.maintable a {
+	color: #1578B0;
+}
+
+.maintable_th_mess {
+	text-indent: 18px;
+}
+
+.tr_odd {
+	background-color: white;
+}
+
+.tr_even {
+	background-color: #F7F7F7;
+}
+
+.cell_mess {
+	font-size: 11px;
+	padding-left: 4px;
+	padding-top: 3px; 
+	padding-bottom: 3px;
+	text-align: left;
+}
+.cell_child { /* vertical black line background */
+	width: 18px;
+	text-align: center;
+	background-image: url(misc_/MessageBoard/blackline.gif);
+	background-repeat: repeat-y;
+	background-position: 7px;
+}
+
+.cell_no {
+	font-size: 11px;
+	padding-left: 4px;
+	padding-top: 3px; 
+	padding-bottom: 3px;
+	text-align: center;
+}
+
+.cell_with_img {
+	width: 18px;
+	text-align: center;
+}
+
+/* --- END  TABLE STYLES  ---*/

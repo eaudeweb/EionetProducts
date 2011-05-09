@@ -1,0 +1,72 @@
+<dtml-var manage_page_header>
+
+<dtml-with "_(management_view='Caches')">
+  <dtml-var manage_tabs>
+</dtml-with>
+
+<p class="form-help">
+  This form shows all cached user - role mappings
+</p>
+
+<form action="manage_reinit" method="post">
+<table cellpadding="2" cellspacing="0" width="98%">
+  <tr class="section-bar">
+    <td colspan="2" align="left" valign="top"><div class="form-label">
+      Purge all caches
+    </div></td>
+  </tr><tr>
+    <td align="left" valign="top"><div class="form-text">
+      Empty all caches
+    </div></td>
+    <td align="left" valign="top"><div class="form-element">
+      <input type="submit" value=" Purge all caches " />
+    </div></td>
+  </tr>
+</table>
+</form>
+
+<p>&nbsp;</p>
+
+<table cellpadding"3" cellspacing="0" width="98%">
+  <tr class="section-bar">
+    <td align="left" valign="top"><div class="form-label">
+      Cached role map
+    </div></td>
+  </tr>
+</table>
+
+<dtml-in getCache>
+
+  <dtml-if name="sequence-start">
+    <br />
+    <table border="1" cellpadding="2">
+      <tr>
+        <td><div class="form-label"> UserID </div></td>
+        <td><div class="form-label"> Added Roles </div></td>
+        <td><div class="form-label"> Cached until </div></td>
+      </tr>
+  </dtml-if>
+
+  <tr>
+    <td valign="top"><div class="form-text">
+      &dtml-sequence-key;
+    </div></td>
+    <td valign="top"><div class="form-text">
+      <dtml-var expr="_.string.join(_['sequence-item'], ', ')">
+    </div></td>
+    <td valign="top"><div class="form-text">
+      <dtml-var expr="getExpiration(_['sequence-key'])" fmt="Time">
+    </div></td>
+  </tr>
+
+  <dtml-if name="sequence-end">
+    </table>
+  </dtml-if>
+
+<dtml-else>
+    <br />
+    <div class="form-text"> No users in cache (superuser is never cached) </div>
+
+</dtml-in>
+
+<dtml-var manage_page_footer>

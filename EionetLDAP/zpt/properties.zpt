@@ -1,0 +1,25 @@
+<tal:block replace="structure here/manage_page_header" />
+
+<tal:block replace="structure here/manage_tabs" />
+
+<h1>EionetLDAP properties</h1>
+
+<form tal:attributes="action string:${here/absolute_url}/manageProperties" method="post">
+    <label for="noreply_mail_address">NoReply Email address:</label>
+    <input type="text" id="noreply_mail_address" name="noreply_mail_address"
+        tal:attributes="value here/noreply_mail_address" />
+    <br /><br />
+    <label for="password_reset_template">Email template for password reset:</label><br />
+    <textarea type="text" id="password_reset_template"
+        name="password_reset_template" rows="12" cols="80"
+        tal:content="here/password_reset_template" />
+    <br /><br />
+    <label for="account_confirmation_template">Email template for account creation:</label><br />
+    <textarea type="text" id="account_confirmation_template"
+        name="account_confirmation_template" rows="12" cols="80"
+        tal:content="here/account_confirmation_template" />
+    <br /><br />
+    <input type="submit" value="Save" />
+</form>
+
+<tal:block replace="structure here/manage_page_footer" />

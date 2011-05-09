@@ -1,0 +1,67 @@
+Meeting
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML><!-- InstanceBegin template="/Templates/Template.dwt" codeOutsideHTMLIsLocked="false" -->
+<HEAD>
+<!-- InstanceBeginEditable name="doctitle" -->
+<TITLE>Meeting</TITLE>
+<!-- InstanceEndEditable --> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- InstanceBeginEditable name="head" --><!-- InstanceEndEditable -->
+</HEAD>
+
+<BODY>
+<p> <img name="n1" src="topimage.gif" width="490" height="125" border="0" usemap="#m_1" alt=""> 
+  . </p>
+<map name="m_1">
+  <area shape="poly" coords="432,100,490,100,490,108,432,108,432,100" href="Document.stx.html" alt="" >
+  <area shape="poly" coords="184,31,242,31,242,39,184,39,184,31" href="Document.stx.html" alt="" >
+  <area shape="rect" coords="396,75,421,83" href="Track.stx.html" alt="" >
+  <area shape="rect" coords="353,101,407,111" href="Agendaitem.stx.html" alt="" >
+  <area shape="rect" coords="312,69,356,89" href="Attendee.stx.html" alt="" >
+  <area shape="rect" coords="271,103,297,111" href="Break.stx.html" alt="" >
+  <area shape="rect" coords="222,77,257,85" href="Session.stx.html" alt="" >
+  <area shape="rect" coords="178,103,215,111" href="Location.stx.html" alt="" >
+  <area shape="rect" coords="128,102,163,112" href="Meeting.stx.html" alt="" >
+  <area shape="poly" coords="159,55,198,55,198,65,159,65,159,55" href="Location.stx.html" alt="" >
+  <area shape="rect" coords="114,4,193,12" href="AnnouncedEvent.stx.html" alt="" >
+  <area shape="rect" coords="9,38,95,48" href="FolderForMeeting.stx.html" alt="" >
+</map>
+<!-- InstanceBeginEditable name="EditRegion1" --> 
+<p>Description</p>
+<p> This view allows you to create a new Meetings.</p>
+<p>Inside the newly created meeting, an index_html object is added. You can choose 
+  to modify the content.</p>
+<p> There are two ways to let the users register for the meeting. They can do 
+  it either unauthenticated or authenticated. The first<br>
+  one means that they must input all information manually. And in addition, there 
+  is no assurance that the person who claims<br>
+  to want to attend the event actually is the person. It is therefore imperative 
+  you verify the registration by calling back<br>
+  on phone or email.</p>
+<p> To allow unauthenticated registration, click on the Security tab and set the 
+  'Register for Meetings' for the Anonymous role.</p>
+<p> The product allows the users to communicated by email. To allow them to do 
+  this you must set the 'Use mailhost services' for either the<br>
+  Anonymous role or some other role relevant for your situation. At the moment 
+  the product doesn't actually make use of the Zope MailHost service.</p>
+<p>Controls</p>
+<p> 'Id' -- The id of the Meeting. This is the last part of the URL that is the 
+  address of the meeting.</p>
+<p> 'Type' -- The legal values of type is listed in the event_types property<br>
+  of the meetings folder.</p>
+<p> 'Title of event' -- The subject of the meeting.</p>
+<p> 'Summary' -- A short description of the meeting - not the agenda.<br>
+  It is used when meetings are syndicated.</p>
+<p> 'Location' -- Either select one of the predefined *Meeting Locations*<br>
+  or type it.</p>
+<p> 'Start/End date' -- Enter the start/end times in YYYY/MM/DD YY:MM format.</p>
+<p> 'Organiser' -- The organiser is the person or organisation organising<br>
+  the event. People expect to be able to contact the organiser for<br>
+  information about the event.</p>
+<p>'Organiser Email' -- The email address of the organiser</p>
+<p> 'Authenticated registrations' -- If you have a sitedir_lookup method<br>
+  then you can use your user directory to let user register with<br>
+  username / password.</p>
+<!-- InstanceEndEditable --> 
+</BODY>
+<!-- InstanceEnd --></HTML>

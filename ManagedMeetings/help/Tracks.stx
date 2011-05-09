@@ -1,0 +1,19 @@
+Meeting - Tracks: Using Tracks
+
+  Description
+
+    A Meeting can be any size from a simple informal meeting to a
+    conference with several tracks.
+
+    Meeting can be updated at once using zip archive files.
+
+  Controls
+
+    'Id' -- The id of the Folder.
+
+    'Upload' -- Select an optional zip file for upload.
+  
+    'Create subfolders' -- Create folders to hold objects, if the zip
+    file contains folders
+
+    'Add' -- Creates a new Folder.

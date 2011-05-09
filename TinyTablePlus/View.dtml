@@ -1,0 +1,12 @@
+<html>
+ <head><title>View <!--#var title_or_id--></title></head>
+ <body bgcolor="#FFFFFF" link="#000099" vlink="#555555" alink="#77003B">
+
+  <!-- $Endicor: View.dtml,v 1.2 1999/01/10 19:49:52 tsarna Exp $ -->
+
+  <!--#var manage_tabs-->
+
+  <!--#var index_html-->
+
+ </body>
+</html>

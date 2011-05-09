@@ -1,0 +1,33 @@
+<tal:block replace="structure here/standard_html_header" />
+
+<div class="error-msg" tal:condition="python:options.get('error', False)" tal:content="options/error" />
+<div class="system-msg" tal:condition="python:options.get('message', False)" tal:content="options/message" />
+
+<h1>Create Eionet account</h1>
+
+<form action="create_account" method="post" tal:define="data options/form_data">
+    <label for="first_name">First name (given name):</label>
+    <input id="first_name" type="text" name="first_name:utf8:ustring" tal:attributes="value data/first_name" size="50" />
+    <br />
+    
+    <label for="last_name">Last name (surname):</label>
+    <input id="last_name" type="text" name="last_name:utf8:ustring" tal:attributes="value data/last_name" size="50" />
+    <br />
+    
+    <label for="uid">Username:</label>
+    <input id="uid" type="text" name="uid" tal:attributes="value data/uid" size="20" />
+    <input type="submit" name="generate" value="generate" />
+    <br />
+    
+    <label for="email">E-mail:</label>
+    <input id="email" type="text" name="email" tal:attributes="value data/email" size="50" />
+    <br />
+    
+    <label for="organisation">Organisation:</label>
+    <input id="organisation" type="text" name="organisation:utf8:ustring" tal:attributes="value data/organisation" size="50" />
+    <br />
+    
+    <input type="submit" value="Add" />
+</form>
+
+<tal:block replace="structure here/standard_html_footer" />

@@ -1,0 +1,81 @@
+<tal:comment tal:replace="nothing">
+    If you want to integrate MessageBoard in your product you must set
+    'integrated' flag to 1.
+    If MessageBoard's flag 'integrated' is set to 1, then all dtml files will not include
+    'standard_html_header' and 'standard_html_footer'. Instead will include some other 2 files:
+    'integrated_html_header' and 'integrated_html_footer'.
+    In your product (the one who integrates MessageBoard) you must have 2 dtml files:
+        - integrated_html_header
+        - integrated_html_footer
+</tal:comment>
+
+<span tal:replace="structure here/integrated_html_header" tal:condition="python:here.integrated" />
+<span tal:replace="structure here/standard_html_header" tal:condition="python:not here.integrated" />
+<span tal:replace="python:request.RESPONSE.setHeader('content-type','text/html;charset=utf-8')" />
+
+<link href="mesgboard_css" rel="stylesheet" type="text/css" media="all" />
+
+<tal:comment tal:replace="nothing">
+	Load page parameters
+</tal:comment>
+
+<h2 i18n:translate="">Message Board</h2>
+
+<tal:block define="msg python:request.get('msg', '');
+			msg_obj python:here.get_message(msg);
+			results python:here.messageTree(msg_obj);">
+
+<div>
+	<a tal:attributes="href string:${here/getMPAbsolutePath}">Messages list</a>
+</div>
+
+<div class="box">
+	<h3 tal:content="msg_obj/getSubject" />
+	<p tal:content="structure msg_obj/getBody" />
+	<p><tal:block repeat="obj python:msg_obj.objectValues('File')">
+			<strong i18n:translate="">Download attachment: </strong><a tal:attributes="href obj/absolute_url" tal:content="obj/id" />
+		</tal:block>
+	</p>
+	<p><span i18n:translate="">Author:</span><span tal:replace="msg_obj/author" /><br />
+		<span i18n:translate="">Date:</span><span tal:replace="msg_obj/date" />
+	</p>
+	<p><a tal:attributes="href string:${msg_obj/absolute_url}/reply_Message" 
+			tal:condition="here/checkPermissionReply" i18n:translate="">[Reply]</a>&nbsp;
+		<a tal:attributes="href string:${msg_obj/absolute_url}/emailMessageCopy" 
+			tal:condition="here/checkPermissionEmail" i18n:translate="">[Send to a friend]</a>&nbsp;
+		<a tal:attributes="href string:${msg_obj/absolute_url}/emailMessageAuthor" 
+			tal:condition="here/checkPermissionEmail" i18n:translate="">[Email author]</a>
+	</p>
+</div>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="maintable" tal:condition="python:len(results) > 0">
+	<tr>
+		<th class="maintable_th_mess"><a href="#" i18n:translate="">Replies</a> </th>
+		<th width="20%" ><a href="#" i18n:translate="">Date</a></th>
+		<th width="15%" ><a href="#" i18n:translate="">Author</a></th>
+	</tr>
+	<tal:block repeat="item results">
+	<tr tal:attributes="class python:test(path('repeat/item/even'),'tr_odd', 'tr_even')">
+		<td>
+			<table height="100%" border="0" cellpadding="0" cellspacing="0" hight>
+			<tal:block repeat="i python:item[0]">
+				<td class="cell_with_img" tal:condition="python:i=='0'"> <img src="misc_/MessageBoard/spacer.gif" width="18" height="1"></td>
+				<td class="cell_with_img" tal:condition="python:i=='1'"> <img src="misc_/MessageBoard/line_leaf.gif" ></td>
+				<td class="cell_child" tal:condition="python:i=='2'"><img src="misc_/MessageBoard/line_leaf.gif" ></td>
+				<td class="cell_child" tal:condition="python:i=='3'"> <img src="misc_/MessageBoard/spacer.gif" width="18" height="1" ></td>
+			</tal:block>
+				<td class="cell_mess">
+					<a tal:define="mesg python:item[1].absolute_url()" 
+						tal:attributes="href string:${mesg}/index_html" 
+						tal:content="python:item[1].title" /></td>
+			</table>
+		</td>
+		<td class="cell_mess" tal:content="python:here.showFullDateTime(item[1].date)" />
+		<td class="cell_mess" tal:content="python:item[1].author" />
+	</tr>
+	</tal:block>
+</table>
+
+</tal:block>
+<span tal:replace="structure here/integrated_html_footer" tal:condition="python:here.integrated" />
+<span tal:replace="structure here/standard_html_footer" tal:condition="python:not here.integrated" />

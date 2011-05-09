@@ -1,0 +1,27 @@
+<dtml-var standard_html_header>
+<h1><dtml-var title_or_id></h1>
+<p>You can also see the <a href="past_html">past/cancelled/tentative events</a> on a separate
+page.</p>
+<dtml-in "objectValues(['Meeting','Announced Event'])" sort=startdate>
+<dtml-if sequence-start>
+<dl>
+</dtml-if>
+<dtml-if "enddate.isFuture() and status =='active'"> 
+<dt><b>
+<dtml-var startdate fmt=Day>,
+<dtml-var startdate fmt=Date> <dtml-var startdate fmt=TimeMinutes> -
+<dtml-if "startdate.Date() == enddate.Date()">
+<dtml-var enddate fmt=TimeMinutes>
+<dtml-else>
+<dtml-var enddate fmt=Date> <dtml-var enddate fmt=TimeMinutes>
+</dtml-if>
+- <dtml-var location missing>
+</b></dt>
+<dd><b><dtml-var event_type>:
+<a href="&dtml-id;/"><dtml-var title_or_id></a></b><br /><dtml-if description><dtml-var textdescription html_quote newline_to_br><dtml-else>No summary available</dtml-if></dd>
+</dtml-if>
+<dtml-if sequence-end>
+</dl>
+</dtml-if>
+</dtml-in>
+<dtml-var standard_html_footer>

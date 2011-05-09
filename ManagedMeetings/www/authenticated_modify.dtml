@@ -1,0 +1,13 @@
+<dtml-var standard_html_header>
+<dtml-call "REQUEST.set('id',_.str(AUTHENTICATED_USER))">
+<dtml-call "REQUEST.set('uid',id)">
+<dtml-call "REQUEST.set('verified','1')">
+<dtml-call "propertysheets.Basic.manage_editProperties(REQUEST)">
+
+<h1>Thanks!</h1>
+<p>
+You will be able to modify you attendance through these forms.
+</p><p>
+<a href="&dtml-URL1;">Go back</a>
+</p>
+<dtml-var standard_html_footer>

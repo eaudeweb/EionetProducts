@@ -1,0 +1,78 @@
+<span metal:use-macro="here/thesaurus_template/macros/thesaurus_page">
+
+
+    <tal:block metal:fill-slot="thesaurus_page_title">
+        Definition sources used by GEMET
+    </tal:block>
+
+    <tal:block metal:fill-slot="thesaurus_content"
+               define="def_sources python:here.getDefinitionSources();">
+
+<style>
+	.abbrdetail {
+		background-color: #eee;
+		margin:0.5em 0em;
+		border:1px solid #cccccc;
+	}
+	.abbrdetail div {
+		border-bottom:1px solid #eeeeee;
+	}
+	.abbrdetail strong {
+		clear:both;
+		width: 10em;
+		float:left;
+		margin-left:0.3em;
+	}
+	.abbrdetail span {
+		background-color: #f8f8f8;
+		display:block;
+		margin-left:10em;
+		padding-left:0.3em;
+	}
+	.abbrev span {
+		font-weight:bold;
+		padding-top:0.4em;
+	}
+	.abbrev strong {
+		font-weight:bold;
+		padding-top:0.4em;
+	}
+
+</style>
+
+
+        <h1>Definition sources used by GEMET</h1>
+
+			<div class="abbrdetail" tal:repeat="source python:def_sources[0]">
+				<div class="abbrev">
+					<strong>Abbreviation: </strong>
+					<span tal:content="python:here.mp_def_source_abbr(source)" />
+				</div>
+				<div>
+					<strong>Author: </strong>
+					<span tal:content="python:here.mp_def_source_author(source)" />
+				</div>
+				<div>
+					<strong>Title: </strong>
+					<span tal:content="python:here.mp_def_source_title(source)" />
+				</div>
+				<div>
+					<strong>URL: </strong>
+					<span tal:content="python:here.mp_def_source_url(source)" />
+				</div>
+				<div>
+					<strong>Publication: </strong>
+					<span tal:content="python:here.mp_def_source_publication(source)" />
+				</div>
+				<div>
+					<strong>Place: </strong>
+					<span tal:content="python:here.mp_def_source_place(source)" />
+				</div>
+				<div>
+					<strong>Year: </strong>
+					<span tal:content="python:here.mp_def_source_year(source)" />
+				</div>
+			</div>
+    </tal:block>
+</span>
+

@@ -1,0 +1,53 @@
+<dtml-var standard_html_header>
+  <h1><dtml-var title_or_id></h1>
+
+<table> 
+<tr><th align="left">Venue</th> 
+    <td><dtml-var title_or_id html_quote></td> 
+</tr> 
+<tr><th align="left">Summary</th> 
+    <td>
+  <dtml-if description>
+    <dtml-var description html_quote newline_to_br>
+  </dtml-if>
+</td> 
+</tr> 
+
+<tr><th align="left">Address</th> 
+    <td>
+  <dtml-if address>
+    <dtml-var address html_quote newline_to_br>
+  </dtml-if>
+</td> 
+</tr> 
+  
+<tr><th align="left">URL</th> 
+    <td>
+  <dtml-if url>
+    <a href="&dtml-url;"><dtml-var url html_quote></a>
+  </dtml-if>
+    </td>
+</tr> 
+
+<tr><th align="left">Map URL</th> 
+    <td>
+  <dtml-if map_url>
+    <a href="&dtml-map_url;"><dtml-var map_url html_quote></a>
+  </dtml-if>
+    </td> 
+</tr> 
+<tr><th align="left">Directions URL</th> 
+    <td>
+  <dtml-if roadmap_url>
+    <a href="&dtml-roadmap_url;"><dtml-var roadmap_url html_quote></a>
+  </dtml-if>
+    </td> 
+</tr> 
+<dtml-if "max_seats > 0">
+<tr><th align="left">Max Seats</th> 
+    <td><dtml-var max_seats></td> 
+</tr> 
+</dtml-if>
+</table>
+
+<dtml-var standard_html_footer>

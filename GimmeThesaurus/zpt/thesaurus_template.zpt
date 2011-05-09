@@ -1,0 +1,37 @@
+<metal:block metal:define-macro="thesaurus_page">
+<html metal:use-macro="here/standard_template.pt/macros/page">
+
+	<metal:block metal:fill-slot="head" tal:define="langcode python:request.get('langcode', 'en');">
+		<title><metal:block metal:define-slot="thesaurus_page_title">Dummy title</metal:block></title>
+		<link rel="stylesheet" type="text/css" href="style_css"/>
+		<metal:block define-slot="thesaurus_extra_head" />
+	</metal:block>
+
+	<body metal:fill-slot="body" tal:omit-tag="" tal:define="langcode python:request.get('langcode', 'en');">
+		<div id="search-bar">
+		&nbsp;<a class="top" tal:attributes="href string:${here/absolute_url}/index_html?langcode=${langcode}" title="Thematic listings">Thematic Listings</a>&nbsp;|
+		&nbsp;<a class="top" tal:attributes="href string:${here/absolute_url}/inspire_themes?langcode=${langcode}" title="Thematic listings">INSPIRE Spatial Data Themes</a>&nbsp;|
+		&nbsp;<a class="top" tal:attributes="href string:${here/absolute_url}/alphabetic?langcode=${langcode}" title="Alphabetic listings">Alphabetic Listings</a>&nbsp;|
+		&nbsp;<a class="top" tal:attributes="href string:${here/absolute_url}/groups?langcode=${langcode}" title="Hierarchical listings">Hierarchical Listings</a>&nbsp;|
+		&nbsp;<a class="top" tal:attributes="href string:${here/absolute_url}/search?langcode=${langcode}" title="Search thesaurus">Search Thesaurus</a>
+		</div>
+
+		<tal:block metal:define-slot="thesaurus_language_bar" content="structure python:here.thesaurus_language_bar(current_langcode=langcode, languages=here.GetLanguages())" />
+
+
+		<p metal:define-slot="thesaurus_content">Dummy content</p>
+
+		<div id="footer-links">
+			<a tal:attributes="href string:${here/absolute_url}/rdf?langcode=${langcode}" title="Download RDF and HTML Files">Download</a>&nbsp;
+			|&nbsp;<a tal:attributes="href string:${here/absolute_url}/administration?langcode=${langcode}" title="Administration">Administration</a>&nbsp;
+			|&nbsp;<a tal:attributes="href string:${here/absolute_url}/alphabets?langcode=${langcode}" title="Alphabets">Alphabets</a>&nbsp;
+			|&nbsp;<a tal:attributes="href string:${here/absolute_url}/about?langcode=${langcode}" title="About GEMET">About GEMET</a>&nbsp;
+			|&nbsp;<a tal:attributes="href string:${here/absolute_url}/webservices?langcode=${langcode}" title="Web Services exposed by GEMET">Web services</a>&nbsp;
+			|&nbsp;<a tal:attributes="href string:${here/absolute_url}/definition_sources?langcode=${langcode}" title="Definition sources used by GEMET">Definition sources</a>&nbsp;
+		</div>
+
+		<div id="footer-version"><tal:block metal:define-slot="thesaurus_version" tal:content="here/get_namespace_version" /></div>
+
+	</body>
+</html>
+</metal:block>

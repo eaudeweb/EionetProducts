@@ -1,0 +1,68 @@
+<tal:comment tal:replace="nothing">
+    If you want to integrate MessageBoard in your product you must set
+    'integrated' flag to 1.
+    If MessageBoard's flag 'integrated' is set to 1, then all dtml files will not include
+    'standard_html_header' and 'standard_html_footer'. Instead will include some other 2 files:
+    'integrated_html_header' and 'integrated_html_footer'.
+    In your product (the one who integrates MessageBoard) you must have 2 dtml files:
+        - integrated_html_header
+        - integrated_html_footer
+</tal:comment>
+
+<span tal:replace="structure here/integrated_html_header" tal:condition="python:here.integrated" />
+<span tal:replace="structure here/standard_html_header" tal:condition="python:not here.integrated" />
+<span tal:replace="python:request.RESPONSE.setHeader('content-type','text/html;charset=utf-8')" />
+
+<link href="mesgboard_css" rel="stylesheet" type="text/css" media="all" />
+
+<tal:comment tal:replace="nothing">
+    Load page parameters
+</tal:comment>
+
+<h2>Message Board</h2>
+<p tal:content="here/description" tal:condition="python:here.description!=''" />
+
+<tal:block define="results python:here.objectValues('Message')">
+	Total messages: <span tal:replace="python:len(results)" />&nbsp;
+	<a tal:attributes="href string:${here/absolute_url}/addMessageForm" 
+		tal:condition="here/checkPermissionAdd">New message</a>
+
+
+<div class="tableselect" id="entry-list">
+	<table cellspacing="0">
+		<tal:block condition="python:len(results)>0">
+		<thead>
+			<tr>
+				<th>Subject</th>
+				<th>File</th>
+				<th>Replies</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr class="odd" tal:repeat="res results">
+				<td><img src="/misc_/MessageBoard/message.gif" alt="Message" />
+					<a name="" tal:attributes="href string:tree_html?msg=${res/id}" tal:content="res/getSubject" />
+				</td>
+				<td>
+					<tal:block repeat="file python:res.objectValues('File')">
+						<a tal:attributes="href file/absolute_url">
+						<img src="/misc_/MessageBoard/attachment.gif" border="0" alt="Attachment" /></a>
+					</tal:block>&nbsp;
+				</td>
+				<td align="center" tal:content="res/count_children" />
+			</tr>
+		</tbody>
+		</tal:block>
+		<tal:block  condition="python:len(results)==0">
+		<tbody>
+			<tr>
+				<td align="center">[No Messages]</td>
+			</tr>
+		<tbody>
+		</tal:block>
+	</table>
+</div>
+</tal:block>
+
+<span tal:replace="structure here/integrated_html_footer" tal:condition="python:here.integrated" />
+<span tal:replace="structure here/standard_html_footer" tal:condition="python:not here.integrated" />

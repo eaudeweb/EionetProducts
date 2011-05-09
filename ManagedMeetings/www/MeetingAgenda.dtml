@@ -1,0 +1,52 @@
+<dtml-comment> -*- mode: dtml; dtml-top-element: "body" -*- </dtml-comment>
+<dtml-var standard_html_header>
+<dtml-unless "REQUEST.has_key('sortering')">
+<dtml-call "REQUEST.set('sortering','startdate')">
+</dtml-unless>
+
+<dtml-var choose_bar>
+
+<h1>Agenda for <i><dtml-var title_or_id></i></h1>
+  <dtml-call "REQUEST.set('day', '')">
+    <table border="0" width="100%" cellspacing="0" cellpadding="0">
+    <dtml-call "REQUEST.set('sttime', startdate)">
+    <dtml-in "PARENTS[0].objectValues(['Meeting Agendaitem'])" sort_expr="sortering">
+      <dtml-if sequence-start>
+	<tr>
+	  <th align="left">Time</th>
+	  <th align="left">Title</th>
+	  <th align="left">Speakers</th>
+	  <th align="left">Venue</th>
+	</tr>
+      </dtml-if>
+      <dtml-if "startdate.day() != day">
+	<tr>
+	<th align="left" colspan="4"><dtml-var startdate fmt="Day"> <dtml-var startdate fmt="day"> <dtml-var startdate fmt="Month"></th>
+	</tr>
+      </dtml-if>
+      <dtml-if confirmed>
+	<tr <dtml-if sequence-odd> bgcolor="#EEEEEE"> <dtml-else>
+	    bgcolor="#FFFFFF"></dtml-if>
+	    <td align="left">
+            <dtml-var sttime fmt="TimeMinutes"> -
+	    <dtml-call "REQUEST.set('sttime', sttime + _.float(duration)/1440.0)">
+	    <dtml-var sttime fmt="TimeMinutes"></td>
+
+	    <td align="left">
+	    <a href="&dtml-id;"><dtml-var title_or_id></a></td>
+	    <td align="left">
+          <dtml-in speakers><dtml-var "speakerlink(_['sequence-item'])"><br /></dtml-in>
+	    </td>
+	    <td align="left"><dtml-var showlocation null="&nbsp;"></td>
+	</tr>
+	<tr <dtml-if sequence-odd> bgcolor="#EEEEEE"> <dtml-else>
+			bgcolor="#FFFFFF"></dtml-if>
+	    <td colspan="4"><i><dtml-var abstract missing></i></td>
+	</tr>
+      </dtml-if>
+      <dtml-call "REQUEST.set('day', startdate.day())">
+    </dtml-in>
+  </table>
+
+
+<dtml-var standard_html_footer>

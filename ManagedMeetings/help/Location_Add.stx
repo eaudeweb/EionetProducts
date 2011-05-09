@@ -1,0 +1,30 @@
+Meeting Location - Add: Add a Location for meetings
+
+  Description
+
+    This view allows you to create a new Meeting Location. Locations
+    can be created at the same level of meetings, or inside a meeting.
+    The latter is useful if the location is not expected to be used
+    again for other meetings.
+
+  Controls
+
+    'Id' -- The id of the Meeting. This is the last part of the URL that is the address of the meeting.
+
+    'Place' -- A short tekst describing the place. Used in selection lists.
+
+    'Summary' -- A short description of the meeting - not the agenda.
+    It is used when meetings are syndicated.
+
+    'Address' -- The postal address.
+
+    'URL' -- URL with information about the place. If it is a hotel, then
+    then website of the hotel.
+
+    'Map URL' -- URL with map to the place. Could be www.mapquest.com
+
+    'Roadmap URL' -- URL with directions to the place. 
+
+    'Max Seats' -- Currently unused.
+
+    'Add' -- Creates a new Location.

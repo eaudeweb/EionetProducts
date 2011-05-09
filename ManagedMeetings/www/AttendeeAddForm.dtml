@@ -1,0 +1,91 @@
+<dtml-comment> -*- mode: dtml; dtml-top-element: "body" -*- </dtml-comment>
+<dtml-var manage_page_header>
+<dtml-var "manage_form_title(this(), _,
+           form_title='Add Attendee',
+           help_product='ManagedMeetings',
+           help_topic=''
+           )">
+
+<form name="form" action="manage_addAttendee" method="post">
+<table border="0">
+
+<tr><td align="left" valign="top">
+<div class="form-label">
+(User)id</div>
+</td> 
+    <td><input type="text" name="id" size="16" /> <i>Generated if left empty</i></td></tr> 
+<tr><td align="left" valign="top">
+<div class="form-label">
+Surname</div>
+</td> 
+    <td><input type="text" name="sn" size="30" /></td></tr> 
+<tr><td align="left" valign="top">
+<div class="form-label">
+First names</div>
+</td> 
+    <td><input type="text" name="givenname" size="30" /></td></tr>
+<tr><td align="left" valign="top">
+<div class="form-label">
+Organisation</div>
+</td> 
+    <td><input type="text" name="organisation" size="30" /></td></tr> 
+<tr><td align="left" valign="top">
+<div class="form-label">
+Email</div>
+</td> 
+    <td><input type="text" name="mail" size="30" /></td></tr> 
+<tr><td align="left" valign="top">
+<div class="form-label">
+Telephone</div>
+</td> 
+    <td><input type="text" name="tel" size="20" /></td></tr> 
+<tr><td align="left" valign="top">
+<div class="form-label">
+Postal Address</div>
+</td> 
+    <td><textarea cols="30" rows="3" name="postaladdress"></textarea></td></tr> 
+
+<tr><td align="left" valign="top">
+<div class="form-label">
+Resume<br />HTML OK</div>
+</td> 
+    <td><textarea cols="60" rows="5" name="resume:text"></textarea></td></tr>
+
+<dtml-try>
+<dtml-with "superValues('Default Attendee Properties')[0]">
+<dtml-var extraprops_addin>
+</dtml-with>
+<dtml-except>
+<!-- Failed superValues -->
+</dtml-try>
+</table>
+
+<tr><td align="left" valign="top">
+<div class="form-label">
+Attending</div>
+</td> 
+    <td><select name="attending">
+		<option value="CONFIRMED" selected="selected">Yes</option>
+		<option value="TENTATIVE">Tentative</option>
+		<option value="DECLINED">No, but keep me informed</option>
+	</select>
+Verified <input type="checkbox" name="verified" /></td></tr> 
+
+<tr><td align="left" valign="top">
+<div class="form-label">
+Role</div>
+</td> 
+    <td><select name="role">
+		<option selected="selected">Attendee</option>
+		<option>Speaker</option>
+		<option>Organiser</option>
+		<option>Chair</option>
+	</select></td></tr> 
+
+
+
+<tr><td></td><td><input type="submit" value="Add" /></td></tr>
+</table>
+<input type="hidden" name="passwd" value="<dtml-var "genRandomId()">" />
+</form>
+<dtml-var manage_page_footer>

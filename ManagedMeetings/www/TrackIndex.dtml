@@ -1,0 +1,35 @@
+<dtml-var standard_html_header>
+<dtml-call "REQUEST.set('currtrack', id)">
+
+<dtml-with "REQUEST.PARENTS[1]"><dtml-var choose_bar></dtml-with>
+<h1><dtml-var title_or_id> Sessions</h1>
+
+<table border="0" width="100%">
+<dtml-call "REQUEST.set('day','')">    
+<dtml-in "PARENTS[1].objectValues(['Meeting Session'])" sort=startdate>
+  <dtml-call "REQUEST.set('currsession', id)">
+  <dtml-if "startdate.day() != day">	
+      <tr><th colspan=2><dtml-var startdate fmt=Day> <dtml-var startdate fmt="Month"></th></tr>
+      <dtml-call "REQUEST.set('day', startdate.day())">
+  </dtml-if>
+    <tr><td valign="top" align="center">
+  <dtml-var title html_quote><br />
+  <dtml-var startdate fmt="TimeMinutes"> - <dtml-var enddate fmt="TimeMinutes">
+    </td><td width="75%">
+  <dtml-call "REQUEST.set('sttime', startdate)">
+  <dtml-in "PARENTS[1].objectValues(['Meeting Agendaitem'])" sort=session_ord>
+    <dtml-if "track == currtrack and session == currsession">
+     <b><a href="&dtml-absolute_url;"><dtml-var title_or_id></a></b><br />
+      <dtml-if "_.len(speakers)"><dtml-in speakers><dtml-var "speakerlink(_['sequence-item'])"><br /></dtml-in>
+      </dtml-if>
+      <b>Time:</b> <dtml-var sttime fmt=TimeMinutes> -
+        <dtml-call "REQUEST.set('sttime', sttime + _.float(duration)/1440.0)">
+        <dtml-var sttime fmt=TimeMinutes><br />
+      <b>Location:</b> <dtml-var showlocation><br />
+      <dtml-var abstract html_quote><br /><br />
+    </dtml-if>
+  </dtml-in>
+    </td></tr>
+</dtml-in>
+</table>
+<dtml-var standard_html_footer>

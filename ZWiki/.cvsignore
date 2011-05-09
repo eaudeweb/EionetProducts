@@ -1,0 +1,14 @@
+.*
+_darcs
+*.pyc
+*~
+*.mo
+old
+Part*
+darcs*
+patch*
+dtmlmessages.pt
+.doxygen
+*.darcs
+*.diff
+NOTES

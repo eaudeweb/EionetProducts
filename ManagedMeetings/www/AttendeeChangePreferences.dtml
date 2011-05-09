@@ -1,0 +1,134 @@
+<dtml-var standard_html_header>
+
+<style type="text/css">
+.boxborder {
+	padding-top: 1em;
+	border: 1px solid #ff7e00;
+        margin-left: auto;
+        margin-right: auto;
+	background-color: white;
+}
+</style>
+
+<dtml-if "not REQUEST.SESSION.has_key('userkey') or (REQUEST.SESSION.has_key('userkey') and REQUEST.SESSION.get('userkey',None) != id)">
+<dtml-with "REQUEST.PARENTS[1]"><dtml-var choose_bar></dtml-with>
+
+    <form action="loginUser" method="post">
+            <dtml-if "REQUEST.SESSION.has_key('error')">
+                <span style="color:red">Incorrect username or password</span>
+            </dtml-if>
+        <table class="boxborder" cellspacing="0" cellpadding="2">
+            <tr>
+                <td>E-mail:</td>
+                <td><input type="text" name="email" value="<dtml-if "REQUEST.has_key('email')"><dtml-var "REQUEST['email']"></dtml-if>" /></td>
+            </tr>
+            <tr>
+                <td>Password:</td>
+                <td><input type="password" name="passwd" /></td>
+                </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td><input type="submit" value="Login" /></td>
+            </tr>
+        </table>
+            <dtml-if "REQUEST.SESSION.has_key('error')">
+                <dtml-call "delSession('error', REQUEST)">
+            </dtml-if>
+    </form>
+
+    <dtml-if "REQUEST.has_key('showpass')">
+    <p align="center">Forgot Your Password?</p>
+	<form action="mailPassword" method="post">
+	<table class="boxborder">
+	    <tr><td align="left">E-mail&nbsp;<input type="text" name="email" value="" size="30" /></td></tr>
+	    <tr><td align="right"><input type="submit" value="Email me the password" /></td></tr>
+	</table>
+	</form>
+    <dtml-else>
+        <form action="AttendeeChangePreferences" method="post">
+        <input type="hidden" name="showpass" value="" />
+        <center><strong>Forgot your password?</strong> <input type="submit" value="Click here" /></center>
+        </form>
+    </dtml-if>
+
+<dtml-else>
+
+    <h1>Edit preferences for <i><dtml-var title></i>!</h1>
+    <dtml-if "REQUEST.has_key('FORM_ERROR')">
+       You have an error in the following form. Please correct it.
+    </dtml-if>
+
+        <form action="changePreferences" method="post">
+        <table>
+        <tr><th>Surname</th> 
+            <td><input type="text" name="sn" size="30" value="<dtml-if "REQUEST.has_key('sn')"><dtml-var "REQUEST['sn']"><dtml-else><dtml-var sn></dtml-if>" /><br />
+                <span style="color:red"><dtml-if "REQUEST.has_key('FORM_ERROR' + '_sn')">
+                        <dtml-var "REQUEST['FORM_ERROR'+'_sn']"></dtml-if></span></td>
+        </tr> 
+        <tr><th>First names</th> 
+            <td><input type="text" name="givenname" size="30" value="<dtml-if "REQUEST.has_key('givenname')"><dtml-var "REQUEST['givenname']"><dtml-else><dtml-var givenname></dtml-if>" /><br />
+                <span style="color:red"><dtml-if "REQUEST.has_key('FORM_ERROR' + '_givenname')">
+                        <dtml-var "REQUEST['FORM_ERROR'+'_givenname']">
+                </dtml-if></span></td>
+        </tr>
+         <tr><th>Email</th> 
+            <td><dtml-var mail></td>
+        </tr> 
+        <tr><th>Organisation</th> 
+            <td><input type="text" name="organisation" size="30" value="<dtml-if "REQUEST.has_key('organisation')"><dtml-var "REQUEST['organisation']"><dtml-else><dtml-var organisation html_quote></dtml-if>" /></td>
+        </tr> 
+        <tr><th>Telephone</th> 
+            <td><input type="text" name="tel" size="20" value="<dtml-if "REQUEST.has_key('tel')"><dtml-var "REQUEST['tel']"><dtml-else><dtml-var tel html_quote></dtml-if>" /></td>
+        </tr> 
+        <tr><th>Postal Address</th> 
+            <td><textarea cols="30" rows="3" name="postaladdress"><dtml-if "REQUEST.has_key('postaladdress')"><dtml-var "REQUEST['postaladdress']"><dtml-else><dtml-var postaladdress html_quote></dtml-if></textarea></td>
+        </tr>
+        <dtml-let att="['Yes', 'Tentative', 'No, but keep me informed']">
+        <tr>
+            <th>Attending</th>
+            <td>
+                <dtml-let page_attending="REQUEST.get('attending', attending)">
+                <select name="attending">
+                <dtml-in "('CONFIRMED', 'TENTATIVE', 'DECLINED')">
+                    <dtml-if "page_attending == _['sequence-item']">
+                        <option value="<dtml-var sequence-item>" selected="selected"><dtml-var "att[_['sequence-index']]"></option>
+                    <dtml-else>
+                        <option value="<dtml-var sequence-item>"><dtml-var "att[_['sequence-index']]"></option>
+                    </dtml-if>
+                </dtml-in>
+                </select>
+                </dtml-let>
+            </td>
+        </tr>
+        </dtml-let>
+
+        <dtml-if ldap_id>
+            <tr>
+                <th>Role</th>
+                <td>
+                    <dtml-let page_role="REQUEST.get('role', role)">
+                    <select name="role">
+                        <dtml-in "['Attendee','Speaker','Organiser','Chair']">
+                            <dtml-let record=sequence-item>
+                            <dtml-if "page_role == record">
+                                <option selected><dtml-var sequence-item></option>
+                            <dtml-else>
+                                <option><dtml-var sequence-item></option>
+                            </dtml-if>
+                            </dtml-let>
+                        </dtml-in>
+                    </select>
+                    </dtml-let>
+                </td>
+            </tr>
+        </dtml-if>
+
+<dtml-var extraprops_addin>
+
+        <tr>
+            <td><input type="submit" value="Change" /></td>
+        </tr>
+        </table>
+        </form>
+</dtml-if>
+<dtml-var standard_html_footer>

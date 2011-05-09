@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<!-- To load this seed file, use http://qualitylabs.org/pdbseed/
+     HOWEVER; No unit tests use it yet.
+     and with version 0.7 of pdbseed you'll have to create an XML-based data definition file by hand
+     See also DBUNIT for Java
+-->
+<dataset>
+  <concept id_concept="7" id_status="n" id_group="1062" datent="2004-09-08 12:59:20" datchg="2004-09-08 12:59:20"/>
+
+  <concept_group id_group="96" langcode="de" description="VERWALTUNG, ORGANISATION, INSTITUTION, PLANUNG, POLITIK UND -VOLLZUG, IMMATERIELLE MASSNAHMEN"/>
+  <concept_group id_group="96" langcode="en" description="ADMINISTRATION, MANAGEMENT, POLICY, POLITICS, INSTITUTIONS, PLANNING"/>
+  <concept_group id_group="234" langcode="en" description="AGRICULTURE, FORESTRY; ANIMAL HUSBANDRY; FISHERY"/>
+  <concept_group id_group="618" langcode="en" description="ATMOSPHERE (air, climate)"/>
+
+  <concept_theme id_concept="21" id_theme="1"/>
+
+  <definition_sources publication="- - - - -" author="- - - - -" url="http://www.abdn.ac.uk/~pol028/sources/europe.htm" title="- - - - -" place="- - - - -" abbr="ABDN" year="- - - - -"/>
+  <definition_sources publication="The Macmillan Press Ltd." author="Allaby, M." url="- - - - -" title="Macmillan Dictionary of the Environment - Third Edition" place="London" abbr="ALL" year="1990"/>
+
+  <language langcode="da" charset="utf8_danish_ci" language="Dansk" alt_langcode="DAN"/>
+  <language langcode="de" charset="utf8_general_ci" language="Deutsch" alt_langcode="GER"/>
+  <language langcode="en" charset="utf8_general_ci" language="English" alt_langcode="ENG"/>
+  <language langcode="en-US" charset="utf8_general_ci" language="English (US)" alt_langcode="USA"/>
+  <language langcode="et" charset="utf8_estonian_ci" language="Eesti keel" alt_langcode="EST"/>
+  <language langcode="eu" charset="utf8_general_ci" language="Euskara" alt_langcode="BAQ"/>
+  <language langcode="fi" charset="utf8_general_ci" language="Suomi" alt_langcode="FIN"/>
+  <language langcode="hu" charset="utf8_general_ci" language="Magyar" alt_langcode="HUN"/>
+  <language langcode="it" charset="utf8_general_ci" language="Italiano" alt_langcode="ITA"/>
+  <language langcode="nl" charset="utf8_general_ci" language="Nederlands" alt_langcode="DUT"/>
+  <language langcode="no" charset="utf8_general_ci" language="Norsk" alt_langcode="NOR"/>
+  <language langcode="pl" charset="utf8_polish_ci" language="Polski" alt_langcode="POL"/>
+  <language langcode="sv" charset="utf8_swedish_ci" language="Svenska" alt_langcode="SVE"/>
+
+  <relation id_concept="7" id_relation="4666" id_type="broader"/>
+  <relation id_concept="21" id_relation="111" id_type="broader"/>
+
+  <property_type id_type="broader" description="broader term" uri="http://www.w3.org/2004/02/skos/core#broader"/>
+  <property_type id_type="narrower" description="narrower term" uri="http://www.w3.org/2004/02/skos/core#narrower"/>
+  <property_type id_type="related" description="related" uri="http://www.w3.org/2004/02/skos/core#related"/>
+  <property_type id_type="topConceptOf" description="top concept of" uri="http://www.w3.org/2004/02/skos/core#topConceptOf"/>
+
+  <scope id_concept="7" scope_note="" langcode="en" definition="Site that cannot be used for any purpose, being contaminated by pollutants, not necessarily radioactive.
+(Source: RRDA)"/>
+  <scope id_concept="21" scope_note="" langcode="en" definition="A coming together of minds; a coming together in opinion or determination; the coming together in accord of two minds on a given proposition. In law, a concord of understanding and intention between two or more parties with respect to the effect upon their relative rights and duties, of certain past or future facts or performances. The consent of two or more persons concerning respecting the transmission of some property, right, or benefits, with the view of contracting an obligation, a mutual obligation. The union of two or more minds in a thing done or to be done; a mutual assent to do a thing.
+(Source: WESTS)"/>
+
+  <status id_status="d" description="delete"/>
+  <status id_status="n" description="new"/>
+
+  <super_group id_group="96" id_super_group="2894"/>
+
+  <term id_concept="7" langcode="de" name="Altstandort"/>
+  <term id_concept="7" langcode="en" name="abandoned industrial site"/>
+  <term id_concept="7" langcode="en-US" name="abandoned industrial site"/>
+
+  <theme accronym="ADM" langcode="en" id_theme="1" description="administration"/>
+  <theme accronym="ADM" langcode="en-US" id_theme="1" description="administration"/>
+</dataset>

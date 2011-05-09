@@ -1,0 +1,116 @@
+<dtml-comment> -*- mode: dtml; dtml-top-element: "body" -*- </dtml-comment>
+<dtml-var manage_page_header>
+<dtml-var manage_tabs>
+
+<form action="." METHOD="POST">
+<table border="0">
+<tr><th>Title</th> 
+    <td><input type="text" name="title:string" size="30" value="&dtml-title;" /></td> 
+</tr>
+<dtml-in "PARENTS[1].objectValues('Meeting Track')">
+	<dtml-if sequence-start>
+	<tr><th>Track</th>
+	    <td><select name="track">
+	    <option value=""
+		<dtml-if "track==''">selected="selected"</dtml-if>>Plenary</option>
+	</dtml-if>
+		<option value="<dtml-var id>"
+		<dtml-if "track==_['sequence-item'].id">
+		  selected="selected"
+		</dtml-if>><dtml-var "_['sequence-item'].title"></option>
+	<dtml-if sequence-end>
+	    </select></td>
+	</tr>
+	</dtml-if>
+<dtml-else>
+   <input type="hidden" name="track" value="" />
+</dtml-in>
+
+<dtml-in "PARENTS[1].objectValues('Meeting Session')" sort=startdate>
+	<dtml-if sequence-start>
+	<tr><th>Session</th>
+	    <td><select name="session">
+	    <option value=""
+		<dtml-if "session==''">selected="selected"</dtml-if>>Outside session</option>
+	</dtml-if>
+		<option value="<dtml-var id>"
+		<dtml-if "session==id">
+		  selected="selected"
+		</dtml-if>><dtml-var startdate fmt=Date>:&dtml-title;</option>
+	<dtml-if sequence-end>
+	    </select></td>
+	</tr>
+	</dtml-if>
+<dtml-else>
+   <input type="hidden" name="session" value="" />
+</dtml-in>
+
+<tr><th>Order in session</th>
+    <td><input type="text" name="session_ord:int" size="5" value="&dtml-session_ord;" />
+Use 10, 20, 30... for flexibility
+    </td></tr>
+
+<tr><th>Duration</th>
+    <td><input type="text" name="duration:int" size="5" value="&dtml-duration;" /> minutes</td></tr>
+
+<tr><th>Venue</th> 
+		<td>
+		  <select name="location">
+<dtml-let mylocation="location">
+		    <option value="">Select location</option>
+	      <dtml-in "PARENTS[2].objectValues('Meeting Location') +
+		  PARENTS[1].objectValues('Meeting Location')" sort=title>
+		<option value="&dtml-id;"
+		<dtml-if "mylocation == id">
+		  selected="selected"
+		</dtml-if>>&dtml-title;</option>
+	      </dtml-in>
+</dtml-let>
+	    </select></td></tr>
+
+<dtml-in "PARENTS[1].objectValues('Meeting Attendee')" sort=title>
+	<dtml-if sequence-start>
+	<tr><th>Speaker</th>
+	    <td><select name="speakers:list" multiple size="4">
+	</dtml-if>
+	<dtml-if "role in ['Speaker','Organiser','Chair']">
+		<option value="&dtml-id;"
+		<dtml-if "id in speakers">
+		  selected="selected"
+		</dtml-if>><dtml-var title></option>
+	</dtml-if>
+	<dtml-if sequence-end>
+	    </select></td>
+	</tr>
+	</dtml-if>
+</dtml-in>
+
+<tr><th>Author(s)</th> 
+    <td><input type="text" name="author:string" size="50" value="<dtml-var author>" /></td></tr> 
+<tr><th>Abstract<br />HTML OK</th> 
+    <td><textarea cols="60" rows="10" name="abstract:text"><dtml-var abstract></textarea></td></tr>
+<tr><th>Paper URL</th> 
+    <td><input type="text" name="paper_url:string" size="30" value="<dtml-var paper_url>" /></td></tr>
+<tr><th>Slides URL</th> 
+    <td><input type="text" name="slides_url:string" size="30" value="<dtml-var slides_url>" /></td></tr>
+<tr><th>Related URL</th> 
+    <td><input type="text" name="url:string" size="30" value="<dtml-var url>" /></td></tr>
+<tr><th>Keywords</th> 
+    <td><textarea cols="30" rows="3" name="keywords:text"><dtml-var keywords></textarea></td></tr>
+<tr><th>Actions agreed<br />HTML OK</th> 
+    <td><textarea cols="60" rows="3" name="actions_agreed:text"><dtml-var actions_agreed></textarea></td></tr>
+<tr><th>Actions completed<br />HTML OK</th> 
+    <td><textarea cols="60" rows="3" name="actions_comp:text"><dtml-var actions_comp></textarea></td></tr>
+<tr><th>Minutes of meeting<br />HTML OK</th> 
+    <td><textarea cols="60" rows="3" name="minutes:text"><dtml-var minutes></textarea></td></tr>
+<tr><th>Confirmed</th> 
+	<td>
+	  <input type="checkbox" name="confirmed"
+      <dtml-if confirmed>
+	checked="checked"
+      </dtml-if>
+       /></td></tr> 
+<tr><td></td><td><input type="submit" value="Change" name="manage_editAction:method" /></td></tr> 
+</table>
+</form>
+<dtml-var manage_page_footer>

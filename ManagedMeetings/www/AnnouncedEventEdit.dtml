@@ -1,0 +1,67 @@
+<dtml-comment> -*- mode: dtml; dtml-top-element: "body" -*- </dtml-comment>
+<dtml-var manage_page_header>
+<dtml-with "_(management_view='Properties')">
+	<dtml-var manage_tabs>
+</dtml-with>
+<form name="edit" action="<dtml-var URL1>" method="post">
+	<table cellspacing="5" cellpadding="0" border="0">
+		<tr>
+			<th>Type</th>
+			<td colspan="3" align="left" valign="top">
+				<dtml-if "_.has_key('event_types') and event_types">
+					<select name="event_type:string">
+						<dtml-in event_types>
+							<dtml-if "event_type==_['sequence-item']"> 
+								<option selected="selected"><dtml-var sequence-item html_quote></option>
+							<dtml-else>
+								<option><dtml-var sequence-item html_quote></option>
+							</dtml-if>
+						</dtml-in>
+					</select>
+				<dtml-else>
+					<input type="text" name="event_type:string" size="30" value="&dtml-even_type;" />
+				</dtml-if>
+			</td>
+		</tr>
+		<tr>
+			<th>Title</th>
+			<td colspan="3" align="left" valign="top"><input type="text" name="title:string" size="40" value="<dtml-var title html_quote>" /></td>
+		</tr>
+		<tr>
+			<th>Summary</th>
+			<td colspan="3" align="left" valign="top"><textarea name="description:text" rows="6" cols="35"><dtml-var description html_quote></textarea></td>
+		</tr>
+		<tr>
+			<th>Location</th>
+			<td colspan="3" align="left" valign="top"><input name="txtlocation:string" size="35" type="text" value="<dtml-var txtlocation html_quote>" /></td>
+		</tr>
+		<tr>
+			<th>URL</th>
+			<td colspan="3" align="left" valign="top"><input name="urllocation:string" size="35" type="text" value="<dtml-var urllocation html_quote>" /></td>
+		</tr>
+		<tr>
+			<th>Start/End date</th>
+			<td colspan="3" align="left" valign="top"><input type="text" name="startdate:date" size="23" value="<dtml-var startdate fmt="%Y-%m-%d %H:%M">" /> to <input type="text" name="enddate:date" size="23" value="<dtml-var enddate fmt="%Y-%m-%d %H:%M">" /></td>
+		</tr>
+		<tr>
+			<th>Organiser</th>
+			<td colspan="3" align="left" valign="top"><input type="text" name="organiser:string" size="35" value="<dtml-var organiser>" /></td>
+		</tr>
+		<tr>
+			<th>Status</th>
+			<td colspan="3" align="left" valign="top">
+				<select name="status:string">
+					<option value="active" <dtml-if expr="status=='active'">selected="selected"</dtml-if>>Active</option>
+					<option value="inactive" <dtml-if expr="status=='inactive'">selected="selected"</dtml-if>>Inactive</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td><input type="submit" name="manage_editAnnouncedEvent:method" value="Change" /></td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr><td colspan="3">&nbsp;</td></tr>
+	</table>
+</form>
+<dtml-var manage_page_footer>

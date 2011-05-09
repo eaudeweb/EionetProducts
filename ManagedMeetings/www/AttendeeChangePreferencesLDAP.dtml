@@ -1,0 +1,100 @@
+<dtml-var standard_html_header>
+
+<dtml-call "REQUEST.set('userid',AUTHENTICATED_USER.getUserName)">
+
+<dtml-let record=userid>
+    <dtml-if "record == ldap_id">
+        <dtml-with "REQUEST.PARENTS[1]"><dtml-var choose_bar></dtml-with>
+        <h1>Edit preferences for <i><dtml-var title></i>!</h1>
+
+        <dtml-if "REQUEST.has_key('FORM_ERROR')">
+           You have an error in the following form. Please correct it.
+        </dtml-if>
+
+            <form action="changePreferences" method="post">
+            <table border="0">
+            <tr><th>Surname</th> 
+                <td><input type="text" name="sn" size="30" value="<dtml-if "REQUEST.has_key('sn')"><dtml-var "REQUEST['sn']"><dtml-else><dtml-var sn></dtml-if>" /><br />
+                    <span style="color:red"><dtml-if "REQUEST.has_key('FORM_ERROR' + '_sn')">
+                            <dtml-var "REQUEST['FORM_ERROR'+'_sn']"></dtml-if></span></td>
+            </tr> 
+            <tr><th>First names</th> 
+                <td><input type="text" name="givenname" size="30" value="<dtml-if "REQUEST.has_key('givenname')"><dtml-var "REQUEST['givenname']"><dtml-else><dtml-var givenname></dtml-if>" /><br />
+                    <span style="color:red"><dtml-if "REQUEST.has_key('FORM_ERROR' + '_givenname')">
+                            <dtml-var "REQUEST['FORM_ERROR'+'_givenname']">
+                    </dtml-if></span></td>
+            </tr>
+             <tr><th>Email</th> 
+                <td><dtml-var mail></td>
+            </tr> 
+            <tr><th>Organisation</th> 
+                <td><input type="text" name="organisation" size="30" value="<dtml-if "REQUEST.has_key('organisation')"><dtml-var "REQUEST['organisation']"><dtml-else><dtml-var organisation html_quote></dtml-if>" /></td>
+            </tr> 
+            <tr><th>Telephone</th> 
+                <td><input type="text" name="tel" size="20" value="<dtml-if "REQUEST.has_key('tel')"><dtml-var "REQUEST['tel']"><dtml-else><dtml-var tel html_quote></dtml-if>" /></td>
+            </tr> 
+            <tr><th>Postal Address</th> 
+                <td><textarea cols="30" rows="3" name="postaladdress"><dtml-if "REQUEST.has_key('postaladdress')"><dtml-var "REQUEST['postaladdress']"><dtml-else><dtml-var postaladdress html_quote></dtml-if></textarea></td>
+            </tr>
+            <dtml-let att="['Yes', 'Tentative', 'No, but keep me informed']">
+            <tr>
+                <th>Attending</th>
+                <td>
+                    <dtml-let page_attending="REQUEST.get('attending', attending)">
+                    <select name="attending">
+                    <dtml-in "('CONFIRMED', 'TENTATIVE', 'DECLINED')">
+                        <dtml-if "page_attending == _['sequence-item']">
+                            <option value="<dtml-var sequence-item>" selected="selected"><dtml-var "att[_['sequence-index']]"></option>
+                        <dtml-else>
+                            <option value="<dtml-var sequence-item>"><dtml-var "att[_['sequence-index']]"></option>
+                        </dtml-if>
+                    </dtml-in>
+                    </select>
+                    </dtml-let>
+                </td>
+            </tr>
+            </dtml-let>
+
+            <dtml-if ldap_id>
+                <tr>
+                    <th>Role</th>
+                    <td>
+                        <dtml-let page_role="REQUEST.get('role', role)">
+                        <select name="role">
+                            <dtml-in "['Attendee','Speaker','Organiser','Chair']">
+                                <dtml-let record=sequence-item>
+                                <dtml-if "page_role == record">
+                                    <option selected><dtml-var sequence-item></option>
+                                <dtml-else>
+                                    <option><dtml-var sequence-item></option>
+                                </dtml-if>
+                                </dtml-let>
+                            </dtml-in>
+                        </select>
+                        </dtml-let>
+                    </td>
+                </tr>
+            </dtml-if>
+<dtml-var extraprops_addin>
+
+            <tr>
+                <td><input type="submit" value="Change" /></td>
+            </tr>
+            </table>
+            </form>
+    <dtml-else>
+        <dtml-if "record=='Anonymous User'">
+            <dtml-call "RESPONSE.setStatus(401)">
+            <dtml-call "RESPONSE.setHeader('WWW-Authenticate','Basic realm=%cZope%c' % ( 34, 34 ))">
+        </dtml-if>
+        <dtml-var choose_bar>
+        <p style="text-align:center">
+          <strong>Your current LDAP account doesn't match the
+    one used by this attendee.<br /> To succesfully edit this profile please
+    open another session and use the appropiate LDAP account.</strong>
+<br />You are "<dtml-var record>". Only "<dtml-var ldap_id>" can change.
+</td>
+        </p>
+    </dtml-if>
+</dtml-let>
+<dtml-var standard_html_footer>

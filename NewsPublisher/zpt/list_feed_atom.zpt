@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:tal="http://xml.zope.org/namespaces/tal" xml:lang="en"
+  tal:define="dummy python:request.RESPONSE.setHeader('content-type', 'application/atom+xml;;charset=UTF-8')">
+    <title tal:content="here/title_or_id" />
+    <link tal:attributes="href string:http://localhost:8080/" rel="alternate" />
+    <link tal:attributes="href string:${here/absolute_url}/feed_atom" rel="self" />
+    <id tal:content="here/absolute_url" />
+    <updated tal:condition="options/news_items" tal:content="python:options['news_items'][0].getObject().rfc3339_change_date()" />
+    <tal:block tal:repeat="item options/news_items">
+    <entry tal:define="news_item python:item.getObject()">
+        <title tal:content="news_item/title_or_id" />
+        <link tal:attributes="href news_item/absolute_url" rel="alternate" />
+        <author><name tal:content="news_item/author" /></author>
+        <published tal:content="news_item/rfc3339_release_date" />
+        <updated tal:content="news_item/rfc3339_change_date" />
+        <id tal:content="news_item/absolute_url" />
+        <summary type="html" tal:content="news_item/teaser" />
+    </entry>
+    </tal:block>
+</feed>

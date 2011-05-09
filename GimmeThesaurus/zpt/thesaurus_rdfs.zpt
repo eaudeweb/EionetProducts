@@ -1,0 +1,72 @@
+<span metal:use-macro="here/thesaurus_template/macros/thesaurus_page">
+
+	<tal:block metal:fill-slot="thesaurus_page_title">
+		Download files
+	</tal:block>
+
+	<tal:block metal:fill-slot="thesaurus_content">
+
+		<h1>Download GEMET</h1>
+
+		<div id="rdf-left">
+			<fieldset class="rdf-fieldset"><legend>General structure</legend><br />
+			<tal:block define="rdf_files python:here.objectValues('Script (Python)')" repeat="rdf rdf_files">
+				<tal:block tal:condition="python:(rdf.id != 'gemet-definitions.rdf') and (rdf.id != 'gemet-groups.rdf')">
+					<div class="rdf-container">
+						<div class="rdf-link"><a class="top" tal:define="id rdf/id; title1 rdf/title_or_id" tal:attributes="href string:${here/absolute_url}/${id}; title string:${title1}" tal:content="title1"></a></div>
+<!--
+						<div class="rdf-time" tal:content="python: rdf.bobobase_modification_time().strftime('%d %B %Y')"></div>
+-->
+					</div>
+
+				</tal:block>
+			</tal:block><br />
+			</fieldset>
+		</div>
+
+		<div class="rdf-right">
+			<fieldset class="rdf-fieldset"><legend>Labels and definitions in RDF</legend>
+				<form action="GetLabelsRDF" method="post" name="frmRDFLang">
+				<div class="rdf-label">Choose the language</div>
+				<div class="rdf-input">
+					<select name="rdf_lang">
+						<tal:block repeat="lang python:here.GetLanguages()">
+						<option tal:define="recordid python:str(here.mp_langcode(lang))"
+								tal:attributes="value recordid" selected="selected"
+								tal:condition="python:recordid==here.getSessionLanguage(here.langcode)"
+								tal:content="python:here.mp_language(lang)"/>
+						<option tal:define="recordid python:str(here.mp_langcode(lang))"
+								tal:attributes="value recordid" tal:condition="python:recordid!=here.getSessionLanguage(here.langcode)"
+								tal:content="python:here.mp_language(lang)"/>
+						</tal:block>
+					</select>
+					</div>
+					<div class="rdf-submit"><input type="submit" value="Get labels and definitions" /></div>
+				</form>
+			</fieldset>
+		</div>
+
+		<div class="rdf-right">
+			<fieldset class="rdf-fieldset"><legend>Supergroups, groups and themes in RDF</legend>
+				<form action="GetGroupsRDF" method="post" name="frmRDFLang">
+				<div class="rdf-label">Choose the language</div>
+				<div class="rdf-input">
+					<select name="rdf_lang">
+						<tal:block repeat="lang python:here.GetLanguages()">
+						<option tal:define="recordid python:str(here.mp_langcode(lang))"
+								tal:attributes="value recordid" selected="selected"
+								tal:condition="python:recordid==here.getSessionLanguage(here.langcode)"
+								tal:content="python:here.mp_language(lang)"/>
+						<option tal:define="recordid python:str(here.mp_langcode(lang))"
+								tal:attributes="value recordid" tal:condition="python:recordid!=here.getSessionLanguage(here.langcode)"
+								tal:content="python:here.mp_language(lang)"/>
+						</tal:block>
+					</select>
+				</div>
+				<div class="rdf-submit"><input type="submit" value="Get groups and themes" /></div>
+				</form>
+			</fieldset>
+		</div>
+	</tal:block>
+</span>
+

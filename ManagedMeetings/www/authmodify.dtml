@@ -1,0 +1,49 @@
+<dtml-comment> -*- mode: dtml; dtml-top-element: "body" -*- </dtml-comment>
+<dtml-var standard_html_header>
+<dtml-if "_.str(AUTHENTICATED_USER) == uid">
+<h1>Modify my details</h1> 
+
+<form action="authenticated_modify" method="post">
+<table> 
+<tr><th>UserID</th> 
+    <td><dtml-var AUTHENTICATED_USER></td></tr> 
+
+<tr><th>Surname</th> 
+    <td><input type="text" name="sn" size="30" value="&dtml.missing-sn;" /></td></tr> 
+<tr><th>First names</th> 
+    <td><input type="text" name="givenname" size="30" value="&dtml.missing-givenname;" /></td></tr> 
+<tr><th>Organisation</th> 
+    <td><input type="text" name="organisation" size="30" value="&dtml.missing-organisation;" /></td></tr> 
+<tr><th>Email</th> 
+    <td><input type="text" name="mail" size="30" value="&dtml.missing-mail;" /></td></tr> 
+<tr><th>Telephone</th> 
+    <td><input type="text" name="tel" size="20" value="&dtml.missing-tel;" /></td></tr> 
+<tr><th>Postal Address</th> 
+    <td><textarea cols="30" rows="3" name="postaladdress">&dtml.missing-postaladdress;</textarea></td></tr> 
+<dtml-let att="['Yes', 'Tentative', 'No, but keep me informed']">
+<tr><th>Attending</th> 
+    <td><select name="attending">
+	<dtml-in "('CONFIRMED', 'TENTATIVE', 'DECLINED')">
+		 <dtml-if "attending == _['sequence-item']">
+			 <option value="<dtml-var attending>" selected="selected"><dtml-var att[sequence-index]></option>
+		 <dtml-else>
+			 <option value="<dtml-var sequence-item>"><dtml-var att[sequence-index]></option>
+		 </dtml-if>
+	</dtml-in>
+	</select></td></tr> 
+</dtml-let>
+<tr><th>Role</th>
+<td><input type="text" size="20" name="role" value="&dtml.missing-role;" /></td></tr>
+<tr><td></td><td><input type="submit" value="Modify" /></td></tr>
+</table>
+</form> 
+<dtml-else>
+<h1>You Are Not the Same User!</h1>
+<p>
+You logged in as <dtml-var AUTHENTICATED_USER>
+and you are therefore not allowed to modify anything here
+as you did not login as the same user
+that created this entry.
+</p>
+</dtml-if>
+<dtml-var standard_html_footer>

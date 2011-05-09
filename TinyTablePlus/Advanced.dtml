@@ -1,0 +1,60 @@
+<html>
+ <head><title><!--#var title_or_id--> Advanced Options</title></head>
+ <body bgcolor="#FFFFFF" link="#000099" vlink="#555555" alink="#77003B">
+
+  <!-- $Endicor: Advanced.dtml,v 1.2 1998/12/24 22:03:41 tsarna Exp $ -->
+
+  <!--#var manage_tabs-->
+    
+  <h2><!--#var title_or_id--> Advanced Options</h2>
+    
+  <form action="manage_advanced" method="POST">
+   <table cellspacing="2">
+    <tr>
+     <th align="LEFT" valign="TOP">Id</th>
+     <td align="LEFT" valign="TOP"><!--#var id--></td>
+    </tr>
+
+    <tr>
+     <th align="LEFT" valign="TOP"><em>Title</em></th>
+     <td align="LEFT" valign="TOP">
+      <input type="TEXT" name="title" size="50"
+      value="<!--#var title-->">
+     </td>
+    </tr>
+
+    <tr><td>&nbsp;</td></tr>
+
+    <tr>
+     <td colspan=2>
+      <br><br>
+      You may specify a <strong>class</strong> for the data records. 
+      This class must be defined in a file that resides in the
+      <code>Extensions</code> directory of this Zope installation. 
+     </td>
+    <tr>
+
+    <tr>
+     <th align="LEFT" valign="TOP"><em>Class Name</em></th>
+     <td align="LEFT" valign="TOP">
+      <input type="TEXT" name="class_name" size="30"
+      value="<!--#var class_name_-->">
+     </td>
+    </tr>
+
+    <tr>
+     <th align="LEFT" valign="TOP"><em>Class File</em></th>
+     <td align="LEFT" valign="TOP">
+      <input type="TEXT" name="class_file" size="30"
+      value="<!--#var class_file_-->">
+     </td>
+    </tr>
+
+    <tr>
+     <td></td>
+     <td><br><input type="SUBMIT" value="Change"></td>
+    </tr>
+   </table>
+  </form>
+ </body>
+</html>

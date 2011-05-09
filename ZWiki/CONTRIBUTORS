@@ -1,0 +1,83 @@
+ZWIKI REPO CONTRIBUTOR'S AGREEMENT V1.0
+=======================================
+
+This is the official contributor list and contributor's agreement for
+the main ZWiki code repository.  If you contribute code here, please
+sign this document by adding your name to the contributor list below,
+in order to ensure that:
+
+- you get proper credit for your work
+
+- there is a clear audit trail and legal status for the project
+
+- the project can easily remain license-compatible with other free &
+  open-source software in future.
+
+Your signature below asserts that your commits to this repository:
+
+- are released under the GNU GPL v2; or are under another
+  GPL-compatible license, such as ZPL, if clearly noted as such; 
+  or are public domain
+
+- may be relicensed under official future versions of their license, at
+  the Zwiki project manager's discretion. Eg GPL v2 code can be rereleased
+  as GPL v3 later.
+
+- are free of known patent violations or copyright violations
+
+
+ZWIKI CONTRIBUTORS
+==================
+
+Contributors who have signed the contributor agreement
+------------------------------------------------------
+Simon Michael <simon@joyful.com> - lead developer
+Encolpe Degoute <encolpe@colpi.info> - french translation, plone adjustment, extend tracker capacity
+Frank Laurijssens <frank@laurijssens.nl> - 
+John Riley <riley@uic.com> - 
+Sascha Welter <betabug.darcs@betabug.ch> -
+Ben Laurijssens <ben@laurijssens.nl> - contributed his beautiful energy and likeness to energize our site
+
+
+Contributors who have not yet signed
+------------------------------------
+Alan Runyan - Plone skin fixes
+Alexander Limi - Plone skinning
+Alexandre Ratti - internationalization fixes
+Casey Duncan - ExternalEditor ?
+Chad Miller - MoinMoinMarkup patch
+Chris McDonough - CMFWiki
+Chris Withers - ZWikiWebProduct
+Garth Kidd - NooZWiki, NeverSaved
+Jim Fulton - edit conflict checking, ftp support, security patches, zope infrastructure changes
+Ken Manheimer - WikiStructuringIdeas, page hierarchy, regulations, WikiForNow
+Lalo Martins - CMF improvements
+Mike Pelletier - security & safety issues
+Peter Merel - WWML & parenting enhancements
+Sidnei da Silva - CMF improvements
+Tres Seaver - StructuredText support, WWML support, ZCWiki
+others not yet listed here...
+
+
+Contributors outside the main code base:
+----------------------------------------
+These folks have not committed code here and don't need to sign, they are
+included for completeness:
+
+Adam Feuer - OnlineBookstoreLinks
+Andrew Cates - gardening and clarifying mainly
+Dean Goodmanson - WikiMailDiscussion, ZwikiTracker, BloggingDiscussion, [SubWiki]s...
+Edward Kreis - JumpSearchModification, NeverCreated
+Evan Simpson - wiki_page_url/virtual hosting suggestions
+Florian Konnertz - DTML experiments, wiki refactoring and AboutZwikiDocs
+Geoff Gardiner - ManagedMode
+Jeff Risberg - ZwikiWithFrames
+Johan Carlsson - ZWikiZC
+Jos Yule
+Justin Clift - docs
+Paolo Pumilia - italian translation of ZwikiWithFrames
+Phil Armstrong - LinkColourHack
+Pieter B - often submits bugs in the [ZwikiTracker]s and works on ZwikiMail and the ZwikiFrontend 
+Rik Hoekstra - wiki_page_url/virtual hosting suggestions
+Ron Dagostino - RecentChangesBySubjectFeature, DeletePageFeature etc
+tav - PlexNews (early zwiki/ptk combo)

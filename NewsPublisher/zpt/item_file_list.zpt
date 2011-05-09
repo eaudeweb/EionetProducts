@@ -1,0 +1,33 @@
+<tal:block define="dummy python:request.RESPONSE.setHeader('content-type', 'text/html;;charset=UTF-8')" />
+<html>
+<head>
+    <title tal:content="string:${here/title_or_id} - select file" />
+    <script type="text/javascript" src="/misc_/NewsPublisher/tinymce/jscripts/tiny_mce/tiny_mce_popup.js"></script>
+    <script type="text/javascript">
+    function select_file(url) {
+        var win = tinyMCEPopup.getWindowArg("window");
+        win.document.getElementById(tinyMCEPopup.getWindowArg("input")).value = url;
+        tinyMCEPopup.close();
+    }
+    </script>
+</head>
+<body>
+
+<h1 tal:content="string:${here/title_or_id} - select file" />
+
+<p tal:condition="not:here/objectItems">Files are stored inside the news item. Go in the <a href="manage_main" target="_blank">Contents tab</a> to upload some.</p>
+
+<p tal:condition="here/objectItems">The files listed below are stored inside the news item. Go in the <a href="manage_main" target="_blank">Contents tab</a> to upload others.</p>
+
+<ul>
+    <li tal:repeat="item here/objectItems">
+        <a tal:define="url python:item[1].absolute_url(); name python:item[0]"
+            tal:attributes="href string:javascript:select_file('${url}')"
+            tal:content="name" />
+    </li>
+</ul>
+
+<p><a href="javascript:window.location.reload();">Refresh</a> the file list.</p>
+
+</body>
+</html>

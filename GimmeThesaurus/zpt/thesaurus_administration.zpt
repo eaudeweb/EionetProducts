@@ -1,0 +1,56 @@
+<!--span metal:use-macro="here/manage_page_header"-->
+<span tal:replace="structure here/manage_page_header" />
+<span tal:replace="structure here/manage_tabs" />
+<div class="system-msg" tal:condition="python:request.has_key('save')">
+	Saved changes. (<span tal:replace="here/ZopeTime" />)<br />
+</div>
+
+<h1>Administration page</h1>
+<div id="cell-error" tal:repeat="error_value here/getSessionErrors"><img class="admin-img" src="/misc_/GimmeThesaurus/err.gif"/>&nbsp;<tal:block content="error_value"/></div>
+
+<div id="admin-info" tal:condition="here/getSessionInfo"><img class="admin-img" src="/misc_/GimmeThesaurus/done.gif"/>&nbsp;<tal:block content="here/getSessionInfo"/></div>
+
+<div class="admin-container">
+	<fieldset><legend>Database connection</legend>
+		<div class="admin-header">Change the database connection parameters using the form below and click the <strong>Update</strong> button.</div>
+
+		<form method="post" action="manageDatabaseConnection">
+			<div class="admin-label">Host name</div><div class="admin-input"><input class="bg" type="text" name="db_host" size="30" tal:attributes="value here/getSessionDBHost" /></div>
+			<div class="admin-label">Name</div><div class="admin-input"><input class="bg" type="text" name="db_name" size="30" tal:attributes="value here/getSessionDBName" /></div>
+			<div class="admin-label">User Login ID</div><div class="admin-input"><input class="bg" type="text" name="db_user" size="30"  tal:attributes="value here/getSessionDBUser" /></div>
+			<div class="admin-label">Password</div><div class="admin-input"><input class="bg" type="password" name="db_password" size="30"  tal:attributes="value here/getSessionDBPassword" /></div>
+			<div class="admin-label">Port</div><div class="admin-input"><input class="bg" type="text" name="db_port" size="5" tal:attributes="value here/getSessionDBPort" /></div>
+			<div class="admin-label"></div><div class="admin-input"><input class="sbm_bg" type="submit" value="Update" /></div>
+		</form>
+	</fieldset>
+</div>
+
+<div class="admin-container" tal:define="languages python:here.GetLanguages()" tal:condition="python:languages">
+	<fieldset><legend>Properties</legend>
+		<div class="admin-header">Change the properties using the form bellow and click the <strong>Update</strong> button.</div>
+		<form action="manageProperties" method="post">
+			<div class="admin-label">Choose the default language</div>
+			<div class="admin-input">
+				<select name="langcode">
+					<tal:block repeat="record languages">
+					<option tal:define="recordid python:str(here.mp_langcode(record))"
+							tal:attributes="value recordid" selected="selected"
+							tal:condition="python:recordid==here.langcode"
+							tal:content="python:here.mp_language(record)"/>
+					<option tal:define="recordid python:str(here.mp_langcode(record))"
+							tal:attributes="value recordid"
+							tal:condition="python:recordid!=here.langcode"
+							tal:content="python:here.mp_language(record)"/>
+					</tal:block>
+				</select>
+			</div>
+			<div class="admin-label">Title</div><div class="admin-input"><input class="bg" type="text" name="title" tal:attributes="value here/title" size="50" /></div>
+			<div class="admin-label">Description</div><div class="admin-input"><textarea class="bg" name="description" rows="5" cols="40" tal:content="here/description">description</textarea></div>
+			<div class="admin-label"></div><div class="admin-input"><input class="sbm_bg" type="submit" value="Update" /></div>
+		</form>
+	</fieldset>
+</div>
+<span tal:content="python:here.delSessionErrors()" tal:omit-tag=""/>
+<span tal:content="python:here.delDBSession()" tal:omit-tag=""/>
+<span tal:content="python:here.delSessionInfo()" tal:omit-tag=""/>
+
